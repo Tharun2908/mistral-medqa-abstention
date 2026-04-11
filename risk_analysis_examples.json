@@ -1,0 +1,392 @@
+{
+  "high_confidence_wrong": [
+    {
+      "question": "A 65-year-old man presents with pain in his left thigh for a week. He describes the pain as dull and constant, boring in nature, and localized deep below the thigh muscle. He says it is worse at night. Physical examination is significant for tenderness and warmth over the anterior aspect of the left thigh. A plain radiograph of the left femur shows increased cortical thickness with widened intercortical space. Laboratory studies show:\nAlkaline phosphatase\n925 U/L\nSerum calcium\n9.2 mg/dL\nSerum phosphorus 4.4 mg/dL\nFindings on bone biopsy are shown in the image. Which of the following is the most likely diagnosis in this patient?",
+      "options": {
+        "A": "Ewing's sarcoma",
+        "B": "Osteitis deformans",
+        "C": "Osteochondritis dissecans",
+        "D": "Osteitis fibrosa cystica"
+      },
+      "prediction": "D",
+      "ground_truth": "B",
+      "is_correct": false,
+      "confidence": 0.90234375,
+      "all_probs": {
+        "A": 0.0272216796875,
+        "B": 0.0308837890625,
+        "C": 0.03955078125,
+        "D": 0.90234375
+      }
+    },
+    {
+      "question": "Background: There is a lack of consensus about whether the initial imaging method for patients with suspected nephrolithiasis should be computed tomography (CT) or ultrasonography.\nMethods: In this multicenter, pragmatic, comparative effectiveness trial, we randomly assigned patients 18 to 76 years of age who presented to the emergency department with suspected nephrolithiasis to undergo initial diagnostic ultrasonography performed by an emergency physician (point-of-care ultrasonography), ultrasonography performed by a radiologist (radiology ultrasonography), or abdominal non-contrast CT. Subsequent management, including additional imaging, was at the discretion of the physician. We compared the three groups with respect to the 30-day incidence of high-risk diagnoses with complications that could be related to missed or delayed diagnosis and the 6-month cumulative radiation exposure. Secondary outcomes were serious adverse events, related serious adverse events (deemed attributable to study participation), pain (assessed on an 11-point visual-analog scale, with higher scores indicating more severe pain), return emergency department visits, hospitalizations, and diagnostic accuracy.\nResults: A total of 2759 patients underwent randomization: 908 to point-of-care ultrasonography, 893 to radiology ultrasonography, and 958 to non-contrast CT abdomen The incidence of high-risk diagnoses with complications in the first 30 days was low (0.4%) and did not vary according to imaging method. The mean 6-month cumulative radiation exposure was significantly lower in the ultrasonography groups than in the CT group (p < 0.001). Serious adverse events occurred in 12.4% of the patients assigned to point-of-care ultrasonography, 10.8% of those assigned to radiology ultrasonography, and 11.2% of those assigned to CT (p = 0.50). Related adverse events were infrequent (incidence, 0.4%) and similar across groups. By 7 days, the average pain score was 2.0 in each group (p = 0.84). Return emergency department visits, hospitalizations, and diagnostic accuracy did not differ significantly among the groups.\nConclusions: Initial ultrasonography was associated with lower cumulative radiation exposure than initial CT, without significant differences in high-risk diagnoses with complications, serious adverse events, pain scores, return emergency department visits, or hospitalizations.\nIf the conclusion stated above was, in fact, due to the earlier detection of nephrolithiasis in patients undergoing point of care ultrasound, what type of bias would this exemplify?",
+      "options": {
+        "A": "Measurement bias",
+        "B": "Recall bias",
+        "C": "Lead-time bias",
+        "D": "Selection bias"
+      },
+      "prediction": "C",
+      "ground_truth": "A",
+      "is_correct": false,
+      "confidence": 0.8984375,
+      "all_probs": {
+        "A": 0.03955078125,
+        "B": 0.0164794921875,
+        "C": 0.8984375,
+        "D": 0.044677734375
+      }
+    },
+    {
+      "question": "A 15-year-old boy with poorly controlled asthma presents to the emergency room complaining of severe shortness of breath. His mother reports that he had trouble breathing soon after he started playing soccer with some friends and was unable to use his inhaler as it was empty. His family history is notable for emphysema in his paternal uncle and cirrhosis in his maternal grandfather. The child\u2019s temperature is 99.0\u00b0F (37.2\u00b0C), blood pressure is 130/90 mmHg, pulse is 130/min, respirations are 28/min, and oxygen saturation is 91% on room air. Physical examination demonstrates wheezing bilaterally in all lung fields. The child is started on supplemental oxygen and a nebulized bronchodilator. Which of the following is a downstream effect of this medication?",
+      "options": {
+        "A": "Decreased leukotriene activity",
+        "B": "Activation of muscarinic receptors",
+        "C": "Decreased phosphodiesterase activity",
+        "D": "Increased adenylate cyclase activity"
+      },
+      "prediction": "C",
+      "ground_truth": "D",
+      "is_correct": false,
+      "confidence": 0.8828125,
+      "all_probs": {
+        "A": 0.0267333984375,
+        "B": 0.0172119140625,
+        "C": 0.8828125,
+        "D": 0.07275390625
+      }
+    },
+    {
+      "question": "A 4-month-old infant is brought to the office by his parents due to sudden nose bleeding without trauma of any kind. He has a 1-month history of multiple bruising that measures 1 cm in diameter each in the hands and feet, and tiny red spots that appeared in the upper and lower extremities without any trauma either. He has no prior bleeding history nor any relevant family history. The vital signs include: heart rate 190/min, respiratory rate 40/min, blood pressure 99/42 mm Hg, and temperature 36.6 \u00b0C (97.9 \u00b0F). His physical exam shows pale skin color, petechiae in the soft palate and in the upper and lower extremities as well as ecchymosis in the back of the hands and feet.\nThe complete blood count results are as follows:\nHemoglobin 8.9 g/dL\nHematocrit 41%\nLeukocyte count 10,500/mm3\nNeutrophils 53%\nBands 2%\nEosinophils 1%\nBasophils 0%\nLymphocytes 33%\nMonocytes 2%\nPlatelet count 450,000/mm3\nThe coagulation test results are as follows:\nPartial thromboplastin time (activated) 30.0 sec\nProthrombin time 13.6 sec\nInternational normalized ratio 0.99\nFibrinogen 364.9 mg/dL\nThe blood smear shows hypochromia, poikilocytosis, and large platelets, while a platelet aggregation test with ristocetin is normal. The overall bleeding time is increased. What is the most likely cause of this patient\u2019s condition?",
+      "options": {
+        "A": "Von Willebrand disease",
+        "B": "Glanzmann\u2019s thrombasthenia",
+        "C": "Bernard-Soulier disease",
+        "D": "Scurvy"
+      },
+      "prediction": "C",
+      "ground_truth": "B",
+      "is_correct": false,
+      "confidence": 0.875,
+      "all_probs": {
+        "A": 0.04931640625,
+        "B": 0.028076171875,
+        "C": 0.875,
+        "D": 0.04931640625
+      }
+    },
+    {
+      "question": "A 68-year-old male comes to the physician for evaluation of right flank pain. He has a history of diabetes and peripheral artery disease. His blood pressure is 160/90 mm Hg. Physical examination shows abdominal tenderness and right flank tenderness. An ultrasound shows dilation of the right ureter and renal pelvis. Which of the following is the most likely underlying cause of this patient's condition?",
+      "options": {
+        "A": "Renal artery stenosis",
+        "B": "Benign prostatic hyperplasia",
+        "C": "Common iliac artery aneurysm",
+        "D": "Urethral stricture"
+      },
+      "prediction": "A",
+      "ground_truth": "C",
+      "is_correct": false,
+      "confidence": 0.8671875,
+      "all_probs": {
+        "A": 0.8671875,
+        "B": 0.03369140625,
+        "C": 0.055419921875,
+        "D": 0.043212890625
+      }
+    },
+    {
+      "question": "A 47-year-old woman comes to the physician for a follow-up examination. She has noticed trembling of her hands for the past 5 months. These movements are only present when she reaches to pick up an object or answer the phone. She has a history of major depressive disorder but has been off medications for the past 3 years. Her father had Parkinson's disease and died 6 months ago. She drinks a glass of wine daily. She appears anxious. Her temperature is 37\u00b0C (98.6\u00b0F), pulse is 80/min, and blood pressure is 118/74 mm Hg. A low-frequency tremor is present that worsens as she reaches out for an object. She consistently overshoots her target. There is no tremor present when her arms are held outstretched. There is increased tone in the lower extremities and Babinski's sign is positive bilaterally. Which of the following is the most likely cause of this patient's symptoms?",
+      "options": {
+        "A": "Cerebellar demyelination",
+        "B": "Degenerated substantia nigra",
+        "C": "Degenerated caudate nucleus",
+        "D": "Subthalamic nucleus stroke\n\""
+      },
+      "prediction": "C",
+      "ground_truth": "A",
+      "is_correct": false,
+      "confidence": 0.8671875,
+      "all_probs": {
+        "A": 0.0380859375,
+        "B": 0.0230712890625,
+        "C": 0.8671875,
+        "D": 0.0712890625
+      }
+    },
+    {
+      "question": "A 21-year-old male presents to his primary care provider for fatigue. He reports that he graduated from college last month and returned 3 days ago from a 2 week vacation to Vietnam and Cambodia. For the past 2 days, he has developed a worsening headache, malaise, and pain in his hands and wrists. The patient has a past medical history of asthma managed with albuterol as needed. He is sexually active with both men and women, and he uses condoms \u201cmost of the time.\u201d On physical exam, the patient\u2019s temperature is 102.5\u00b0F (39.2\u00b0C), blood pressure is 112/66 mmHg, pulse is 105/min, respirations are 12/min, and oxygen saturation is 98% on room air. He has tenderness to palpation over his bilateral metacarpophalangeal joints and a maculopapular rash on his trunk and upper thighs. Tourniquet test is negative. Laboratory results are as follows:\n\nHemoglobin: 14 g/dL\nHematocrit: 44%\nLeukocyte count: 3,200/mm^3\nPlatelet count: 112,000/mm^3\n\nSerum:\nNa+: 142 mEq/L\nCl-: 104 mEq/L\nK+: 4.6 mEq/L\nHCO3-: 24 mEq/L\nBUN: 18 mg/dL\nGlucose: 87 mg/dL\nCreatinine: 0.9 mg/dL\nAST: 106 U/L\nALT: 112 U/L\nBilirubin (total): 0.8 mg/dL\nBilirubin (conjugated): 0.3 mg/dL\n\nWhich of the following is the most likely diagnosis in this patient?",
+      "options": {
+        "A": "Chikungunya",
+        "B": "Dengue fever",
+        "C": "Epstein-Barr virus",
+        "D": "Hepatitis A"
+      },
+      "prediction": "B",
+      "ground_truth": "A",
+      "is_correct": false,
+      "confidence": 0.86328125,
+      "all_probs": {
+        "A": 0.037841796875,
+        "B": 0.86328125,
+        "C": 0.0625,
+        "D": 0.037841796875
+      }
+    },
+    {
+      "question": "A 41-year-old man presents to the clinic with the complaints of abdominal discomfort and cramping for the past 4 months. He also mentions that he has grossly bloody stool and most of the time an urge to defecate. He has a history of bulimia with laxative abuse several years ago. He admits having lost about 5 lb in the past month. His temperature is 37\u00b0 C (98.6\u00b0 F), respiratory rate is 15/min, pulse is 77/min, and blood pressure is 105/86 mm Hg. On physical examination, a mild conjunctival pallor is evident, and the rectum is erythematous, indurated, and tender. Colonoscopy demonstrates continuous mucosal lesions throughout the rectum to the hepatic flexure of the colon. What is the most likely diagnosis?",
+      "options": {
+        "A": "Ulcerative colitis",
+        "B": "Celiac disease",
+        "C": "Irritable bowel syndrome",
+        "D": "Crohn\u2019s disease"
+      },
+      "prediction": "D",
+      "ground_truth": "A",
+      "is_correct": false,
+      "confidence": 0.85546875,
+      "all_probs": {
+        "A": 0.0703125,
+        "B": 0.03759765625,
+        "C": 0.03759765625,
+        "D": 0.85546875
+      }
+    },
+    {
+      "question": "A 21-year-old old college student is brought to the emergency department by his roommates because he has been \"acting strangely.\" Over the last 7 months, he has claimed to hear voices telling him that he must prepare for the end of the world. He used to be a straight A student but started failing exams recently due to his erratic behavior. Furthermore, there are periods of time where he does not sleep for several days and redecorates the entire apartment. During those times he spends huge amounts of money on online shopping. These periods usually last for about 2 weeks and happen every other month. On physical exam, he appears unkept and irritated. He seems to respond to invisible stimuli, and he jumps from topic to topic without clear focus. Which of the following is most consistent with this patient's presentation?",
+      "options": {
+        "A": "Brief psychotic disorder",
+        "B": "Schizoaffective disorder",
+        "C": "Schizophreniform disorder",
+        "D": "Schizotypal personality disorder"
+      },
+      "prediction": "C",
+      "ground_truth": "B",
+      "is_correct": false,
+      "confidence": 0.84765625,
+      "all_probs": {
+        "A": 0.06982421875,
+        "B": 0.0478515625,
+        "C": 0.84765625,
+        "D": 0.032958984375
+      }
+    },
+    {
+      "question": "A 65-year-old woman comes to the physician for a routine bone mineral density screening. She does not have any children. Menopause was at age 55. Her mother died of breast cancer at the age of 48 years. She has hypertension for which she takes ramipril. Dual-energy x-ray absorptiometry at the femoral neck shows a T-score of -2.7 SD. The physician considers treatment with raloxifene. This medication would put her at increased risk of developing which of the following conditions?",
+      "options": {
+        "A": "Pulmonary embolism",
+        "B": "Cellulitis",
+        "C": "Breast cancer",
+        "D": "Hypercholesterolemia"
+      },
+      "prediction": "C",
+      "ground_truth": "A",
+      "is_correct": false,
+      "confidence": 0.83984375,
+      "all_probs": {
+        "A": 0.06884765625,
+        "B": 0.02880859375,
+        "C": 0.83984375,
+        "D": 0.06103515625
+      }
+    }
+  ],
+  "low_confidence": [
+    {
+      "question": "An investigator is studying the function of different enzymes in various human cell types. A subset of normal human cells with an elevated intracellular concentration of bisphosphoglycerate mutase is harvested and isolated. Which of the following is most likely to be absent in these cells?",
+      "options": {
+        "A": "\u03b1-ketoglutarate dehydrogenase",
+        "B": "Pyruvate kinase",
+        "C": "Glutathione reductase",
+        "D": "Carbonic anhydrase"
+      },
+      "prediction": "A",
+      "ground_truth": "A",
+      "is_correct": true,
+      "confidence": 0.263671875,
+      "all_probs": {
+        "A": 0.263671875,
+        "B": 0.263671875,
+        "C": 0.263671875,
+        "D": 0.2060546875
+      }
+    },
+    {
+      "question": "A 5-year-old boy is brought to the physician because of an irregular gait 3 days after receiving age-appropriate vaccinations. Examination of the lower extremities shows no redness or swelling. When the child stands on his right leg, his left leg drops and his pelvis tilts towards the left. Sensation to light touch is normal in both legs. This patient's symptoms are most likely due to the injection of the vaccine into which of the following locations?",
+      "options": {
+        "A": "Inferolateral quadrant of the right buttock",
+        "B": "Inferomedial quadrant of the right buttock",
+        "C": "Inferomedial quadrant of the left buttock",
+        "D": "Superomedial quadrant of the right buttock"
+      },
+      "prediction": "A",
+      "ground_truth": "D",
+      "is_correct": false,
+      "confidence": 0.265625,
+      "all_probs": {
+        "A": 0.265625,
+        "B": 0.234375,
+        "C": 0.265625,
+        "D": 0.234375
+      }
+    },
+    {
+      "question": "A researcher is conducting an experiment on the mouse kidney to study the relative concentrations between the tubular fluid and plasma of a number of substances along the proximal convoluted tubule. Based on the graph shown in figure A, which of the following best describes the tubular fluid-to-plasma concentration ratio of urea?",
+      "options": {
+        "A": "B",
+        "B": "C",
+        "C": "D",
+        "D": "E"
+      },
+      "prediction": "B",
+      "ground_truth": "A",
+      "is_correct": false,
+      "confidence": 0.265625,
+      "all_probs": {
+        "A": 0.234375,
+        "B": 0.265625,
+        "C": 0.265625,
+        "D": 0.234375
+      }
+    },
+    {
+      "question": "A 3-year-old boy is brought to the emergency department by ambulance after a motor vehicle accident. He is unconscious upon arrival and is found to have severe internal bleeding due to trauma. He is taken for emergency surgery and severely damaged tissues are removed. After surgery, the boy is taken into the PICU for recovery. Over the subsequent week, serial labs are drawn showing target cells, thrombocytosis, and leukocytosis. He is started on a prophylactic regimen that is continued upon discharge. Which of the following is consistent with the mechanism of action of the drug that was most likely prescribed in this case?",
+      "options": {
+        "A": "30S ribosome inhibitor",
+        "B": "50S ribosome inhibitor",
+        "C": "Cell wall cross-linking inhibitor",
+        "D": "DNA gyrase inhibitor"
+      },
+      "prediction": "C",
+      "ground_truth": "C",
+      "is_correct": true,
+      "confidence": 0.265625,
+      "all_probs": {
+        "A": 0.234375,
+        "B": 0.234375,
+        "C": 0.265625,
+        "D": 0.265625
+      }
+    },
+    {
+      "question": "A 3-year-old girl is brought to the emergency department by her parents for an acute arm injury. The mother reports that they were walking in the park and the patient\u2019s dad was swinging the patient in the air by her arms. The dad reports he then heard a click and the patient immediately began to cry. On examination, the patient is holding her right forearm in a pronated position and her elbow slightly flexed. Pain is localized to the lateral aspect of the elbow. She refuses to use the affected limb. She does allow passive flexion and extension with full range of motion but supination is limited and causes pain. Which of the following is the next step in management?",
+      "options": {
+        "A": "Immobilization",
+        "B": "Moderate flexion then hyperpronation",
+        "C": "Radiograph",
+        "D": "Supination then maximal extension"
+      },
+      "prediction": "A",
+      "ground_truth": "B",
+      "is_correct": false,
+      "confidence": 0.271484375,
+      "all_probs": {
+        "A": 0.271484375,
+        "B": 0.1865234375,
+        "C": 0.271484375,
+        "D": 0.271484375
+      }
+    },
+    {
+      "question": "A 32-year-old woman presents to the emergency department with complaints of a headache. The last menstrual period was 4 months ago. She also reports having a mild headache for 1 month. There has been a grape-like mass protruding from her vagina for the last 15 days. On examination, the fundus of the uterus is at the level of the umbilicus and no fetal heart sounds are heard. The vital signs are as follows: blood pressure 160/100 mm Hg, pulse rate 108/min. On USG examination, no fetal parts are seen. What will be the genotype of the substance which will be aspirated by dilation and evacuation?",
+      "options": {
+        "A": "69XXY",
+        "B": "23XX",
+        "C": "47XYY",
+        "D": "46XX"
+      },
+      "prediction": "A",
+      "ground_truth": "D",
+      "is_correct": false,
+      "confidence": 0.271484375,
+      "all_probs": {
+        "A": 0.271484375,
+        "B": 0.1865234375,
+        "C": 0.271484375,
+        "D": 0.271484375
+      }
+    },
+    {
+      "question": "An 18-year-old woman is brought to the emergency department because of lightheadedness and a feeling of dizziness. She has had nausea, occasional episodes of vomiting, myalgia, and a generalized rash for the past week. She also reports feeling lethargic. She has no shortness of breath. There is no family history of serious illness. She appears ill. Her temperature is 39.1\u00b0C (102.3\u00b0F), pulse is 118/min, and blood pressure is 94/60 mm Hg. Cardiac examination shows no abnormalities. There is a widespread erythematous rash on the trunk and extremities with skin peeling on the palms and soles. Laboratory studies show:\nHemoglobin 13.6 g/dL\nLeukocyte count 19,300/mm3\nPlatelet count 98,000/mm3\nSerum\nUrea nitrogen 47 mg/dL\nGlucose 88 mg/dL\nCreatinine 1.8 mg/dL\nTotal bilirubin 2.1 mg/dL\nAST 190 U/L\nALT 175 U/L\nUrinalysis shows no abnormalities. Further evaluation of this patient's history is most likely to reveal which of the following?\"",
+      "options": {
+        "A": "Recent hiking trip",
+        "B": "Intravenous heroin abuse",
+        "C": "Exposure to a patient with mengingococcemia",
+        "D": "Currently menstruating"
+      },
+      "prediction": "A",
+      "ground_truth": "D",
+      "is_correct": false,
+      "confidence": 0.2734375,
+      "all_probs": {
+        "A": 0.2734375,
+        "B": 0.212890625,
+        "C": 0.2734375,
+        "D": 0.2412109375
+      }
+    },
+    {
+      "question": "A 21-year-old female presents to the clinic requesting prenatal counseling. She was born with a disease that has led her to have recurrent upper respiratory infections throughout her life requiring antibiotic prophylaxis and chest physiotherapy as well as pancreatic enzyme replacement therapy. She marries a man (without this disease phenotype) from a population where the prevalence of this disease is 1/100. What is the chance that their child will have the disease of interest?",
+      "options": {
+        "A": "9/100",
+        "B": "1/10",
+        "C": "81/100",
+        "D": "9/10"
+      },
+      "prediction": "A",
+      "ground_truth": "A",
+      "is_correct": true,
+      "confidence": 0.2734375,
+      "all_probs": {
+        "A": 0.2734375,
+        "B": 0.212890625,
+        "C": 0.2412109375,
+        "D": 0.2734375
+      }
+    },
+    {
+      "question": "The parents of a 16-year-old boy with type 1 diabetes mellitus present requesting information about the drug, exenatide, an injectable drug that only needs to be administered once a week. The patient\u2019s blood glucose levels have been difficult to control on his current insulin regimen due to poor adherence to recommended therapy, and he has had difficulty putting on weight despite eating copiously. The patient is afebrile and his vital signs are within normal limits. His body mass index (BMI) is 19 kg/m2. Which of the following best describes why the patient should not be switched to exenatide?",
+      "options": {
+        "A": "Insulin production by the pancreas is insufficient for exenatide to be effective.",
+        "B": "Exenatide suppresses glucagon secretion, which increases the risk of hypoglycemia.",
+        "C": "Suppression of appetite makes it even harder for him to gain weight.",
+        "D": "Exenatide is contraindicated in children below 18 years."
+      },
+      "prediction": "A",
+      "ground_truth": "A",
+      "is_correct": true,
+      "confidence": 0.2734375,
+      "all_probs": {
+        "A": 0.2734375,
+        "B": 0.2412109375,
+        "C": 0.212890625,
+        "D": 0.2734375
+      }
+    },
+    {
+      "question": "A 56-year-old woman comes to the physician because of a 2-week history of fatigue and painless bruising over her arms and trunk. She has also had several episodes of nosebleeds that resolved with compression after a few minutes. She recently completed treatment for a urinary tract infection. She has had no changes in her weight. She has type 2 diabetes mellitus and hypertension. Her last menstrual cycle was 5 years ago. She does not smoke or drink alcohol. Home medications include metformin, amlodipine, and enalapril. Her vital signs are within normal limits. Physical examination shows pale conjunctivae. There are ecchymoses and petechiae over the upper extremities, chest, and back. There is no lymphadenopathy. The remainder of the physical examination is unremarkable. Laboratory studies show:\nHemoglobin 8.7 mg/dL\nLeukocyte count 1100/mm3\nPlatelet count 54,000/mm3\nReticulocyte count 0.1%\nMean corpuscular volume 93 \u03bcm3\nSerum\nTotal bilirubin 1.1 mg/dL\nLDH 80 U/L\nWhich of the following is most likely to confirm the diagnosis?\"",
+      "options": {
+        "A": "Serum transferrin level",
+        "B": "Bone marrow biopsy",
+        "C": "Peripheral blood smear",
+        "D": "Serum porphobilinogen level"
+      },
+      "prediction": "A",
+      "ground_truth": "B",
+      "is_correct": false,
+      "confidence": 0.27734375,
+      "all_probs": {
+        "A": 0.27734375,
+        "B": 0.27734375,
+        "C": 0.27734375,
+        "D": 0.16796875
+      }
+    }
+  ],
+  "stats": {
+    "total_high_conf_wrong": 34,
+    "total_low_conf": 185,
+    "low_conf_correct": 63,
+    "low_conf_wrong": 122
+  }
+}
