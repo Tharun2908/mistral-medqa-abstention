@@ -1,0 +1,220 @@
+{
+  "baseline": {
+    "bins": [
+      {
+        "bin_low": 0.0,
+        "bin_high": 0.1,
+        "bin_mid": 0.05,
+        "avg_confidence": null,
+        "accuracy": null,
+        "count": 0,
+        "gap": null,
+        "direction": null
+      },
+      {
+        "bin_low": 0.1,
+        "bin_high": 0.2,
+        "bin_mid": 0.15,
+        "avg_confidence": null,
+        "accuracy": null,
+        "count": 0,
+        "gap": null,
+        "direction": null
+      },
+      {
+        "bin_low": 0.2,
+        "bin_high": 0.3,
+        "bin_mid": 0.25,
+        "avg_confidence": 0.2853,
+        "accuracy": 0.4032,
+        "count": 62,
+        "gap": 0.1179,
+        "direction": "underconfident"
+      },
+      {
+        "bin_low": 0.3,
+        "bin_high": 0.4,
+        "bin_mid": 0.35,
+        "avg_confidence": 0.3483,
+        "accuracy": 0.3634,
+        "count": 432,
+        "gap": 0.0152,
+        "direction": "underconfident"
+      },
+      {
+        "bin_low": 0.4,
+        "bin_high": 0.5,
+        "bin_mid": 0.45,
+        "avg_confidence": 0.4438,
+        "accuracy": 0.4046,
+        "count": 304,
+        "gap": 0.0392,
+        "direction": "overconfident"
+      },
+      {
+        "bin_low": 0.5,
+        "bin_high": 0.6,
+        "bin_mid": 0.55,
+        "avg_confidence": 0.5448,
+        "accuracy": 0.5486,
+        "count": 175,
+        "gap": 0.0038,
+        "direction": "underconfident"
+      },
+      {
+        "bin_low": 0.6,
+        "bin_high": 0.7,
+        "bin_mid": 0.65,
+        "avg_confidence": 0.6487,
+        "accuracy": 0.6977,
+        "count": 129,
+        "gap": 0.0489,
+        "direction": "underconfident"
+      },
+      {
+        "bin_low": 0.7,
+        "bin_high": 0.8,
+        "bin_mid": 0.75,
+        "avg_confidence": 0.7514,
+        "accuracy": 0.7375,
+        "count": 80,
+        "gap": 0.0139,
+        "direction": "overconfident"
+      },
+      {
+        "bin_low": 0.8,
+        "bin_high": 0.9,
+        "bin_mid": 0.85,
+        "avg_confidence": 0.8497,
+        "accuracy": 0.803,
+        "count": 66,
+        "gap": 0.0466,
+        "direction": "overconfident"
+      },
+      {
+        "bin_low": 0.9,
+        "bin_high": 1.0,
+        "bin_mid": 0.95,
+        "avg_confidence": 0.9323,
+        "accuracy": 1.0,
+        "count": 25,
+        "gap": 0.0677,
+        "direction": "underconfident"
+      }
+    ],
+    "ece": 0.0304,
+    "mce": 0.1179,
+    "avg_conf": 0.4883,
+    "avg_acc": 0.4933,
+    "total": 1273
+  },
+  "finetuned": {
+    "bins": [
+      {
+        "bin_low": 0.0,
+        "bin_high": 0.1,
+        "bin_mid": 0.05,
+        "avg_confidence": null,
+        "accuracy": null,
+        "count": 0,
+        "gap": null,
+        "direction": null
+      },
+      {
+        "bin_low": 0.1,
+        "bin_high": 0.2,
+        "bin_mid": 0.15,
+        "avg_confidence": null,
+        "accuracy": null,
+        "count": 0,
+        "gap": null,
+        "direction": null
+      },
+      {
+        "bin_low": 0.2,
+        "bin_high": 0.3,
+        "bin_mid": 0.25,
+        "avg_confidence": 0.2849,
+        "accuracy": 0.2857,
+        "count": 42,
+        "gap": 0.0008,
+        "direction": "underconfident"
+      },
+      {
+        "bin_low": 0.3,
+        "bin_high": 0.4,
+        "bin_mid": 0.35,
+        "avg_confidence": 0.3533,
+        "accuracy": 0.3444,
+        "count": 331,
+        "gap": 0.0089,
+        "direction": "overconfident"
+      },
+      {
+        "bin_low": 0.4,
+        "bin_high": 0.5,
+        "bin_mid": 0.45,
+        "avg_confidence": 0.4467,
+        "accuracy": 0.4069,
+        "count": 317,
+        "gap": 0.0397,
+        "direction": "overconfident"
+      },
+      {
+        "bin_low": 0.5,
+        "bin_high": 0.6,
+        "bin_mid": 0.55,
+        "avg_confidence": 0.5464,
+        "accuracy": 0.6154,
+        "count": 221,
+        "gap": 0.069,
+        "direction": "underconfident"
+      },
+      {
+        "bin_low": 0.6,
+        "bin_high": 0.7,
+        "bin_mid": 0.65,
+        "avg_confidence": 0.6514,
+        "accuracy": 0.6058,
+        "count": 137,
+        "gap": 0.0456,
+        "direction": "overconfident"
+      },
+      {
+        "bin_low": 0.7,
+        "bin_high": 0.8,
+        "bin_mid": 0.75,
+        "avg_confidence": 0.7482,
+        "accuracy": 0.75,
+        "count": 88,
+        "gap": 0.0018,
+        "direction": "underconfident"
+      },
+      {
+        "bin_low": 0.8,
+        "bin_high": 0.9,
+        "bin_mid": 0.85,
+        "avg_confidence": 0.8481,
+        "accuracy": 0.8625,
+        "count": 80,
+        "gap": 0.0144,
+        "direction": "underconfident"
+      },
+      {
+        "bin_low": 0.9,
+        "bin_high": 1.0,
+        "bin_mid": 0.95,
+        "avg_confidence": 0.9354,
+        "accuracy": 0.9825,
+        "count": 57,
+        "gap": 0.047,
+        "direction": "underconfident"
+      }
+    ],
+    "ece": 0.0322,
+    "mce": 0.069,
+    "avg_conf": 0.5244,
+    "avg_acc": 0.5224,
+    "total": 1273
+  }
+}
