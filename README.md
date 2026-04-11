@@ -72,11 +72,88 @@ accuracy–coverage tradeoffs compared to the base model.
 
 ---
 
+## 🔬 Extended Analysis
+
+### Max-Prob vs Entropy Abstention
+
+We compared two selective prediction strategies:
+- **Max-probability thresholding**: abstain if `max(probs) < threshold`
+- **Entropy-based abstention**: abstain if `entropy(probs) > threshold`
+
+Entropy measures how concentrated the model's probability mass is over the four
+answer options — high entropy means the model is confused.
+
+**Head-to-head at ~50% coverage:**
+
+| Method | Answered Accuracy | Coverage | Wrong Rate |
+|--------|-------------------|----------|------------|
+| Max-Prob | 70.33% | 45.80% | 13.59% |
+| Entropy | 67.73% | 49.41% | 15.95% |
+
+Max-prob outperforms entropy on the fine-tuned model. Fine-tuning sharpens
+confidence distributions, making max-prob a more reliable signal than entropy.
+
+---
+
+### Confidence Calibration (ECE)
+
+Expected Calibration Error measures how well confidence aligns with actual accuracy.
+A perfectly calibrated model follows the diagonal: "70% confident → correct 70% of the time."
+
+| Model | ECE | MCE |
+|-------|-----|-----|
+| Baseline | 0.0304 | 0.1179 |
+| Fine-tuned | 0.0322 | 0.0690 |
+
+Fine-tuning slightly increased ECE by 0.0018 (negligible), but significantly reduced
+MCE from 11.79% → 6.90% — meaning the worst-case miscalibration bin improved dramatically.
+Low-confidence bins became much better calibrated after fine-tuning, which is why
+confidence-based abstention works more reliably on the fine-tuned model.
+
+---
+
+### ⚠️ Risk-Weighted Evaluation
+
+Manual analysis of 10 high-confidence wrong answers and 10 low-confidence abstentions:
+
+**High-confidence wrong answers:**
+
+| Example | Predicted | Correct | Risk |
+|---------|-----------|---------|------|
+| Bone disease diagnosis | Osteitis fibrosa cystica | Osteitis deformans | Benign |
+| Epidemiology bias | Lead-time bias | Measurement bias | Benign |
+| Drug mechanism | Decreased phosphodiesterase | Increased adenylate cyclase | Ambiguous |
+| Bleeding disorder (infant) | Bernard-Soulier | Glanzmann's thrombasthenia | **Critical** |
+| Abdominal mass | Renal artery stenosis | Common iliac artery aneurysm | **Critical** |
+| Neurological diagnosis | Degenerated caudate | Cerebellar demyelination | Ambiguous |
+| Tropical disease | Dengue fever | Chikungunya | Benign |
+| GI diagnosis | Crohn's disease | Ulcerative colitis | **Critical** |
+| Psychiatric diagnosis | Schizophreniform | Schizoaffective | Ambiguous |
+| Drug side effect | Breast cancer | Pulmonary embolism | **Critical** |
+
+**40% of high-confidence wrong answers were critical medical errors.**
+
+**Low-confidence abstentions (model correctly refused):**
+
+| Example | Risk | Verdict |
+|---------|------|---------|
+| Wrong vaccine injection site → nerve damage | **Critical** | ✅ Correctly abstained |
+| Wrong elbow reduction technique | **Critical** | ✅ Correctly abstained |
+| Missed toxic shock syndrome history | **Critical** | ✅ Correctly abstained |
+| Wrong test for aplastic anemia | **Critical** | ✅ Correctly abstained |
+
+The abstention mechanism correctly refused to answer on all 4 critical cases
+in the low-confidence set — demonstrating real clinical safety value.
+
+---
+
 ## 🧠 Concepts Demonstrated
 
 - Parameter-efficient fine-tuning (QLoRA)
 - Selective prediction (accuracy–coverage tradeoff)
-- Confidence calibration for LLMs
+- Confidence calibration for LLMs (ECE, MCE)
+- Max-probability vs entropy-based abstention
+- Risk-weighted evaluation for medical AI
 - Reliability-aware evaluation beyond accuracy
 
 ---
@@ -97,14 +174,21 @@ Dataset    : GBaker/MedQA-USMLE-4-options
 ```
 mistral-medqa-abstention/
 │
-├── baseline_eval.py          # Evaluate base Mistral-7B on MedQA test set
-├── train_lora.py             # Fine-tune with QLoRA + early stopping
-├── finetuned_eval.py         # Evaluate fine-tuned model on MedQA test set
-├── abstention_analysis.py    # Sweep thresholds, compute abstention metrics
+├── baseline_eval.py              # Evaluate base Mistral-7B on MedQA test set
+├── train_lora.py                 # Fine-tune with QLoRA + early stopping
+├── finetuned_eval.py             # Evaluate fine-tuned model on MedQA test set
+├── abstention_analysis.py        # Sweep thresholds, compute abstention metrics
+├── entropy_abstention.py         # Compare max-prob vs entropy abstention
+├── reliability_diagram.py        # ECE calibration analysis
+├── risk_analysis.py              # Manual risk-weighted evaluation
 │
-├── baseline_results.json     # Baseline evaluation results + confidence scores
-├── finetuned_results.json    # Fine-tuned evaluation results + confidence scores
-├── abstention_results.json   # Full threshold analysis results
+├── baseline_results.json         # Baseline evaluation results + confidence scores
+├── finetuned_results.json        # Fine-tuned evaluation results + confidence scores
+├── abstention_results.json       # Full threshold analysis results
+├── entropy_abstention_results.json # Max-prob vs entropy comparison
+├── reliability_results.json      # ECE calibration results
+├── risk_analysis_examples.json   # Examples for manual review
+├── risk_analysis_summary.md      # Manual risk categorization
 │
 └── README.md
 ```
@@ -140,9 +224,12 @@ python train_lora.py
 python finetuned_eval.py
 ```
 
-### 5. Run Abstention Analysis
+### 5. Run All Analyses
 ```bash
-python abstention_analysis.py
+python abstention_analysis.py       # threshold sweep
+python entropy_abstention.py        # max-prob vs entropy
+python reliability_diagram.py       # ECE calibration
+python risk_analysis.py             # risk-weighted examples
 ```
 
 ---
@@ -153,10 +240,8 @@ import torch
 from peft import PeftModel
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
-# Load tokenizer
 tokenizer = AutoTokenizer.from_pretrained("Primeinvincible/mistral-medqa-lora-v3")
 
-# Load base model in 4-bit
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
     bnb_4bit_quant_type="nf4",
@@ -167,8 +252,6 @@ base_model = AutoModelForCausalLM.from_pretrained(
     quantization_config=bnb_config,
     device_map="auto",
 )
-
-# Load LoRA adapters
 model = PeftModel.from_pretrained(base_model, "Primeinvincible/mistral-medqa-lora-v3")
 model.eval()
 ```
@@ -181,20 +264,17 @@ model.eval()
 In medical AI, a confident wrong answer is worse than no answer. A model that
 abstains on uncertain cases is safer than one that always answers.
 
-**Why confidence thresholding?**
-We extract softmax probabilities over the four answer options (A/B/C/D) at the
-last token position. If the highest probability falls below the threshold,
-the model abstains. This is simple, interpretable, and requires no additional training.
+**Why max-prob over entropy?**
+After fine-tuning, the model's distributions become sharper — max-prob is a more
+reliable signal than entropy for this model at this operating point.
 
 **Why early stopping?**
-Previous experiments showed overfitting after 2+ epochs (eval loss climbed while
-train loss dropped). Early stopping with patience=3 automatically stops training
-when validation loss stops improving.
+Previous experiments showed overfitting after 2+ epochs. Early stopping with
+patience=3 automatically stops when validation loss stops improving.
 
 **Why QLoRA?**
-Fine-tuning a 7B model requires significant GPU memory. QLoRA reduces memory usage
-by quantizing the base model to 4-bit while training only the small LoRA adapter
-weights (~0.09% of total parameters).
+Quantizing the base model to 4-bit while training only LoRA adapters
+(~0.09% of total parameters) makes 7B model fine-tuning feasible on a single V100.
 
 ---
 
