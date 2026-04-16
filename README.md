@@ -7,11 +7,11 @@
 A safety-focused fine-tuning project that enables Mistral-7B to abstain from answering
 when uncertain, reducing high-confidence errors in medical QA.
 
-> 🚀 Improves reliability from 52.2% → 70.3% using confidence-based selective prediction
+>  Improves reliability from 52.2% → 70.3% using confidence-based selective prediction
 
 ---
 
-## 🎯 Problem
+##  Problem
 
 Standard fine-tuning optimizes for accuracy but can make models **overconfident in wrong answers**.
 In medical AI, a confident wrong answer is more dangerous than no answer at all.
@@ -22,7 +22,7 @@ controllable coverage.
 
 ---
 
-## 📊 Results
+##  Results
 
 ### Baseline vs Fine-Tuned (No Abstention)
 
@@ -49,7 +49,7 @@ controllable coverage.
 | 0.80 | 91.24% | 10.76% | 0.94% | 89.24% |
 | 0.90 | 98.25% | 4.48% | 0.08% | 95.52% |
 
-### 🏆 Sweet Spot (threshold = 0.50)
+###  Sweet Spot (threshold = 0.50)
 
 | Metric | No Abstention | With Abstention |
 |--------|---------------|-----------------|
@@ -63,7 +63,7 @@ coverage, indicating improved confidence calibration and more reliable selective
 
 ---
 
-## 💡 Key Insight
+##  Key Insight
 
 Fine-tuning not only improves raw accuracy (+2.9%), but also makes confidence scores
 better aligned with prediction correctness (improved calibration), enabling reliable
@@ -72,7 +72,7 @@ accuracy–coverage tradeoffs compared to the base model.
 
 ---
 
-## 🔬 Extended Analysis
+##  Extended Analysis
 
 ### Max-Prob vs Entropy Abstention
 
@@ -112,7 +112,7 @@ confidence-based abstention works more reliably on the fine-tuned model.
 
 ---
 
-### ⚠️ Risk-Weighted Evaluation
+###  Risk-Weighted Evaluation
 
 Manual analysis of 10 high-confidence wrong answers and 10 low-confidence abstentions:
 
@@ -147,7 +147,7 @@ in the low-confidence set — demonstrating real clinical safety value.
 
 ---
 
-## 🧠 Concepts Demonstrated
+##  Concepts Demonstrated
 
 - Parameter-efficient fine-tuning (QLoRA)
 - Selective prediction (accuracy–coverage tradeoff)
@@ -158,7 +158,7 @@ in the low-confidence set — demonstrating real clinical safety value.
 
 ---
 
-## 🏗️ Architecture
+##  Architecture
 ```
 Base Model : mistralai/Mistral-7B-v0.3
 Method     : QLoRA (4-bit quantization + LoRA adapters)
@@ -170,7 +170,7 @@ Dataset    : GBaker/MedQA-USMLE-4-options
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 ```
 mistral-medqa-abstention/
 │
@@ -195,7 +195,7 @@ mistral-medqa-abstention/
 
 ---
 
-## 🚀 Quickstart
+##  Quickstart
 
 ### 1. Install Dependencies
 ```bash
@@ -234,7 +234,7 @@ python risk_analysis.py             # risk-weighted examples
 
 ---
 
-## 🔧 Load Fine-Tuned Model
+##  Load Fine-Tuned Model
 ```python
 import torch
 from peft import PeftModel
@@ -258,7 +258,7 @@ model.eval()
 
 ---
 
-## 💡 Key Design Decisions
+##  Key Design Decisions
 
 **Why abstention over accuracy maximization?**
 In medical AI, a confident wrong answer is worse than no answer. A model that
@@ -288,7 +288,7 @@ Quantizing the base model to 4-bit while training only LoRA adapters
 
 ---
 
-## 🗂️ Dataset
+##  Dataset
 
 **GBaker/MedQA-USMLE-4-options**
 - 10,178 training examples
@@ -301,7 +301,7 @@ Official test set kept untouched for final evaluation.
 
 ---
 
-## 🖥️ Hardware
+##  Hardware
 
 - GPU: NVIDIA Tesla V100S-PCIE-32GB
 - Training time: ~1.5 hours (early stopping at epoch 1.4)
@@ -309,13 +309,13 @@ Official test set kept untouched for final evaluation.
 
 ---
 
-## 🔗 Model on HuggingFace
+##  Model on HuggingFace
 
 [Primeinvincible/mistral-medqa-lora-v3](https://huggingface.co/Primeinvincible/mistral-medqa-lora-v3)
 
 ---
 
-## 👤 Author
+##  Author
 
 Master's student specializing in NLP/LLM safety and production deployment.
 Part of a portfolio focused on making LLM systems reliable for real-world use.
