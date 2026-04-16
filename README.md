@@ -137,10 +137,10 @@ Manual analysis of 10 high-confidence wrong answers and 10 low-confidence absten
 
 | Example | Risk | Verdict |
 |---------|------|---------|
-| Wrong vaccine injection site → nerve damage | **Critical** | ✅ Correctly abstained |
-| Wrong elbow reduction technique | **Critical** | ✅ Correctly abstained |
-| Missed toxic shock syndrome history | **Critical** | ✅ Correctly abstained |
-| Wrong test for aplastic anemia | **Critical** | ✅ Correctly abstained |
+| Wrong vaccine injection site → nerve damage | **Critical** |  Correctly abstained |
+| Wrong elbow reduction technique | **Critical** |  Correctly abstained |
+| Missed toxic shock syndrome history | **Critical** |  Correctly abstained |
+| Wrong test for aplastic anemia | **Critical** |  Correctly abstained |
 
 The abstention mechanism correctly refused to answer on all 4 critical cases
 in the low-confidence set — demonstrating real clinical safety value.
@@ -278,7 +278,7 @@ Quantizing the base model to 4-bit while training only LoRA adapters
 
 ---
 
-## 📈 How to Choose a Threshold
+##  How to Choose a Threshold
 
 | Use Case | Recommended Threshold | Reasoning |
 |----------|-----------------------|-----------|
