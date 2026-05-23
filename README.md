@@ -69,10 +69,16 @@ at higher coverage than the base model, indicating more reliable selective predi
 
 ## 💡 Key Insight
 
-Fine-tuning not only improves raw accuracy (+2.9%), but also makes confidence scores
-better aligned with prediction correctness (improved calibration), enabling reliable
-abstention decisions based on calibrated confidence. This leads to significantly better
-accuracy–coverage tradeoffs compared to the base model.
+Fine-tuning modestly improves raw accuracy (+2.9%) and enables a stronger
+accuracy–coverage tradeoff under post-hoc abstention.
+
+At threshold 0.50, answered-question accuracy increases from 52.24% to 70.33%
+while coverage drops to 45.80%, reducing dataset-level wrong answers from
+47.76% to 13.59%.
+
+Calibration results are mixed: ECE slightly worsens from 0.0304 to 0.0322, while
+MCE improves from 0.1179 to 0.0690. Therefore, the main result should be framed
+as improved selective prediction behavior, not improved average calibration.
 
 ---
 
