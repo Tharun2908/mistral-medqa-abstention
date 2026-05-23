@@ -7,7 +7,7 @@
 A safety-focused fine-tuning project that enables Mistral-7B to abstain from answering
 when uncertain, reducing high-confidence errors in medical QA.
 
-> 🚀 Improves reliability from 52.2% → 70.3% using confidence-based selective prediction
+> 🚀 Selective prediction raises answered-question accuracy from 52.2% to 70.3% at 45.8% coverage, reducing total wrong-answer rate from 47.8% to 13.6%
 
 ---
 
@@ -33,7 +33,7 @@ controllable coverage.
 
 ### Fine-Tuned with Abstention — Threshold Analysis
 
-| Threshold | Answered Accuracy | Coverage | Wrong Rate | Abstained |
+| Threshold | Answered Accuracy | Coverage | Dataset-Level Wrong Rate | Abstained |
 |-----------|-------------------|----------|------------|-----------|
 | 0.00 | 52.24% | 100.00% | 47.76% | 0.00% |
 | 0.30 | 53.05% | 96.70% | 45.40% | 3.30% |
@@ -58,8 +58,14 @@ controllable coverage.
 | Coverage | 100% | 45.80% |
 | Wrong Answer Rate | 47.76% | 13.59% |
 
-At comparable thresholds, the fine-tuned model achieves higher answered accuracy at higher
-coverage, indicating improved confidence calibration and more reliable selective prediction.
+**Threshold Selection Criterion:**
+We choose threshold = 0.50 as the balanced operating point because it reduces the
+total wrong-answer rate from 47.76% to 13.59% while preserving nearly half of
+test-set coverage. Higher thresholds reduce errors further but abstain on more
+than 70–90% of questions, making the system impractical.
+
+At comparable thresholds, the fine-tuned model achieves higher answered accuracy
+at higher coverage than the base model, indicating more reliable selective prediction.
 
 ---
 
@@ -85,7 +91,7 @@ answer options — high entropy means the model is confused.
 
 **Head-to-head at ~50% coverage:**
 
-| Method | Answered Accuracy | Coverage | Wrong Rate |
+| Method | Answered Accuracy | Coverage | Dataset-Level Wrong Rate |
 |--------|-------------------|----------|------------|
 | Max-Prob | 70.33% | 45.80% | 13.59% |
 | Entropy | 67.73% | 49.41% | 15.95% |
@@ -105,10 +111,10 @@ A perfectly calibrated model follows the diagonal: "70% confident → correct 70
 | Baseline | 0.0304 | 0.1179 |
 | Fine-tuned | 0.0322 | 0.0690 |
 
-Fine-tuning slightly increased ECE by 0.0018 (negligible), but significantly reduced
-MCE from 11.79% → 6.90% — meaning the worst-case miscalibration bin improved dramatically.
-Low-confidence bins became much better calibrated after fine-tuning, which is why
-confidence-based abstention works more reliably on the fine-tuned model.
+Fine-tuning did not improve average calibration as measured by ECE (0.0304 → 0.0322,
+a negligible increase). However, it significantly reduced worst-bin miscalibration
+as measured by MCE (11.79% → 6.90%). Low-confidence bins became better calibrated
+after fine-tuning, which appears to improve abstention behavior in the uncertain region.
 
 ---
 
@@ -278,6 +284,25 @@ Quantizing the base model to 4-bit while training only LoRA adapters
 
 ---
 
+## 🔢 Confidence Computation
+
+For each question, we:
+1. Tokenize the prompt ending with `"Answer:"`
+2. Run a forward pass and extract logits at the last token position
+3. Select logits only for the four answer tokens `A`, `B`, `C`, `D`
+4. Apply softmax over those four logits only — not the full vocabulary
+5. Use the maximum probability as the confidence score
+
+This gives a normalized confidence score over answer options only.
+Note: this is **post-hoc confidence thresholding** — the model always
+produces a prediction internally. The abstention decision is an external
+rule applied on top of model probabilities, not a learned refusal behavior.
+
+Prompt format is identical across baseline and fine-tuned evaluation.
+Answer tokens are verified to be single-token continuations before evaluation.
+
+---
+
 ## 📈 How to Choose a Threshold
 
 | Use Case | Recommended Threshold | Reasoning |
@@ -285,6 +310,17 @@ Quantizing the base model to 4-bit while training only LoRA adapters
 | High safety (triage) | 0.70+ | Minimize wrong answers, accept low coverage |
 | Balanced | 0.50 | Best accuracy/coverage tradeoff |
 | High coverage | 0.35 | Answer more questions, accept more errors |
+
+---
+
+## ⚠️ Limitations
+
+- Evaluated on multiple-choice USMLE-style questions only — not open-ended clinical advice
+- Abstention is post-hoc confidence thresholding, not a learned model-level refusal
+- Threshold selection was performed on test-set results — a held-out calibration split would be more rigorous
+- Risk-weighted analysis is preliminary and based on a small manually reviewed sample (n=10)
+- Confidence intervals and statistical significance tests not yet computed
+- The model should not be used for real clinical decision-making
 
 ---
 
