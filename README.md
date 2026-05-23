@@ -16,8 +16,7 @@ when uncertain, reducing high-confidence errors in medical QA.
 Standard fine-tuning optimizes for accuracy but can make models **overconfident in wrong answers**.
 In medical AI, a confident wrong answer is more dangerous than no answer at all.
 
-This project addresses that by adding an **abstention mechanism** — the model refuses to answer
-when its confidence falls below a threshold, reducing wrong answer rates while maintaining
+This project addresses that by adding an **abstention mechanism** — an external abstention rule suppresses the model's answer when confidence falls below a threshold, reducing wrong answer rates while maintaining
 controllable coverage.
 
 ---
@@ -49,7 +48,7 @@ controllable coverage.
 | 0.80 | 91.24% | 10.76% | 0.94% | 89.24% |
 | 0.90 | 98.25% | 4.48% | 0.08% | 95.52% |
 
-### 🏆 Sweet Spot (threshold = 0.50)
+### 🏆 Balanced Operating Point: threshold = 0.50
 
 | Metric | No Abstention | With Abstention |
 |--------|---------------|-----------------|
@@ -61,8 +60,7 @@ controllable coverage.
 **Threshold Selection Criterion:**
 We choose threshold = 0.50 as the balanced operating point because it reduces the
 total wrong-answer rate from 47.76% to 13.59% while preserving nearly half of
-test-set coverage. Higher thresholds reduce errors further but abstain on more
-than 70–90% of questions, making the system impractical.
+test-set coverage. Higher thresholds reduce errors further but abstain on more than 70–90% of questions, which may be unsuitable for use cases requiring broad coverage.
 
 At comparable thresholds, the fine-tuned model achieves higher answered accuracy
 at higher coverage than the base model, indicating more reliable selective prediction.
@@ -137,7 +135,7 @@ Manual analysis of 10 high-confidence wrong answers and 10 low-confidence absten
 | Psychiatric diagnosis | Schizophreniform | Schizoaffective | Ambiguous |
 | Drug side effect | Breast cancer | Pulmonary embolism | **Critical** |
 
-**40% of high-confidence wrong answers were critical medical errors.**
+**In this small manually reviewed sample, 4/10 high-confidence wrong answers were categorized as critical.**
 
 **Low-confidence abstentions (model correctly refused):**
 
@@ -149,7 +147,7 @@ Manual analysis of 10 high-confidence wrong answers and 10 low-confidence absten
 | Wrong test for aplastic anemia | **Critical** | ✅ Correctly abstained |
 
 The abstention mechanism correctly refused to answer on all 4 critical cases
-in the low-confidence set — demonstrating real clinical safety value.
+in the low-confidence set — suggesting potential clinical safety value, though larger expert-reviewed samples are needed.
 
 ---
 
@@ -333,7 +331,7 @@ Answer tokens are verified to be single-token continuations before evaluation.
 - Format: 4-option multiple choice
 
 Train/val split: 90/10 from training set (seed=42).
-Official test set kept untouched for final evaluation.
+Official test set was not used for training or early stopping. Abstention thresholds were selected after inspecting test-set results, so future work should use a separate held-out calibration split for threshold selection.
 
 ---
 
