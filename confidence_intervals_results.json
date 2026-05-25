@@ -1,0 +1,67 @@
+{
+  "Overall Accuracy": {
+    "baseline": {
+      "mean": 0.4927,
+      "ci_low": 0.4674,
+      "ci_high": 0.5192
+    },
+    "finetuned": {
+      "mean": 0.5223,
+      "ci_low": 0.4941,
+      "ci_high": 0.5491
+    },
+    "overlap": true
+  },
+  "Answered Accuracy @0.50": {
+    "baseline": {
+      "mean": 0.6796,
+      "ci_low": 0.6401,
+      "ci_high": 0.721
+    },
+    "finetuned": {
+      "mean": 0.7031,
+      "ci_low": 0.665,
+      "ci_high": 0.7402
+    },
+    "overlap": true
+  },
+  "Coverage @0.50": {
+    "baseline": {
+      "mean": 0.3729,
+      "ci_low": 0.3488,
+      "ci_high": 0.3983
+    },
+    "finetuned": {
+      "mean": 0.4576,
+      "ci_low": 0.4313,
+      "ci_high": 0.4839
+    },
+    "overlap": false
+  },
+  "Wrong Rate @0.50": {
+    "baseline": {
+      "mean": 0.1195,
+      "ci_low": 0.1013,
+      "ci_high": 0.1359
+    },
+    "finetuned": {
+      "mean": 0.1359,
+      "ci_low": 0.1178,
+      "ci_high": 0.1548
+    },
+    "overlap": true
+  },
+  "AUROC": {
+    "baseline": {
+      "mean": 0.6739,
+      "ci_low": 0.6436,
+      "ci_high": 0.7025
+    },
+    "finetuned": {
+      "mean": 0.7066,
+      "ci_low": 0.6774,
+      "ci_high": 0.736
+    },
+    "overlap": true
+  }
+}
