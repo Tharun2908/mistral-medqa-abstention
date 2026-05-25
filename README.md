@@ -168,6 +168,103 @@ in the low-confidence set — suggesting potential clinical safety value, though
 
 ---
 
+## 🛠️ Engineering Highlights
+
+- Built end-to-end fine-tuning and evaluation pipeline for Mistral-7B on MedQA
+- Implemented QLoRA training with early stopping for single-GPU fine-tuning on V100
+- Designed post-hoc abstention layer using normalized A/B/C/D answer probabilities
+- Added threshold-sweep evaluation to expose accuracy–coverage tradeoffs
+- Compared max-probability and entropy-based uncertainty signals
+- Produced reproducible JSON outputs for baseline, fine-tuned, calibration, and risk analyses
+- Built `predict.py` CLI for single-question inference with configurable abstention threshold
+- Documented deployment constraints including GPU type, training time, and inference time
+
+---
+
+## 🧪 Example Inference
+
+```bash
+python predict.py \
+  --question "A patient presents with..." \
+  --option_a "Aspirin" \
+  --option_b "Ibuprofen" \
+  --option_c "Acetaminophen" \
+  --option_d "Morphine" \
+  --threshold 0.50
+```
+
+**Answered (confidence above threshold):**
+```json
+{
+  "prediction": "B",
+  "confidence": 0.72,
+  "abstained": false,
+  "threshold": 0.50,
+  "all_probs": {"A": 0.12, "B": 0.72, "C": 0.09, "D": 0.07},
+  "message": "Answered with 72.0% confidence"
+}
+```
+
+**Abstained (confidence below threshold):**
+```json
+{
+  "prediction": null,
+  "confidence": 0.41,
+  "abstained": true,
+  "threshold": 0.50,
+  "all_probs": {"A": 0.41, "B": 0.28, "C": 0.19, "D": 0.12},
+  "message": "Abstained due to low confidence"
+}
+```
+
+---
+
+## 🚢 Deployment Considerations
+
+This project is an evaluation and abstention pipeline, not a clinical product.
+
+For production-style deployment, the abstention layer wraps around model inference:
+
+1. Format the medical multiple-choice prompt
+2. Run the fine-tuned Mistral-7B model
+3. Extract logits for answer options A/B/C/D
+4. Normalize probabilities over answer choices only
+5. Return answer only if max probability exceeds configured threshold
+6. Otherwise return abstention response
+
+The threshold can be configured per use case:
+- Higher threshold for safety-critical settings (fewer answers, more reliable)
+- Lower threshold for higher coverage (more answers, more errors)
+- Separate calibration split recommended before deployment
+
+**Note:** This system is designed as a research and evaluation prototype.
+It should not be used for real clinical decision-making.
+
+---
+
+## ⚙️ Example Configuration
+
+```yaml
+model:
+  base_model: mistralai/Mistral-7B-v0.3
+  adapter: Primeinvincible/mistral-medqa-lora-v3
+  quantization: 4bit
+
+inference:
+  answer_options: ["A", "B", "C", "D"]
+  confidence_method: max_probability
+  abstention_threshold: 0.50
+
+evaluation:
+  dataset: GBaker/MedQA-USMLE-4-options
+  split: test
+  metrics:
+    - accuracy
+    - coverage
+    - dataset_level_wrong_rate
+    - answered_accuracy
+```
+
 ## 🏗️ Architecture
 ```
 Base Model : mistralai/Mistral-7B-v0.3
