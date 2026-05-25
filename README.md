@@ -100,7 +100,7 @@ fine-tuning — not just its predictions.
 Fine-tuning improves raw accuracy by +2.91%, but its larger impact is on
 selective prediction behavior. Under matched-coverage comparison, the fine-tuned
 model outperforms the baseline at every coverage level with an average accuracy
-gain of +5.11% — proving that fine-tuning improves confidence reliability,
+gain of +5.11% — consistent with fine-tuning improving confidence reliability,
 not just raw predictions.
 
 At threshold 0.50, answered-question accuracy increases from 52.24% to 70.33%
