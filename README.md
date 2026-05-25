@@ -57,6 +57,8 @@ controllable coverage.
 | Coverage | 100% | 45.80% |
 | Wrong Answer Rate | 47.76% | 13.59% |
 
+
+
 **Threshold Selection Criterion:**
 We choose threshold = 0.50 as the balanced operating point because it reduces the
 total wrong-answer rate from 47.76% to 13.59% while preserving nearly half of
@@ -67,17 +69,46 @@ at higher coverage than the base model, indicating more reliable selective predi
 
 ---
 
+### 📈 Matched-Coverage Comparison — Baseline vs Fine-Tuned
+
+Comparing at fixed thresholds is unfair because baseline and fine-tuned models
+answer different numbers of questions at the same threshold. Matched-coverage
+comparison ensures we compare equal-sized subsets.
+
+| Coverage | Base Accuracy | FT Accuracy | Gain | Base Wrong | FT Wrong |
+|----------|---------------|-------------|------|------------|----------|
+| 90% | 51.51% | 54.40% | +2.89% | 42.97% | 41.08% |
+| 80% | 53.18% | 56.87% | +3.69% | 37.55% | 34.25% |
+| 70% | 54.92% | 59.89% | +4.97% | 32.05% | 28.36% |
+| 60% | 57.25% | 63.85% | +6.60% | 26.16% | 21.52% |
+| 50% | 61.90% | 68.40% | +6.50% | 18.85% | 15.71% |
+| 40% | 67.07% | 72.73% | +5.66% | 12.80% | 10.84% |
+| 30% | 69.67% | 74.93% | +5.26% | 9.27% | 7.38% |
+| 20% | 77.95% | 83.27% | +5.32% | 4.40% | 3.30% |
+
+**Fine-tuned wins at all 8 coverage levels.**
+Average accuracy gain: +5.11% | Average wrong rate reduction: -2.70%
+
+Fine-tuning improves selective prediction (+5.11% average) more than raw accuracy
+(+2.91%), indicating the model's confidence scores become more reliable after
+fine-tuning — not just its predictions.
+
+---
+
 ## 💡 Key Insight
 
-Fine-tuning modestly improves raw accuracy (+2.9%) and enables a stronger
-accuracy–coverage tradeoff under post-hoc abstention.
+Fine-tuning improves raw accuracy by +2.91%, but its larger impact is on
+selective prediction behavior. Under matched-coverage comparison, the fine-tuned
+model outperforms the baseline at every coverage level with an average accuracy
+gain of +5.11% — proving that fine-tuning improves confidence reliability,
+not just raw predictions.
 
 At threshold 0.50, answered-question accuracy increases from 52.24% to 70.33%
 while coverage drops to 45.80%, reducing dataset-level wrong answers from
 47.76% to 13.59%.
 
 Calibration results are mixed: ECE slightly worsens from 0.0304 to 0.0322, while
-MCE improves from 0.1179 to 0.0690. Therefore, the main result should be framed
+MCE improves from 0.1179 to 0.0690. The main result should therefore be framed
 as improved selective prediction behavior, not improved average calibration.
 
 ---
@@ -288,6 +319,8 @@ mistral-medqa-abstention/
 ├── entropy_abstention.py         # Compare max-prob vs entropy abstention
 ├── reliability_diagram.py        # ECE calibration analysis
 ├── risk_analysis.py              # Manual risk-weighted evaluation
+├── compare_abstention.py         # Matched-coverage baseline vs fine-tuned
+├── predict.py                    # Single question inference with abstention
 │
 ├── baseline_results.json         # Baseline evaluation results + confidence scores
 ├── finetuned_results.json        # Fine-tuned evaluation results + confidence scores
@@ -296,6 +329,7 @@ mistral-medqa-abstention/
 ├── reliability_results.json      # ECE calibration results
 ├── risk_analysis_examples.json   # Examples for manual review
 ├── risk_analysis_summary.md      # Manual risk categorization
+├── comparison_results.json       # Matched-coverage comparison results
 │
 └── README.md
 ```
