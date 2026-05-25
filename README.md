@@ -111,6 +111,10 @@ Calibration results are mixed: ECE slightly worsens from 0.0304 to 0.0322, while
 MCE improves from 0.1179 to 0.0690. The main result should therefore be framed
 as improved selective prediction behavior, not improved average calibration.
 
+AUROC for error detection improved from 0.67 to 0.71 after fine-tuning,
+confirming that confidence scores become more discriminative between
+correct and incorrect predictions.
+
 ---
 
 ## 🔬 Extended Analysis
@@ -150,6 +154,32 @@ Fine-tuning did not improve average calibration as measured by ECE (0.0304 → 0
 a negligible increase). However, it significantly reduced worst-bin miscalibration
 as measured by MCE (11.79% → 6.90%). Low-confidence bins became better calibrated
 after fine-tuning, which appears to improve abstention behavior in the uncertain region.
+
+---
+
+### AUROC for Error Detection
+
+AUROC measures how well confidence scores separate correct from wrong predictions.
+A perfect error detector scores 1.0 — random chance scores 0.5.
+
+| Model | AUROC | Interpretation |
+|-------|-------|----------------|
+| Baseline | 0.6738 | Weak |
+| Fine-tuned | 0.7069 | Useful |
+
+Fine-tuning improved AUROC by +0.033 points, moving from weak to useful territory.
+
+**Confidence Gap Analysis:**
+
+| Model | Correct Confidence | Wrong Confidence | Gap |
+|-------|-------------------|------------------|-----|
+| Baseline | 54.31% | 43.49% | +10.81% |
+| Fine-tuned | 58.73% | 45.55% | +13.19% |
+
+The fine-tuned model is more confident when correct and has a wider gap between
+correct and wrong predictions (+13.2% vs +10.8%). This confirms that fine-tuning
+makes confidence a more reliable signal for abstention decisions — directly
+explaining why the matched-coverage comparison shows +5.11% average accuracy gain.
 
 ---
 
@@ -329,6 +359,12 @@ mistral-medqa-abstention/
 ├── reliability_results.json      # ECE calibration results
 ├── risk_analysis_examples.json   # Examples for manual review
 ├── risk_analysis_summary.md      # Manual risk categorization
+├── comparison_results.json       # Matched-coverage comparison results
+├── auroc_analysis.py             # AUROC error detection analysis
+├── compare_abstention.py         # Matched-coverage baseline vs fine-tuned
+├── predict.py                    # Single question inference with abstention
+│
+├── auroc_results.json            # AUROC analysis results
 ├── comparison_results.json       # Matched-coverage comparison results
 │
 └── README.md
