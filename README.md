@@ -183,6 +183,29 @@ explaining why the matched-coverage comparison shows +5.11% average accuracy gai
 
 ---
 
+### Statistical Significance — Bootstrap Confidence Intervals
+
+Bootstrap confidence intervals (95%, 1000 samples) assess whether observed
+differences are statistically meaningful or could be due to chance.
+
+| Metric | Baseline | Fine-Tuned | Overlap? |
+|--------|----------|------------|----------|
+| Overall Accuracy | 49.27% [46.74%, 51.92%] | 52.23% [49.41%, 54.91%] | Yes ⚠️ |
+| Answered Accuracy @0.50 | 67.96% [64.01%, 72.10%] | 70.31% [66.50%, 74.02%] | Yes ⚠️ |
+| Coverage @0.50 | 37.29% [34.88%, 39.83%] | 45.76% [43.13%, 48.39%] | **No ✅** |
+| Wrong Rate @0.50 | 11.95% [10.13%, 13.59%] | 13.59% [11.78%, 15.48%] | Yes ⚠️ |
+| AUROC | 67.39% [64.36%, 70.25%] | 70.66% [67.74%, 73.60%] | Yes ⚠️ |
+
+**Key finding:** Coverage improvement (+8.47%) is the only statistically
+significant result — CIs do not overlap. Accuracy and AUROC improvements
+are directionally positive but not conclusive on 1,273 test examples.
+
+The significant coverage improvement means the fine-tuned model answers
+more questions at the same confidence threshold — indicating sharper,
+more decisive confidence distributions after fine-tuning.
+
+---
+
 ### ⚠️ Risk-Weighted Evaluation
 
 Manual analysis of 10 high-confidence wrong answers and 10 low-confidence abstentions:
@@ -366,6 +389,14 @@ mistral-medqa-abstention/
 │
 ├── auroc_results.json            # AUROC analysis results
 ├── comparison_results.json       # Matched-coverage comparison results
+├── confidence_intervals.py       # Bootstrap confidence intervals
+├── auroc_analysis.py             # AUROC error detection analysis
+├── compare_abstention.py         # Matched-coverage baseline vs fine-tuned
+├── predict.py                    # Single question inference with abstention
+│
+├── confidence_intervals_results.json  # Bootstrap CI results
+├── auroc_results.json            # AUROC analysis results
+├── comparison_results.json       # Matched-coverage comparison results
 │
 └── README.md
 ```
@@ -490,7 +521,9 @@ Answer tokens are verified to be single-token continuations before evaluation.
 - Abstention is post-hoc confidence thresholding, not a learned model-level refusal
 - Threshold selection was performed on test-set results — a held-out calibration split would be more rigorous
 - Risk-weighted analysis is preliminary and based on a small manually reviewed sample (n=10)
-- Confidence intervals and statistical significance tests not yet computed
+- - Confidence intervals computed via bootstrap (n=1000): accuracy and AUROC
+  improvements are directionally positive but CIs overlap — not statistically
+  conclusive on 1,273 examples. Coverage improvement is statistically significant.
 - The model should not be used for real clinical decision-making
 
 ---
