@@ -178,12 +178,11 @@ a warm-started (not abstain-averse) DPO reference, and abstain-favoring pairs.
 
 **Headline framing:** v2 and v3 are two points on one coverage/directedness
 tradeoff. v3 moves the *natural* operating point from 32% → 55% coverage at a small
-calibration cost (P(E) AUROC 0.694 → 0.660). Both models expose a directed P(E) score
-score that can be thresholded to choose operating points along the coverage/safety curve.
+calibration cost (P(E) AUROC 0.694 → 0.660). Both models expose a directed P(E) score that can be thresholded to choose operating points along the coverage/safety curve.
 
 ## The result, in one figure
 
-![Selective prediction curve](selective_prediction_curve.png)
+![Selective prediction curve](figures/selective_prediction_curve.png)
 
 - **Lines** = coverage/accuracy reachable by thresholding each model's P(E) score.
 - **Stars** = each model's *natural* (learned 5-way argmax) operating point.
@@ -212,6 +211,32 @@ curves — the learned 5-way abstention reaches a low-coverage/high-accuracy reg
   operating point be selected from the full coverage/AUROC trajectory post-hoc.
 - **Honest tradeoff:** pushing natural coverage 32% → 55% cost ~0.03 P(E) AUROC.
   Named, not hidden.
+
+---
+
+## Quickstart
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Run the main learned-abstention evaluation:
+
+```bash
+DPO_ADAPTER=./mistral-medqa-dpo-v3/checkpoint-540/policy \
+TOKENIZER_PATH=./mistral-medqa-dpo-v3-final \
+python scripts/phase2_learned_abstention/dpo_eval_full.py
+```
+
+Recreate the selective-prediction figure:
+
+```bash
+python scripts/phase2_learned_abstention/plot_selective_prediction.py
+```
+
+Note: model checkpoint folders are intentionally not stored in GitHub. The repository includes code, metrics, configs, plots, and final evaluation JSONs.
 
 ---
 
@@ -249,7 +274,7 @@ For a faster evaluation sanity check:
 ```bash
 DPO_ADAPTER=./mistral-medqa-dpo-v3/checkpoint-540/policy \
 TOKENIZER_PATH=./mistral-medqa-dpo-v3-final \
-python dpo_eval_full.py --limit 20
+python scripts/phase2_learned_abstention/dpo_eval_full.py --limit 20
 ```
 
 The full 1,273-example evaluation can be run after the smoke test passes.
@@ -262,10 +287,10 @@ The full 1,273-example evaluation can be run after the smoke test passes.
 # Headline balanced model (v3 ckpt-540)
 DPO_ADAPTER=./mistral-medqa-dpo-v3/checkpoint-540/policy \
 TOKENIZER_PATH=./mistral-medqa-dpo-v3-final \
-python dpo_eval_full.py
+python scripts/phase2_learned_abstention/dpo_eval_full.py
 
 # Reproduce the figure
-python plot_selective_prediction.py
+python scripts/phase2_learned_abstention/plot_selective_prediction.py
 ```
 
 ---
@@ -287,7 +312,7 @@ python plot_selective_prediction.py
 - QLoRA training; learned-abstention via DPO with a warm-started reference adapter
 - Diagnosed a failed DPO run (zero abstain mass, abstain-averse reference,
   answer-favoring pairs) and fixed all three causes
-- Full-sentence completion scoring eval with a calibrated P(E) abstention signal
+- Full-sentence completion scoring eval with a directed P(E) abstention signal
 - Live per-type training monitor + dense checkpointing for post-hoc model selection
 - Reproducible JSON outputs and a coverage/accuracy figure across all models
 
@@ -308,28 +333,69 @@ Dataset    : GBaker/MedQA-USMLE-4-options (10,178 train / 1,273 test)
 
 ## 📁 Project Structure
 
-```
+```text
 mistral-medqa-abstention/
 │
-├── Part 1 — post-hoc selective prediction
-│   ├── baseline_eval.py / train_lora.py / finetuned_eval.py
-│   ├── abstention_analysis.py / entropy_abstention.py
-│   ├── reliability_diagram.py / risk_analysis.py
-│   ├── compare_abstention.py / auroc_analysis.py / confidence_intervals.py
-│   └── predict.py
+├── README.md
+├── requirements.txt
+├── LICENSE
+├── configs/
+│   ├── dpo_v2_safety.yaml
+│   └── dpo_v3_balanced.yaml
 │
-├── Part 2 — learned abstention (DPO)
-│   ├── build_dpo_pairs_v2.py        # build preference pairs (ratio configurable)
-│   ├── train_warmstart.py           # warm-start SFT (lift abstain off zero)
-│   ├── train_dpo_v3.py              # DPO training (warm-started reference)
-│   ├── dpo_eval_full.py             # full-sentence eval + P(E) sweep
-│   ├── eval_checkpoints.py          # trajectory sweep over checkpoints
-│   ├── plot_selective_prediction.py # the coverage/accuracy figure
-│   └── final_dpo_v3_results/        # full-eval JSONs for all candidates
+├── figures/
+│   └── selective_prediction_curve.png
 │
-├── selective_prediction_curve.png
-└── README.md
+├── scripts/
+│   ├── phase1_sft_posthoc/
+│   │   ├── baseline_eval.py
+│   │   ├── train_lora.py
+│   │   ├── finetuned_eval.py
+│   │   ├── abstention_analysis.py
+│   │   ├── entropy_abstention.py
+│   │   ├── reliability_diagram.py
+│   │   ├── risk_analysis.py
+│   │   ├── compare_abstention.py
+│   │   ├── auroc_analysis.py
+│   │   ├── confidence_intervals.py
+│   │   └── predict.py
+│   │
+│   └── phase2_learned_abstention/
+│       ├── build_dpo_pairs_v2.py
+│       ├── train_warmstart.py
+│       ├── train_dpo.py
+│       ├── train_dpo_v2.py
+│       ├── train_dpo_v3.py
+│       ├── dpo_eval_full.py
+│       ├── eval_checkpoints.py
+│       └── plot_selective_prediction.py
+│
+└── results/
+    ├── phase1_sft_posthoc/
+    │   ├── baseline_results.json
+    │   ├── finetuned_results.json
+    │   ├── abstention_results.json
+    │   ├── entropy_abstention_results.json
+    │   ├── reliability_results.json
+    │   ├── comparison_results.json
+    │   ├── auroc_results.json
+    │   ├── confidence_intervals_results.json
+    │   ├── risk_analysis_examples.json
+    │   └── risk_analysis_summary.md
+    │
+    └── phase2_learned_abstention/
+        ├── final_dpo_v3_results/
+        │   ├── checkpoint_tradeoff.json
+        │   ├── results_v3_ck130.json
+        │   ├── results_v3_ck180.json
+        │   ├── results_v3_ck190.json
+        │   └── results_v3_ck540.json
+        │
+        └── results_dpo_v2/
+            ├── dpo_eval_full_results.json
+            └── dpo_eval_full_predictions.jsonl
 ```
+
 
 ## ⚠️ Limitations
 
