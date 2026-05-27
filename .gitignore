@@ -1,6 +1,24 @@
+# Model weights / checkpoints
 *.safetensors
+*.bin
+*.pt
+*.pth
 mistral-medqa-*/
 *-final/
+checkpoint-*/
+
+# Logs / large prediction outputs
 *.log
 dpo_eval_full_predictions.jsonl
+
+# Python / cache
 __pycache__/
+*.pyc
+.cache/
+wandb/
+
+# Local exports / backups
+*.tar.gz
+project2_release/
+data_local_only/
+docs/
