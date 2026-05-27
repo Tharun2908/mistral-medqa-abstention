@@ -1,25 +1,41 @@
 ![Python](https://img.shields.io/badge/Python-3.10-blue)
 ![Model](https://img.shields.io/badge/Model-Mistral--7B-orange)
 ![Task](https://img.shields.io/badge/Task-MedQA-green)
+![Method](https://img.shields.io/badge/Method-QLoRA%20%2B%20DPO-purple)
 
 # Mistral-7B MedQA Abstention — Selective Prediction for Reliable Medical QA
 
-A safety-focused fine-tuning project that enables Mistral-7B to abstain from answering
-when uncertain, reducing high-confidence errors in medical QA.
+A safety-focused project that teaches Mistral-7B to **abstain when uncertain** on
+medical multiple-choice questions, cutting high-confidence errors. The project
+covers two complementary approaches to abstention:
 
-> 🚀 Selective prediction raises answered-question accuracy from 52.2% to 70.3% at 45.8% coverage, reducing total wrong-answer rate from 47.8% to 13.6%
+1. **Post-hoc selective prediction** — an external confidence threshold suppresses
+   low-confidence answers (no retraining for the abstention itself).
+2. **Learned abstention (DPO)** — the model is *trained* to prefer abstaining over
+   giving a confident wrong answer, producing a directed abstention signal that
+   reaches operating points post-hoc thresholding cannot.
+
+> The progression is the point: post-hoc thresholding establishes a strong
+> selective-prediction baseline; DPO then trains the abstention behavior into the
+> model itself, and the two are compared on the same coverage/accuracy axes.
 
 ---
 
 ## 🎯 Problem
 
-Standard fine-tuning optimizes for accuracy but can make models **overconfident in wrong answers**.
-In medical AI, a confident wrong answer is more dangerous than no answer at all.
+Standard fine-tuning optimizes for accuracy but can leave models **overconfident in
+wrong answers**. In medical AI, a confident wrong answer is more dangerous than no
+answer at all. This project reduces confident-wrong answers two ways — a tunable
+post-hoc threshold, and a trained (learned) refusal behavior — and quantifies the
+coverage/accuracy tradeoff for each.
 
-This project addresses that by adding an **abstention mechanism** — an external abstention rule suppresses the model's answer when confidence falls below a threshold, reducing wrong answer rates while maintaining
-controllable coverage.
+Throughout, results are reported as a **(coverage, accuracy) pair**, never accuracy
+alone: a model that answers fewer questions more accurately is the entire design
+goal, so coverage must always be quoted alongside it.
 
 ---
+
+# Part 1 — Post-hoc Selective Prediction (SFT + confidence threshold)
 
 ## 📊 Results
 
@@ -33,7 +49,7 @@ controllable coverage.
 ### Fine-Tuned with Abstention — Threshold Analysis
 
 | Threshold | Answered Accuracy | Coverage | Dataset-Level Wrong Rate | Abstained |
-|-----------|-------------------|----------|------------|-----------|
+|-----------|-------------------|----------|--------------------------|-----------|
 | 0.00 | 52.24% | 100.00% | 47.76% | 0.00% |
 | 0.30 | 53.05% | 96.70% | 45.40% | 3.30% |
 | 0.35 | 55.33% | 85.47% | 38.18% | 14.53% |
@@ -52,31 +68,23 @@ controllable coverage.
 
 | Metric | No Abstention | With Abstention |
 |--------|---------------|-----------------|
-| Overall Accuracy | 52.24% | — |
 | Answered Accuracy | 52.24% | 70.33% |
 | Coverage | 100% | 45.80% |
-| Wrong Answer Rate | 47.76% | 13.59% |
+| Dataset-Level Wrong Rate | 47.76% | 13.59% |
 
-
-
-**Threshold Selection Criterion:**
-We choose threshold = 0.50 as the balanced operating point because it reduces the
-total wrong-answer rate from 47.76% to 13.59% while preserving nearly half of
-test-set coverage. Higher thresholds reduce errors further but abstain on more than 70–90% of questions, which may be unsuitable for use cases requiring broad coverage.
-
-At comparable thresholds, the fine-tuned model achieves higher answered accuracy
-at higher coverage than the base model, indicating more reliable selective prediction.
-
----
+At threshold 0.50, answered-question accuracy rises from 52.24% to 70.33% while
+coverage drops to 45.80%, reducing dataset-level wrong answers from 47.76% to
+13.59%. **Note:** this threshold was selected after inspecting test-set results —
+a held-out calibration split would make this number more defensible.
 
 ### 📈 Matched-Coverage Comparison — Baseline vs Fine-Tuned
 
 Comparing at fixed thresholds is unfair because baseline and fine-tuned models
 answer different numbers of questions at the same threshold. Matched-coverage
-comparison ensures we compare equal-sized subsets.
+comparison ensures equal-sized subsets.
 
-| Coverage | Base Accuracy | FT Accuracy | Gain | Base Wrong | FT Wrong |
-|----------|---------------|-------------|------|------------|----------|
+| Coverage | Base Acc | FT Acc | Gain | Base Wrong | FT Wrong |
+|----------|----------|--------|------|------------|----------|
 | 90% | 51.51% | 54.40% | +2.89% | 42.97% | 41.08% |
 | 80% | 53.18% | 56.87% | +3.69% | 37.55% | 34.25% |
 | 70% | 54.92% | 59.89% | +4.97% | 32.05% | 28.36% |
@@ -86,158 +94,123 @@ comparison ensures we compare equal-sized subsets.
 | 30% | 69.67% | 74.93% | +5.26% | 9.27% | 7.38% |
 | 20% | 77.95% | 83.27% | +5.32% | 4.40% | 3.30% |
 
-**Fine-tuned wins at all 8 coverage levels.**
-Average accuracy gain: +5.11% | Average wrong rate reduction: -2.70%
+**Fine-tuned wins at all 8 coverage levels.** Average accuracy gain +5.11%.
+Individual per-level differences are not individually significant at n=1,273, but
+winning at all 8 levels in the same direction is itself meaningful (sign test
+p≈0.004).
 
-Fine-tuning improves selective prediction (+5.11% average) more than raw accuracy
-(+2.91%), indicating the model's confidence scores become more reliable after
-fine-tuning — not just its predictions.
+## 💡 Key Insight (Part 1)
 
----
+Fine-tuning's clearest, statistically significant effect is on **coverage**: the
+fine-tuned model answers significantly more questions at the same confidence
+threshold (bootstrap CIs non-overlapping, +8.47%), indicating sharper confidence
+distributions. Accuracy and AUROC gains are directionally positive and consistent
+across all 8 matched-coverage levels, but not individually significant at n=1,273.
 
-## 💡 Key Insight
+Calibration is mixed: ECE slightly worsens (0.0304 → 0.0322) while MCE improves
+(11.79% → 6.90%). The result is best framed as **improved selective-prediction
+behavior**, not improved average calibration.
 
-Fine-tuning improves raw accuracy by +2.91%, but its larger impact is on
-selective prediction behavior. Under matched-coverage comparison, the fine-tuned
-model outperforms the baseline at every coverage level with an average accuracy
-gain of +5.11% — consistent with fine-tuning improving confidence reliability,
-not just raw predictions.
+### Supporting analyses (Part 1)
 
-At threshold 0.50, answered-question accuracy increases from 52.24% to 70.33%
-while coverage drops to 45.80%, reducing dataset-level wrong answers from
-47.76% to 13.59%.
+**Max-Prob vs Entropy (≈50% coverage):** max-prob wins (70.33% / 45.80% / 13.59%
+wrong) over entropy (67.73% / 49.41% / 15.95% wrong) — fine-tuning sharpens
+distributions, making max-prob the more reliable signal.
 
-Calibration results are mixed: ECE slightly worsens from 0.0304 to 0.0322, while
-MCE improves from 0.1179 to 0.0690. The main result should therefore be framed
-as improved selective prediction behavior, not improved average calibration.
+**AUROC for error detection:** baseline 0.6738 → fine-tuned 0.7069. Confidence gap
+(correct − wrong) widened from +10.8% to +13.2%.
 
-AUROC for error detection improved from 0.67 to 0.71 after fine-tuning,
-confirming that confidence scores become more discriminative between
-correct and incorrect predictions.
+**Bootstrap CIs (95%, n=1000):** coverage improvement (+8.47%) is the only
+statistically significant result (CIs non-overlapping). Accuracy/AUROC gains are
+directionally positive but not conclusive at 1,273 examples.
 
----
-
-## 🔬 Extended Analysis
-
-### Max-Prob vs Entropy Abstention
-
-We compared two selective prediction strategies:
-- **Max-probability thresholding**: abstain if `max(probs) < threshold`
-- **Entropy-based abstention**: abstain if `entropy(probs) > threshold`
-
-Entropy measures how concentrated the model's probability mass is over the four
-answer options — high entropy means the model is confused.
-
-**Head-to-head at ~50% coverage:**
-
-| Method | Answered Accuracy | Coverage | Dataset-Level Wrong Rate |
-|--------|-------------------|----------|------------|
-| Max-Prob | 70.33% | 45.80% | 13.59% |
-| Entropy | 67.73% | 49.41% | 15.95% |
-
-Max-prob outperforms entropy on the fine-tuned model. Fine-tuning sharpens
-confidence distributions, making max-prob a more reliable signal than entropy.
+**Risk-weighted review (small, n=10):** of 10 manually reviewed high-confidence
+wrong answers, 4 were categorized as clinically critical; the abstention mechanism
+correctly refused all 4 critical cases in the low-confidence set. Preliminary —
+larger expert-reviewed samples are needed.
 
 ---
 
-### Confidence Calibration (ECE)
+# Part 2 — Learned Abstention (Warm-start + DPO)
 
-Expected Calibration Error measures how well confidence aligns with actual accuracy.
-A perfectly calibrated model follows the diagonal: "70% confident → correct 70% of the time."
+Part 1's abstention is **external** — the model always produces a prediction
+internally, and a threshold suppresses it. Part 2 asks: can the model *learn* to
+abstain, preferring "I cannot answer confidently" over a confident wrong answer?
 
-| Model | ECE | MCE |
-|-------|-----|-----|
-| Baseline | 0.0304 | 0.1179 |
-| Fine-tuned | 0.0322 | 0.0690 |
+## The experimental progression (this is the core story)
 
-Fine-tuning did not improve average calibration as measured by ECE (0.0304 → 0.0322,
-a negligible increase). However, it significantly reduced worst-bin miscalibration
-as measured by MCE (11.79% → 6.90%). Low-confidence bins became better calibrated
-after fine-tuning, which appears to improve abstention behavior in the uncertain region.
+| Stage | Outcome | What it taught |
+|-------|---------|----------------|
+| **DPO v1** | **Failed** — abstain rate 0%, P(E) AUROC 0.43 (undirected) | DPO can't create a behavior from ~zero probability mass against a KL leash |
+| **Warm-start SFT** | Abstain string lifted from max P(E) 0.02 → 0.39, but undirected | Teaches the abstain *string* exists, not *when* to use it |
+| **DPO v2** | **Directed** — P(E) AUROC 0.43 → **0.69**, but over-conservative (68% abstain) | Warm-started reference + abstain-favoring pairs make abstention directional |
+| **DPO v3** | **Usable tradeoff** — coverage 55%, P(E) AUROC 0.66 | 1:1 pairs + tighter β + longer warmup center the operating point |
 
----
+**Root-cause diagnosis of the v1 failure** (the part worth reading): the abstain
+completion had near-zero probability under the SFT model (max P(E) = 0.0225). DPO
+amplifies *relative* preferences but cannot introduce a behavior from zero,
+especially with a KL penalty pulling toward an abstain-averse reference, and with
+answer-favoring (1:2) pairs whose net gradient pushed abstain *down*. The fix
+addressed all three: a warm-start SFT pass to give the abstain string real mass,
+a warm-started (not abstain-averse) DPO reference, and abstain-favoring pairs.
 
-### AUROC for Error Detection
+## Final models (full 1,273-example test set)
 
-AUROC measures how well confidence scores separate correct from wrong predictions.
-A perfect error detector scores 1.0 — random chance scores 0.5.
+| Model | Coverage | Answered Acc | Dataset Wrong | P(E) AUROC | Role |
+|-------|----------|--------------|---------------|------------|------|
+| SFT baseline | ~100% | 52.2% | ~48% | — | answers everything |
+| **DPO v2** | 31.6% | 77.4% | **7.2%** | **0.694** | safety-first |
+| **DPO v3 (ckpt-540)** | **55.3%** | 69.3% | 17.0% | 0.660 | balanced (headline) |
+| DPO v3 (ckpt-190) | 32.9% | 76.1% | 7.9% | 0.663 | alt safety point |
 
-| Model | AUROC | Interpretation |
-|-------|-------|----------------|
-| Baseline | 0.6738 | Weak |
-| Fine-tuned | 0.7069 | Useful |
+**Headline framing:** v2 and v3 are two points on one coverage/directedness
+tradeoff. v3 moves the *natural* operating point from 32% → 55% coverage at a small
+calibration cost (P(E) AUROC 0.694 → 0.660). Both models expose a directed P(E) score
+score that can be thresholded to choose operating points along the coverage/safety curve.
 
-Fine-tuning improved AUROC by +0.033 points, moving from weak to useful territory.
+## The result, in one figure
 
-**Confidence Gap Analysis:**
+![Selective prediction curve](selective_prediction_curve.png)
 
-| Model | Correct Confidence | Wrong Confidence | Gap |
-|-------|-------------------|------------------|-----|
-| Baseline | 54.31% | 43.49% | +10.81% |
-| Fine-tuned | 58.73% | 45.55% | +13.19% |
+- **Lines** = coverage/accuracy reachable by thresholding each model's P(E) score.
+- **Stars** = each model's *natural* (learned 5-way argmax) operating point.
+- All curves sit well above the SFT baseline (~52%, answers everything).
 
-The fine-tuned model is more confident when correct and has a wider gap between
-correct and wrong predictions (+13.2% vs +10.8%). This confirms that fine-tuning
-makes confidence a more reliable signal for abstention decisions — directly
-explaining why the matched-coverage comparison shows +5.11% average accuracy gain.
+**Key insight from the figure:** the stars sit *above and to the left* of the P(E)
+curves — the learned 5-way abstention reaches a low-coverage/high-accuracy region
+(≈32% coverage, ≈77% accuracy) that post-hoc P(E) thresholding cannot reach
+(thresholding bottoms out near 50% coverage). This is the concrete payoff of
+**training** abstention into the model rather than bolting a threshold on top.
 
----
+## Methodology choices worth defending
 
-### Statistical Significance — Bootstrap Confidence Intervals
+- **Evaluation by full-sentence completion scoring** (mean per-token log-prob of
+  `" The answer is X."` vs `" I cannot answer confidently."`), matching the DPO
+  training format exactly — not next-token A–E scoring, which measures an
+  out-of-distribution format.
+- **P(E) as the deployment signal.** The natural argmax proved bistable across
+  training (v1 0% / warm-start ~30% / v2 68% abstain), so rather than force the
+  argmax to a target coverage, we train a directed P(E) score and threshold it —
+  how selective prediction is actually deployed.
+- **Per-type training monitor.** v1's overall pairwise accuracy (0.72) hid that the
+  abstain side was ~0.0 while the answer side was ~0.95. v2/v3 log a live
+  coverage/abstain readout so over-abstention is visible during training.
+- **Dense checkpointing.** v3 saved every 10 steps (all kept), letting the best
+  operating point be selected from the full coverage/AUROC trajectory post-hoc.
+- **Honest tradeoff:** pushing natural coverage 32% → 55% cost ~0.03 P(E) AUROC.
+  Named, not hidden.
 
-Bootstrap confidence intervals (95%, 1000 samples) assess whether observed
-differences are statistically meaningful or could be due to chance.
+## Run the DPO models
 
-| Metric | Baseline | Fine-Tuned | Overlap? |
-|--------|----------|------------|----------|
-| Overall Accuracy | 49.27% [46.74%, 51.92%] | 52.23% [49.41%, 54.91%] | Yes ⚠️ |
-| Answered Accuracy @0.50 | 67.96% [64.01%, 72.10%] | 70.31% [66.50%, 74.02%] | Yes ⚠️ |
-| Coverage @0.50 | 37.29% [34.88%, 39.83%] | 45.76% [43.13%, 48.39%] | **No ✅** |
-| Wrong Rate @0.50 | 11.95% [10.13%, 13.59%] | 13.59% [11.78%, 15.48%] | Yes ⚠️ |
-| AUROC | 67.39% [64.36%, 70.25%] | 70.66% [67.74%, 73.60%] | Yes ⚠️ |
+```bash
+# Headline balanced model (v3 ckpt-540)
+DPO_ADAPTER=./mistral-medqa-dpo-v3/checkpoint-540/policy \
+TOKENIZER_PATH=./mistral-medqa-dpo-v3-final \
+python dpo_eval_full.py
 
-**Key finding:** Coverage improvement (+8.47%) is the only statistically
-significant result — CIs do not overlap. Accuracy and AUROC improvements
-are directionally positive but not conclusive on 1,273 test examples.
-
-The significant coverage improvement means the fine-tuned model answers
-more questions at the same confidence threshold — indicating sharper,
-more decisive confidence distributions after fine-tuning.
-
----
-
-### ⚠️ Risk-Weighted Evaluation
-
-Manual analysis of 10 high-confidence wrong answers and 10 low-confidence abstentions:
-
-**High-confidence wrong answers:**
-
-| Example | Predicted | Correct | Risk |
-|---------|-----------|---------|------|
-| Bone disease diagnosis | Osteitis fibrosa cystica | Osteitis deformans | Benign |
-| Epidemiology bias | Lead-time bias | Measurement bias | Benign |
-| Drug mechanism | Decreased phosphodiesterase | Increased adenylate cyclase | Ambiguous |
-| Bleeding disorder (infant) | Bernard-Soulier | Glanzmann's thrombasthenia | **Critical** |
-| Abdominal mass | Renal artery stenosis | Common iliac artery aneurysm | **Critical** |
-| Neurological diagnosis | Degenerated caudate | Cerebellar demyelination | Ambiguous |
-| Tropical disease | Dengue fever | Chikungunya | Benign |
-| GI diagnosis | Crohn's disease | Ulcerative colitis | **Critical** |
-| Psychiatric diagnosis | Schizophreniform | Schizoaffective | Ambiguous |
-| Drug side effect | Breast cancer | Pulmonary embolism | **Critical** |
-
-**In this small manually reviewed sample, 4/10 high-confidence wrong answers were categorized as critical.**
-
-**Low-confidence abstentions (model correctly refused):**
-
-| Example | Risk | Verdict |
-|---------|------|---------|
-| Wrong vaccine injection site → nerve damage | **Critical** | ✅ Correctly abstained |
-| Wrong elbow reduction technique | **Critical** | ✅ Correctly abstained |
-| Missed toxic shock syndrome history | **Critical** | ✅ Correctly abstained |
-| Wrong test for aplastic anemia | **Critical** | ✅ Correctly abstained |
-
-The abstention mechanism correctly refused to answer on all 4 critical cases
-in the low-confidence set — suggesting potential clinical safety value, though larger expert-reviewed samples are needed.
+# Reproduce the figure
+python plot_selective_prediction.py
+```
 
 ---
 
@@ -245,317 +218,90 @@ in the low-confidence set — suggesting potential clinical safety value, though
 
 - Parameter-efficient fine-tuning (QLoRA)
 - Selective prediction (accuracy–coverage tradeoff)
-- Confidence calibration for LLMs (ECE, MCE)
-- Max-probability vs entropy-based abstention
-- Risk-weighted evaluation for medical AI
+- **Direct Preference Optimization (DPO) for learned abstention**
+- **Warm-start SFT to introduce a behavior before preference optimization**
+- Confidence calibration (ECE, MCE), max-prob vs entropy abstention
+- AUROC error detection, bootstrap confidence intervals
+- Root-cause debugging of a failed training run + targeted fixes
 - Reliability-aware evaluation beyond accuracy
-
----
 
 ## 🛠️ Engineering Highlights
 
-- Built end-to-end fine-tuning and evaluation pipeline for Mistral-7B on MedQA
-- Implemented QLoRA training with early stopping for single-GPU fine-tuning on V100
-- Designed post-hoc abstention layer using normalized A/B/C/D answer probabilities
-- Added threshold-sweep evaluation to expose accuracy–coverage tradeoffs
-- Compared max-probability and entropy-based uncertainty signals
-- Produced reproducible JSON outputs for baseline, fine-tuned, calibration, and risk analyses
-- Built `predict.py` CLI for single-question inference with configurable abstention threshold
-- Documented deployment constraints including GPU type, training time, and inference time
+- End-to-end SFT → warm-start → DPO pipeline for Mistral-7B on MedQA (single V100)
+- QLoRA training; learned-abstention via DPO with a warm-started reference adapter
+- Diagnosed a failed DPO run (zero abstain mass, abstain-averse reference,
+  answer-favoring pairs) and fixed all three causes
+- Full-sentence completion scoring eval with a calibrated P(E) abstention signal
+- Live per-type training monitor + dense checkpointing for post-hoc model selection
+- Reproducible JSON outputs and a coverage/accuracy figure across all models
 
 ---
-
-## 🧪 Example Inference
-
-```bash
-python predict.py \
-  --question "A patient presents with..." \
-  --option_a "Aspirin" \
-  --option_b "Ibuprofen" \
-  --option_c "Acetaminophen" \
-  --option_d "Morphine" \
-  --threshold 0.50
-```
-
-**Answered (confidence above threshold):**
-```json
-{
-  "prediction": "B",
-  "confidence": 0.72,
-  "abstained": false,
-  "threshold": 0.50,
-  "all_probs": {"A": 0.12, "B": 0.72, "C": 0.09, "D": 0.07},
-  "message": "Answered with 72.0% confidence"
-}
-```
-
-**Abstained (confidence below threshold):**
-```json
-{
-  "prediction": null,
-  "confidence": 0.41,
-  "abstained": true,
-  "threshold": 0.50,
-  "all_probs": {"A": 0.41, "B": 0.28, "C": 0.19, "D": 0.12},
-  "message": "Abstained due to low confidence"
-}
-```
-
----
-
-## 🚢 Deployment Considerations
-
-This project is an evaluation and abstention pipeline, not a clinical product.
-
-For production-style deployment, the abstention layer wraps around model inference:
-
-1. Format the medical multiple-choice prompt
-2. Run the fine-tuned Mistral-7B model
-3. Extract logits for answer options A/B/C/D
-4. Normalize probabilities over answer choices only
-5. Return answer only if max probability exceeds configured threshold
-6. Otherwise return abstention response
-
-The threshold can be configured per use case:
-- Higher threshold for safety-critical settings (fewer answers, more reliable)
-- Lower threshold for higher coverage (more answers, more errors)
-- Separate calibration split recommended before deployment
-
-**Note:** This system is designed as a research and evaluation prototype.
-It should not be used for real clinical decision-making.
-
----
-
-## ⚙️ Example Configuration
-
-```yaml
-model:
-  base_model: mistralai/Mistral-7B-v0.3
-  adapter: Primeinvincible/mistral-medqa-lora-v3
-  quantization: 4bit
-
-inference:
-  answer_options: ["A", "B", "C", "D"]
-  confidence_method: max_probability
-  abstention_threshold: 0.50
-
-evaluation:
-  dataset: GBaker/MedQA-USMLE-4-options
-  split: test
-  metrics:
-    - accuracy
-    - coverage
-    - dataset_level_wrong_rate
-    - answered_accuracy
-```
 
 ## 🏗️ Architecture
+
 ```
 Base Model : mistralai/Mistral-7B-v0.3
-Method     : QLoRA (4-bit quantization + LoRA adapters)
-LoRA rank  : r=16, alpha=32
-Target     : q_proj, v_proj
-Training   : Early stopping (patience=3, monitoring eval_loss)
-Dataset    : GBaker/MedQA-USMLE-4-options
+Method     : QLoRA (4-bit) + DPO
+LoRA       : r=16, alpha=32, targets q_proj/v_proj
+SFT        : early stopping (patience=3) on MedQA-USMLE
+Warm-start : short SFT pass introducing the abstain completion
+DPO        : warm-started policy + frozen warm-started reference,
+             beta 0.05–0.10, full-sentence A/B/C/D/E completions
+Dataset    : GBaker/MedQA-USMLE-4-options (10,178 train / 1,273 test)
 ```
 
----
-
 ## 📁 Project Structure
+
 ```
 mistral-medqa-abstention/
 │
-├── baseline_eval.py              # Evaluate base Mistral-7B on MedQA test set
-├── train_lora.py                 # Fine-tune with QLoRA + early stopping
-├── finetuned_eval.py             # Evaluate fine-tuned model on MedQA test set
-├── abstention_analysis.py        # Sweep thresholds, compute abstention metrics
-├── entropy_abstention.py         # Compare max-prob vs entropy abstention
-├── reliability_diagram.py        # ECE calibration analysis
-├── risk_analysis.py              # Manual risk-weighted evaluation
-├── compare_abstention.py         # Matched-coverage baseline vs fine-tuned
-├── predict.py                    # Single question inference with abstention
+├── Part 1 — post-hoc selective prediction
+│   ├── baseline_eval.py / train_lora.py / finetuned_eval.py
+│   ├── abstention_analysis.py / entropy_abstention.py
+│   ├── reliability_diagram.py / risk_analysis.py
+│   ├── compare_abstention.py / auroc_analysis.py / confidence_intervals.py
+│   └── predict.py
 │
-├── baseline_results.json         # Baseline evaluation results + confidence scores
-├── finetuned_results.json        # Fine-tuned evaluation results + confidence scores
-├── abstention_results.json       # Full threshold analysis results
-├── entropy_abstention_results.json # Max-prob vs entropy comparison
-├── reliability_results.json      # ECE calibration results
-├── risk_analysis_examples.json   # Examples for manual review
-├── risk_analysis_summary.md      # Manual risk categorization
-├── comparison_results.json       # Matched-coverage comparison results
-├── auroc_analysis.py             # AUROC error detection analysis
-├── compare_abstention.py         # Matched-coverage baseline vs fine-tuned
-├── predict.py                    # Single question inference with abstention
+├── Part 2 — learned abstention (DPO)
+│   ├── build_dpo_pairs_v2.py        # build preference pairs (ratio configurable)
+│   ├── train_warmstart.py           # warm-start SFT (lift abstain off zero)
+│   ├── train_dpo_v3.py              # DPO training (warm-started reference)
+│   ├── dpo_eval_full.py             # full-sentence eval + P(E) sweep
+│   ├── eval_checkpoints.py          # trajectory sweep over checkpoints
+│   ├── plot_selective_prediction.py # the coverage/accuracy figure
+│   └── final_dpo_v3_results/        # full-eval JSONs for all candidates
 │
-├── auroc_results.json            # AUROC analysis results
-├── comparison_results.json       # Matched-coverage comparison results
-├── confidence_intervals.py       # Bootstrap confidence intervals
-├── auroc_analysis.py             # AUROC error detection analysis
-├── compare_abstention.py         # Matched-coverage baseline vs fine-tuned
-├── predict.py                    # Single question inference with abstention
-│
-├── confidence_intervals_results.json  # Bootstrap CI results
-├── auroc_results.json            # AUROC analysis results
-├── comparison_results.json       # Matched-coverage comparison results
-│
+├── selective_prediction_curve.png
 └── README.md
 ```
 
----
-
-## 🚀 Quickstart
-
-### 1. Install Dependencies
-```bash
-pip install torch --index-url https://download.pytorch.org/whl/cu118
-pip install transformers peft datasets accelerate bitsandbytes huggingface_hub trl
-```
-
-### 2. Run Baseline Evaluation
-```bash
-python baseline_eval.py
-```
-
-### 3. Fine-Tune with Early Stopping
-```bash
-# Smoke test first
-# Set SMOKE_TEST = True in train_lora.py
-python train_lora.py
-
-# Full training
-# Set SMOKE_TEST = False in train_lora.py
-python train_lora.py
-```
-
-### 4. Evaluate Fine-Tuned Model
-```bash
-python finetuned_eval.py
-```
-
-### 5. Run All Analyses
-```bash
-python abstention_analysis.py       # threshold sweep
-python entropy_abstention.py        # max-prob vs entropy
-python reliability_diagram.py       # ECE calibration
-python risk_analysis.py             # risk-weighted examples
-```
-
----
-
-## 🔧 Load Fine-Tuned Model
-```python
-import torch
-from peft import PeftModel
-from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
-
-tokenizer = AutoTokenizer.from_pretrained("Primeinvincible/mistral-medqa-lora-v3")
-
-bnb_config = BitsAndBytesConfig(
-    load_in_4bit=True,
-    bnb_4bit_quant_type="nf4",
-    bnb_4bit_compute_dtype=torch.float16,
-)
-base_model = AutoModelForCausalLM.from_pretrained(
-    "mistralai/Mistral-7B-v0.3",
-    quantization_config=bnb_config,
-    device_map="auto",
-)
-model = PeftModel.from_pretrained(base_model, "Primeinvincible/mistral-medqa-lora-v3")
-model.eval()
-```
-
----
-
-## 💡 Key Design Decisions
-
-**Why abstention over accuracy maximization?**
-In medical AI, a confident wrong answer is worse than no answer. A model that
-abstains on uncertain cases is safer than one that always answers.
-
-**Why max-prob over entropy?**
-After fine-tuning, the model's distributions become sharper — max-prob is a more
-reliable signal than entropy for this model at this operating point.
-
-**Why early stopping?**
-Previous experiments showed overfitting after 2+ epochs. Early stopping with
-patience=3 automatically stops when validation loss stops improving.
-
-**Why QLoRA?**
-Quantizing the base model to 4-bit while training only LoRA adapters
-(~0.09% of total parameters) makes 7B model fine-tuning feasible on a single V100.
-
----
-
-## 🔢 Confidence Computation
-
-For each question, we:
-1. Tokenize the prompt ending with `"Answer:"`
-2. Run a forward pass and extract logits at the last token position
-3. Select logits only for the four answer tokens `A`, `B`, `C`, `D`
-4. Apply softmax over those four logits only — not the full vocabulary
-5. Use the maximum probability as the confidence score
-
-This gives a normalized confidence score over answer options only.
-Note: this is **post-hoc confidence thresholding** — the model always
-produces a prediction internally. The abstention decision is an external
-rule applied on top of model probabilities, not a learned refusal behavior.
-
-Prompt format is identical across baseline and fine-tuned evaluation.
-Answer tokens are verified to be single-token continuations before evaluation.
-
----
-
-## 📈 How to Choose a Threshold
-
-| Use Case | Recommended Threshold | Reasoning |
-|----------|-----------------------|-----------|
-| High safety (triage) | 0.70+ | Minimize wrong answers, accept low coverage |
-| Balanced | 0.50 | Best accuracy/coverage tradeoff |
-| High coverage | 0.35 | Answer more questions, accept more errors |
-
----
-
 ## ⚠️ Limitations
 
-- Evaluated on multiple-choice USMLE-style questions only — not open-ended clinical advice
-- Abstention is post-hoc confidence thresholding, not a learned model-level refusal
-- Threshold selection was performed on test-set results — a held-out calibration split would be more rigorous
-- Risk-weighted analysis is preliminary and based on a small manually reviewed sample (n=10)
-- - Confidence intervals computed via bootstrap (n=1000): accuracy and AUROC
-  improvements are directionally positive but CIs overlap — not statistically
-  conclusive on 1,273 examples. Coverage improvement is statistically significant.
-- The model should not be used for real clinical decision-making
+- Multiple-choice USMLE-style questions only — not open-ended clinical advice.
+- Part 1 abstention is post-hoc thresholding; Part 2 is learned but the abstention
+  signal AUROC (0.66–0.69) is moderate, not a near-perfect error detector.
+- Results always quote (coverage, accuracy) together — high accuracy figures come
+  with reduced coverage.
+- Part 1 thresholds were selected on test-set results; a held-out calibration split
+  would be more rigorous.
+- Risk-weighted analysis is preliminary (n=10).
+- Not for real clinical decision-making.
 
----
+## 🗂️ Dataset & Hardware
 
-## 🗂️ Dataset
+**GBaker/MedQA-USMLE-4-options** — 10,178 train / 1,273 test, USMLE Step 1/2/3,
+4-option MC. Train/val 90/10 (seed=42); official test set never used for training
+or early stopping.
 
-**GBaker/MedQA-USMLE-4-options**
-- 10,178 training examples
-- 1,273 test examples
-- Source: USMLE Step 1/2/3 medical licensing exam questions
-- Format: 4-option multiple choice
-
-Train/val split: 90/10 from training set (seed=42).
-Official test set was not used for training or early stopping. Abstention thresholds were selected after inspecting test-set results, so future work should use a separate held-out calibration split for threshold selection.
-
----
-
-## 🖥️ Hardware
-
-- GPU: NVIDIA Tesla V100S-PCIE-32GB
-- Training time: ~1.5 hours (early stopping at epoch 1.4)
-- Inference time: ~4 minutes for full test set (1,273 examples)
-
----
+GPU: NVIDIA Tesla V100-32GB. SFT ~1.5h; warm-start ~45 min; DPO v3 full run
+~10h (dense eval every 10 steps).
 
 ## 🔗 Model on HuggingFace
 
 [Primeinvincible/mistral-medqa-lora-v3](https://huggingface.co/Primeinvincible/mistral-medqa-lora-v3)
-
----
+(SFT adapter; DPO adapters maintained as local checkpoints)
 
 ## 👤 Author
 
-Master's student specializing in NLP/LLM safety and production deployment.
-Part of a portfolio focused on making LLM systems reliable for real-world use.
+Master's student specializing in NLP/LLM safety and production deployment. Part of
+a portfolio focused on making LLM systems reliable for real-world use.
