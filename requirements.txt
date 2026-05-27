@@ -1,0 +1,27 @@
+# Core ML stack
+torch==2.3.1
+transformers==4.46.3
+tokenizers==0.20.3
+accelerate==0.34.2
+peft==0.19.1
+trl==0.12.2
+
+# Quantization / GPU fine-tuning
+bitsandbytes==0.43.3
+triton==2.3.1
+
+# Data / evaluation
+datasets
+numpy==1.26.4
+pandas
+scikit-learn
+scipy
+
+# Tokenization / model loading
+sentencepiece
+protobuf
+
+# Plotting / utilities
+matplotlib
+tqdm
+huggingface_hub
