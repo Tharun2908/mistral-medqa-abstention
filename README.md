@@ -213,6 +213,49 @@ curves — the learned 5-way abstention reaches a low-coverage/high-accuracy reg
 - **Honest tradeoff:** pushing natural coverage 32% → 55% cost ~0.03 P(E) AUROC.
   Named, not hidden.
 
+---
+
+## Smoke Test
+
+To verify the environment and model-loading stack before running full evaluation:
+
+```bash
+python - <<'PY'
+import torch
+import transformers
+import peft
+import bitsandbytes as bnb
+import datasets
+import sklearn
+
+print("torch:", torch.__version__)
+print("cuda available:", torch.cuda.is_available())
+print("transformers:", transformers.__version__)
+print("peft:", peft.__version__)
+print("bitsandbytes:", bnb.__version__)
+print("datasets:", datasets.__version__)
+print("sklearn:", sklearn.__version__)
+
+if torch.cuda.is_available():
+    print("gpu:", torch.cuda.get_device_name(0))
+    x = torch.randn(1024, 1024, device="cuda", dtype=torch.float16)
+    q, state = bnb.functional.quantize_4bit(x, quant_type="nf4")
+    print("bitsandbytes 4-bit works:", q.device)
+PY
+```
+
+For a faster evaluation sanity check:
+
+```bash
+DPO_ADAPTER=./mistral-medqa-dpo-v3/checkpoint-540/policy \
+TOKENIZER_PATH=./mistral-medqa-dpo-v3-final \
+python dpo_eval_full.py --limit 20
+```
+
+The full 1,273-example evaluation can be run after the smoke test passes.
+
+---
+
 ## Run the DPO models
 
 ```bash
