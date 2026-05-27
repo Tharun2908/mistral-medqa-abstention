@@ -1,0 +1,83 @@
+{
+  "n_test": 1273,
+  "natural_operating_point": {
+    "coverage": 0.3534956794972506,
+    "abstain_rate": 0.6465043205027494,
+    "answered_accuracy": 0.7511111111111111,
+    "dataset_wrong_rate": 0.08798114689709348
+  },
+  "auroc_confidence": 0.699958702867129,
+  "n_dropped_nonfinite": 0,
+  "pe_diagnostic": {
+    "mean_pe_on_wouldbe_correct": 0.37657333742160115,
+    "mean_pe_on_wouldbe_wrong": 0.41788640215148437,
+    "max_pe": 0.6315413117408752,
+    "auroc_pe_as_wrongness_detector": 0.6111245410730204
+  },
+  "pe_soft_abstention_sweep": [
+    {
+      "pe_threshold": 0.4104,
+      "coverage": 0.5003927729772192,
+      "answered_accuracy": 0.6342229199372057
+    },
+    {
+      "pe_threshold": 0.4201,
+      "coverage": 0.5498821681068342,
+      "answered_accuracy": 0.6228571428571429
+    },
+    {
+      "pe_threshold": 0.4313,
+      "coverage": 0.5993715632364494,
+      "answered_accuracy": 0.6146788990825688
+    },
+    {
+      "pe_threshold": 0.4404,
+      "coverage": 0.6496465043205027,
+      "answered_accuracy": 0.6070133010882709
+    },
+    {
+      "pe_threshold": 0.45,
+      "coverage": 0.6999214454045561,
+      "answered_accuracy": 0.5993265993265994
+    },
+    {
+      "pe_threshold": 0.4587,
+      "coverage": 0.7501963864886095,
+      "answered_accuracy": 0.5863874345549738
+    },
+    {
+      "pe_threshold": 0.4721,
+      "coverage": 0.7996857816182247,
+      "answered_accuracy": 0.5864440078585462
+    },
+    {
+      "pe_threshold": 0.4839,
+      "coverage": 0.8491751767478397,
+      "answered_accuracy": 0.5837187789084182
+    },
+    {
+      "pe_threshold": 0.501,
+      "coverage": 0.8994501178318932,
+      "answered_accuracy": 0.5790393013100437
+    },
+    {
+      "pe_threshold": 0.5264,
+      "coverage": 0.9497250589159466,
+      "answered_accuracy": 0.5732009925558312
+    }
+  ],
+  "config": {
+    "base": "mistralai/Mistral-7B-v0.3",
+    "tokenizer": "./mistral-medqa-dpo-v3-final",
+    "adapter": "./mistral-medqa-dpo-v3/checkpoint-130/policy",
+    "dataset": "GBaker/MedQA-USMLE-4-options",
+    "scoring": "mean_completion_logprob",
+    "completions": {
+      "A": " The answer is A.",
+      "B": " The answer is B.",
+      "C": " The answer is C.",
+      "D": " The answer is D.",
+      "E": " I cannot answer confidently."
+    }
+  }
+}
