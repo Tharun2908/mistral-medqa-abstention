@@ -21,6 +21,19 @@ covers two complementary approaches to abstention:
 
 ---
 
+## 30-second summary
+
+- Fine-tuned **Mistral-7B** on MedQA-USMLE using **QLoRA**.
+- Built a selective-prediction system to reduce confident wrong medical answers.
+- Compared two abstention approaches:
+  - **Post-hoc confidence thresholding** using answer probabilities.
+  - **Learned abstention** using warm-start SFT + DPO.
+- Diagnosed a failed DPO run where the model never abstained, then fixed it with warm-start SFT and better DPO design.
+- Final balanced learned-abstention model answers **55.3%** of questions with **69.3% answered accuracy**, reducing dataset-level wrong answers from about **48% to 17%**.
+- Safety-first DPO model answers **31.6%** of questions with **77.4% answered accuracy**, reducing dataset-level wrong answers to **7.2%**.
+
+---
+
 ## 🎯 Problem
 
 Standard fine-tuning optimizes for accuracy but can leave models **overconfident in
