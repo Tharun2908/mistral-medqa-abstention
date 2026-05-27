@@ -314,6 +314,30 @@ GPU: NVIDIA Tesla V100-32GB. SFT ~1.5h; warm-start ~45 min; DPO v3 full run
 [Primeinvincible/mistral-medqa-lora-v3](https://huggingface.co/Primeinvincible/mistral-medqa-lora-v3)
 (SFT adapter; DPO adapters maintained as local checkpoints)
 
+## Model Checkpoints
+
+The original SFT adapter is available on Hugging Face:
+
+[Primeinvincible/mistral-medqa-lora-v3](https://huggingface.co/Primeinvincible/mistral-medqa-lora-v3)
+
+The warm-start and DPO adapters are not stored directly in this GitHub repository because they are model checkpoint artifacts. The repository instead includes:
+
+- training and evaluation scripts
+- final evaluation JSONs
+- checkpoint tradeoff summaries
+- selective-prediction figure
+- full methodology and metrics
+
+The selected DPO checkpoints are:
+
+| Checkpoint | Role |
+|---|---|
+| `mistral-medqa-dpo-v3/checkpoint-540/policy` | balanced learned-abstention model |
+| `mistral-medqa-dpo-v2-final/policy` | safety-first model |
+| `mistral-medqa-dpo-v3/checkpoint-190/policy` | alternate safety checkpoint |
+
+These adapters can be uploaded to Hugging Face separately if needed.
+
 ## 👤 Author
 
 Master's student specializing in NLP/LLM safety and production deployment. Part of
