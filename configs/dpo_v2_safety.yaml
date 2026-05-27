@@ -1,0 +1,24 @@
+experiment: dpo_v2_safety_learned_abstention
+
+base_model: mistralai/Mistral-7B-v0.3
+sft_adapter: Primeinvincible/mistral-medqa-lora-v3
+warmstart_adapter: mistral-medqa-warmstart/policy
+selected_adapter: mistral-medqa-dpo-v2-final/policy
+
+training:
+  method: warm_start_sft_plus_dpo
+  beta: 0.05
+  pair_ratio: "abstain-favoring"
+  objective: safety_first_abstention
+
+evaluation:
+  scoring: full_sentence_completion_logprob
+  abstention_score: P(E)
+
+final_result:
+  coverage: 0.316
+  answered_accuracy: 0.774
+  dataset_wrong_rate: 0.072
+  p_e_auroc: 0.694
+
+role: safety_first_model

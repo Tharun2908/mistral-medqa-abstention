@@ -1,0 +1,56 @@
+experiment: dpo_v3_balanced_learned_abstention
+
+base_model: mistralai/Mistral-7B-v0.3
+sft_adapter: Primeinvincible/mistral-medqa-lora-v3
+warmstart_adapter: mistral-medqa-warmstart/policy
+selected_adapter: mistral-medqa-dpo-v3/checkpoint-540/policy
+
+dataset:
+  name: GBaker/MedQA-USMLE-4-options
+  train_examples: 10178
+  test_examples: 1273
+  task: four_option_medical_qa
+
+training:
+  method: warm_start_sft_plus_dpo
+  quantization: 4bit_nf4
+  lora_rank: 16
+  lora_alpha: 32
+  target_modules:
+    - q_proj
+    - v_proj
+
+dpo_v3:
+  beta: 0.1
+  learning_rate: 8e-6
+  warmup_ratio: 0.15
+  pair_ratio: "1:1 abstain:answer"
+  max_length: 1024
+  max_prompt_length: 960
+  checkpoint_selection: checkpoint_sweep
+  selected_checkpoint: checkpoint-540
+
+evaluation:
+  scoring: full_sentence_completion_logprob
+  answer_completions:
+    - " The answer is A."
+    - " The answer is B."
+    - " The answer is C."
+    - " The answer is D."
+  abstention_completion: " I cannot answer confidently."
+  metrics:
+    - coverage
+    - answered_accuracy
+    - dataset_wrong_rate
+    - p_e_auroc
+
+final_result:
+  coverage: 0.553
+  answered_accuracy: 0.693
+  dataset_wrong_rate: 0.170
+  p_e_auroc: 0.660
+
+notes:
+  - "Model weights are not stored in GitHub."
+  - "DPO adapters were trained on a university GPU cluster."
+  - "This is a research prototype, not clinical software."
