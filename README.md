@@ -427,6 +427,9 @@ SFT        : early stopping (patience=3) on MedQA-USMLE
 Warm-start : short SFT pass introducing the abstain completion
 DPO        : warm-started policy + frozen warm-started reference,
              beta 0.05–0.10, full-sentence A/B/C/D/E completions
+GRPO v4    : merged warm-start (bf16, in-memory) + fresh LoRA,
+             pure RLVR (beta=0), reward (+1.0 correct / +0.3 abstain
+             / -2.0 wrong / -2.2 malformed), G=4 on H200
 Dataset    : GBaker/MedQA-USMLE-4-options (10,178 train / 1,273 test)
 ```
 
@@ -467,7 +470,22 @@ mistral-medqa-abstention/
 │       ├── train_dpo_v3.py
 │       ├── dpo_eval_full.py
 │       ├── eval_checkpoints.py
-│       └── plot_selective_prediction.py
+│       ├── plot_selective_prediction.py
+│       ├── grpo_v4_full.py
+│       ├── reward_fn.py
+│       ├── test_reward_fn.py
+│       ├── eval_grpo_v4_2_sweep.py
+│       └── sanity_merged_warmstart.py
+│
+├── grpo_v4_artifacts/
+│   ├── grpo_v4_FAILED_checkpoint_tradeoff.json
+│   ├── grpo_v4_1_checkpoint_tradeoff.json
+│   ├── grpo_v4_2_checkpoint_tradeoff.json
+│   ├── grpo_v4_2_train_metrics.json
+│   └── grpo_v4_2_eval/
+│       ├── results_checkpoint-25.json
+│       ├── ... (one per checkpoint)
+│       └── results_final.json
 │
 └── results/
     ├── phase1_sft_posthoc/
@@ -506,6 +524,10 @@ mistral-medqa-abstention/
 - Part 1 thresholds were selected on test-set results; a held-out calibration split
   would be more rigorous.
 - Risk-weighted analysis is preliminary (n=10).
+- **Part 3 (GRPO v4.2) is a methods-comparison negative result, not a production
+  model.** The trajectory plateaued at P(E) AUROC 0.41 and does not match DPO's
+  selective-prediction quality on this task. Its value is in the comparison, not
+  the standalone model.
 - Not for real clinical decision-making.
 
 ## 🗂️ Dataset & Hardware
@@ -514,8 +536,16 @@ mistral-medqa-abstention/
 4-option MC. Train/val 90/10 (seed=42); official test set never used for training
 or early stopping.
 
-GPU: NVIDIA Tesla V100-32GB. SFT ~1.5h; warm-start ~45 min; DPO v3 full run
-~10h (dense eval every 10 steps).
+GPUs used across the project:
+- **SFT, warm-start, DPO v2/v3:** NVIDIA Tesla V100-32GB. SFT ~1.5h; warm-start
+  ~45 min; DPO v3 full run ~10h (dense eval every 10 steps).
+- **GRPO v4, v4.1:** NVIDIA A100-40GB. Each run ~13–25 min for 270–540 steps at G=2.
+- **GRPO v4.2:** NVIDIA H200-143GB. ~9 min for 270 steps at G=4; eval sweep ~25 min.
+
+Cross-hardware note recorded for honesty: V100 used fp16 paths; A100/H200 used
+bf16. The frozen DPO v2/v3 result rows were produced on the V100 stack; GRPO v4
+rows were produced on A100/H200. Eval invariance (same `dpo_eval_full.py` against
+the same 1,273-example test set) preserves the comparison.
 
 ## 🔗 Model on HuggingFace
 
