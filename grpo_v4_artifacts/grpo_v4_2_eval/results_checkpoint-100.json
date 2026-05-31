@@ -1,0 +1,83 @@
+{
+  "n_test": 1273,
+  "natural_operating_point": {
+    "coverage": 0.9041633935585232,
+    "abstain_rate": 0.09583660644147683,
+    "answered_accuracy": 0.579496090356212,
+    "dataset_wrong_rate": 0.38020424194815394
+  },
+  "auroc_confidence": 0.7019809284542876,
+  "n_dropped_nonfinite": 0,
+  "pe_diagnostic": {
+    "mean_pe_on_wouldbe_correct": 0.2934736091648901,
+    "mean_pe_on_wouldbe_wrong": 0.2834022032674597,
+    "max_pe": 0.37729957699775696,
+    "auroc_pe_as_wrongness_detector": 0.3919760932741148
+  },
+  "pe_soft_abstention_sweep": [
+    {
+      "pe_threshold": 0.2872,
+      "coverage": 0.5003927729772192,
+      "answered_accuracy": 0.46153846153846156
+    },
+    {
+      "pe_threshold": 0.2917,
+      "coverage": 0.5498821681068342,
+      "answered_accuracy": 0.46714285714285714
+    },
+    {
+      "pe_threshold": 0.2959,
+      "coverage": 0.5993715632364494,
+      "answered_accuracy": 0.48230668414154654
+    },
+    {
+      "pe_threshold": 0.2993,
+      "coverage": 0.6496465043205027,
+      "answered_accuracy": 0.4921402660217654
+    },
+    {
+      "pe_threshold": 0.3035,
+      "coverage": 0.6999214454045561,
+      "answered_accuracy": 0.5039281705948373
+    },
+    {
+      "pe_threshold": 0.3088,
+      "coverage": 0.7494108405341713,
+      "answered_accuracy": 0.5167714884696016
+    },
+    {
+      "pe_threshold": 0.3135,
+      "coverage": 0.7996857816182247,
+      "answered_accuracy": 0.5265225933202358
+    },
+    {
+      "pe_threshold": 0.3193,
+      "coverage": 0.8491751767478397,
+      "answered_accuracy": 0.5337650323774283
+    },
+    {
+      "pe_threshold": 0.3272,
+      "coverage": 0.8994501178318932,
+      "answered_accuracy": 0.537117903930131
+    },
+    {
+      "pe_threshold": 0.3369,
+      "coverage": 0.9497250589159466,
+      "answered_accuracy": 0.5417700578990902
+    }
+  ],
+  "config": {
+    "base": "mistralai/Mistral-7B-v0.3",
+    "tokenizer": "./mistral-medqa-dpo-final",
+    "adapter": "./mistral-medqa-dpo-final/policy",
+    "dataset": "GBaker/MedQA-USMLE-4-options",
+    "scoring": "mean_completion_logprob",
+    "completions": {
+      "A": " The answer is A.",
+      "B": " The answer is B.",
+      "C": " The answer is C.",
+      "D": " The answer is D.",
+      "E": " I cannot answer confidently."
+    }
+  }
+}
