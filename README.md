@@ -7,17 +7,21 @@
 
 A safety-focused project that teaches Mistral-7B to **abstain when uncertain** on
 medical multiple-choice questions, cutting high-confidence errors. The project
-covers two complementary approaches to abstention:
+compares three approaches to abstention:
 
 1. **Post-hoc selective prediction** — an external confidence threshold suppresses
    low-confidence answers (no retraining for the abstention itself).
 2. **Learned abstention (DPO)** — the model is *trained* to prefer abstaining over
    giving a confident wrong answer, producing a directed abstention signal that
    reaches operating points post-hoc thresholding cannot.
+3. **Verifiable-reward RL (GRPO/RLVR)** — the reward function directly encodes the
+   answer key and abstention cost matrix, testing whether outcome-only rewards can
+   learn the same selective-prediction behavior.
 
 > The progression is the point: post-hoc thresholding establishes a strong
 > selective-prediction baseline; DPO then trains the abstention behavior into the
-> model itself, and the two are compared on the same coverage/accuracy axes.
+> model itself; GRPO tests whether verifiable rewards alone can recover the same
+> behavior. All methods are compared on the same coverage/accuracy axes.
 
 ---
 
@@ -25,12 +29,14 @@ covers two complementary approaches to abstention:
 
 - Fine-tuned **Mistral-7B** on MedQA-USMLE using **QLoRA**.
 - Built a selective-prediction system to reduce confident wrong medical answers.
-- Compared two abstention approaches:
+- Compared three abstention approaches:
   - **Post-hoc confidence thresholding** using answer probabilities.
   - **Learned abstention** using warm-start SFT + DPO.
+  - **Verifiable-reward RL** using GRPO/RLVR with answer-key rewards.
 - Diagnosed a failed DPO run where the model never abstained, then fixed it with warm-start SFT and better DPO design.
 - Final balanced learned-abstention model answers **55.3%** of questions with **69.3% answered accuracy**, reducing dataset-level wrong answers from about **48% to 17%**.
 - Safety-first DPO model answers **31.6%** of questions with **77.4% answered accuracy**, reducing dataset-level wrong answers to **7.2%**.
+- Tested verifiable-reward RL (GRPO) as a third method: coverage **0.91**, P(E) AUROC **0.41** — significantly below DPO. The negative result reveals a structural asymmetry between preference learning and verifiable-reward learning on selective-prediction tasks.
 
 ---
 
@@ -38,9 +44,10 @@ covers two complementary approaches to abstention:
 
 Standard fine-tuning optimizes for accuracy but can leave models **overconfident in
 wrong answers**. In medical AI, a confident wrong answer is more dangerous than no
-answer at all. This project reduces confident-wrong answers two ways — a tunable
-post-hoc threshold, and a trained (learned) refusal behavior — and quantifies the
-coverage/accuracy tradeoff for each.
+answer at all. This project compares three routes to reducing confident-wrong answers — a tunable
+post-hoc threshold, a trained preference-based refusal behavior, and a
+verifiable-reward RL attempt — and quantifies the coverage/accuracy tradeoff for
+each.
 
 Throughout, results are reported as a **(coverage, accuracy) pair**, never accuracy
 alone: a model that answers fewer questions more accurately is the entire design
@@ -167,18 +174,20 @@ answer-favoring (1:2) pairs whose net gradient pushed abstain *down*. The fix
 addressed all three: a warm-start SFT pass to give the abstain string real mass,
 a warm-started (not abstain-averse) DPO reference, and abstain-favoring pairs.
 
-## Final models (full 1,273-example test set)
+## Final models and methods comparison (full 1,273-example test set)
 
-| Model | Coverage | Answered Acc | Dataset Wrong | P(E) AUROC | Role |
-|-------|----------|--------------|---------------|------------|------|
-| SFT baseline | ~100% | 52.2% | ~48% | — | answers everything |
-| **DPO v2** | 31.6% | 77.4% | **7.2%** | **0.694** | safety-first |
-| **DPO v3 (ckpt-540)** | **55.3%** | 69.3% | 17.0% | 0.660 | balanced (headline) |
-| DPO v3 (ckpt-190) | 32.9% | 76.1% | 7.9% | 0.663 | alt safety point |
+| Model | Method | Coverage | Answered Acc | Dataset Wrong | P(E) AUROC | Role |
+|-------|--------|----------|--------------|---------------|------------|------|
+| SFT baseline | — | 1.000 | 0.522 | 0.478 | — | answers everything |
+| SFT + threshold | post-hoc | 0.458 | 0.703 | 0.136 | 0.707 | post-hoc selective-prediction baseline |
+| **DPO v2** | **preference RL** | 0.316 | 0.774 | **0.072** | **0.694** | safety-first |
+| **DPO v3 (ckpt-540)** | **preference RL** | **0.553** | 0.693 | 0.170 | 0.660 | balanced (headline) |
+| **GRPO v4.2 (final)** | **verifiable-reward RL** | 0.912 | 0.577 | 0.386 | 0.408 | methods-comparison (negative result) |
+| DPO v3 (ckpt-190) | preference RL | 0.329 | 0.761 | 0.079 | 0.663 | alt safety point |
 
 **Headline framing:** v2 and v3 are two points on one coverage/directedness
 tradeoff. v3 moves the *natural* operating point from 32% → 55% coverage at a small
-calibration cost (P(E) AUROC 0.694 → 0.660). Both models expose a directed P(E) score that can be thresholded to choose operating points along the coverage/safety curve.
+calibration cost (P(E) AUROC 0.694 → 0.660). Both models expose a directed P(E) score that can be thresholded to choose operating points along the coverage/safety curve. The GRPO row is included as a methods-comparison negative result; Part 3 explains why it learns an aggregate abstention rate but not a useful per-example abstention signal.
 
 ## The result, in one figure
 
@@ -211,6 +220,94 @@ curves — the learned 5-way abstention reaches a low-coverage/high-accuracy reg
   operating point be selected from the full coverage/AUROC trajectory post-hoc.
 - **Honest tradeoff:** pushing natural coverage 32% → 55% cost ~0.03 P(E) AUROC.
   Named, not hidden.
+
+---
+
+# Part 3 — Verifiable-Reward RL (GRPO v4): A Negative Result
+
+Part 2 trained learned abstention from offline preference pairs. Part 3 asks the
+cleaner question: can the same selective-prediction behavior be learned from
+verifiable rewards alone — the answer key, a cost matrix, and nothing else — using
+GRPO/RLVR?
+
+The motivation for the question is methodological. DPO's preference pairs were
+constructed using SFT confidence: when SFT was confidently wrong, we made
+abstention the chosen completion. That choice — encoding when to abstain into the
+training data — is a powerful supervisory signal, but it is also an indirect way
+to specify the cost function. GRPO with verifiable rewards lets the cost asymmetry
+(confident-wrong vs abstain) be stated directly in the reward function. The
+hypothesis: same behavior, less data-engineering indirection.
+
+The result, after a full experimental progression: GRPO/RLVR did not learn
+directed abstention on this task, and the failure is structural, not
+infrastructural.
+
+## The experimental progression
+
+| Stage | Outcome | What it taught |
+|-------|---------|----------------|
+| **v4** (reward +1/+0.1/-1, A100, G=2) | Collapsed to coverage=1.0 — always answer | Reward shape with insufficient asymmetry made "always answer" positive-EV at SFT accuracy ~52%, dominating the +0.10 abstain reward |
+| **v4.1** (reward +1/+0.3/-2, A100, G=2) | Coverage 0.88, but P(E) AUROC stuck at 0.39 | EV-corrected reward prevents collapse but plateaus on directionality — abstention rate emerges, abstention selectivity does not |
+| **v4.2** (reward +1/+0.3/-2, H200, G=4) | Coverage 0.91, P(E) AUROC 0.41 | Removing the G=2 group-collapse bottleneck via H200/G=4 produces richer per-prompt signal during training but the same plateau in eval — confirms G=2 was not the bottleneck |
+
+## Root-cause diagnosis
+
+P(E) AUROC measures whether abstention is directionally informative about
+wrongness — high AUROC requires the model to be more uncertain on the cases it
+gets wrong. This is fundamentally a per-example calibration property. The GRPO
+reward function provides only outcome signal (was this answer correct?), not
+uncertainty signal (was this question hard?). The policy can learn the aggregate
+abstention rate that matches the EV-optimal cost ratio, but cannot learn the
+conditional "abstain on this question" behavior from outcome reward alone.
+
+DPO had a structural advantage GRPO cannot recover via reward shaping or group
+size: its preference pairs used SFT confidence as the abstention teaching signal,
+supervisedly informing the model which examples deserve abstention. GRPO has no
+equivalent per-example signal.
+
+## Results on the full 1,273-example test set
+
+| Model | Method | Coverage | Answered Acc | Dataset Wrong | P(E) AUROC |
+|-------|--------|----------|--------------|---------------|------------|
+| SFT baseline | — | 1.000 | 0.522 | 0.478 | — |
+| SFT + threshold | post-hoc | 0.458 | 0.703 | 0.136 | 0.707 |
+| DPO v2 | preference RL | 0.316 | 0.774 | 0.072 | 0.694 |
+| DPO v3 (ckpt-540) | preference RL | 0.553 | 0.693 | 0.170 | 0.660 |
+| **GRPO v4.2 (final)** | **verifiable-reward RL** | 0.912 | 0.577 | 0.386 | 0.408 |
+
+GRPO v4.2 is a marginal improvement over the SFT baseline: the policy abstains
+about 9% of the time and accuracy on answered questions rises from 52% to 58%.
+However, it is dominated by every abstention-aware method on every metric that
+matters.
+
+## What this means
+
+The interview-ready interpretation: in this short MCQA setting, outcome-only
+GRPO/RLVR did not learn calibrated selective prediction, because the reward
+provides correctness feedback but not per-example uncertainty feedback. The
+asymmetry between preference learning and verifiable-reward learning is not about
+cost specification (where verifiable-reward is cleaner) but about teaching signal
+density. Preference pairs can encode per-example confidence; verifiable rewards
+cannot, unless the reward itself uses a confidence signal — at which point the
+method stops being pure RLVR.
+
+This is a more interesting finding than a clean win would have been. A clean GRPO
+success would have shown that two paths reach the same destination; the negative
+result shows when each path is the right one. For MedQA selective abstention,
+preference learning's data-encoded targets dominated. For tasks where the reward
+signal is itself confidence-rich (think multi-step reasoning with intermediate
+verifiability), the opposite would likely hold.
+
+## Future work
+
+- **Augmented reward.** Inject SFT confidence into the reward function (larger
+  bonus for correctness when SFT was uncertain; larger penalty for wrongness when
+  SFT was confident). This would likely close the P(E) AUROC gap but is no longer
+  pure RLVR.
+- **Tasks with denser per-example reward.** Multi-step reasoning chains where
+  intermediate steps are independently verifiable should favor GRPO over DPO —
+  the opposite of the result here.
+
 
 ---
 
@@ -301,6 +398,7 @@ python scripts/phase2_learned_abstention/plot_selective_prediction.py
 - Selective prediction (accuracy–coverage tradeoff)
 - **Direct Preference Optimization (DPO) for learned abstention**
 - **Warm-start SFT to introduce a behavior before preference optimization**
+- **Verifiable-reward RL (GRPO/RLVR) as a methods-comparison negative result**
 - Confidence calibration (ECE, MCE), max-prob vs entropy abstention
 - AUROC error detection, bootstrap confidence intervals
 - Root-cause debugging of a failed training run + targeted fixes
@@ -314,7 +412,8 @@ python scripts/phase2_learned_abstention/plot_selective_prediction.py
   answer-favoring pairs) and fixed all three causes
 - Full-sentence completion scoring eval with a directed P(E) abstention signal
 - Live per-type training monitor + dense checkpointing for post-hoc model selection
-- Reproducible JSON outputs and a coverage/accuracy figure across all models
+- Reproducible JSON outputs and a coverage/accuracy figure across SFT/DPO models
+- GRPO v4 progression on A100/H200, showing that richer group signal improved training diversity but did not solve per-example abstention selectivity
 
 ---
 
@@ -322,7 +421,7 @@ python scripts/phase2_learned_abstention/plot_selective_prediction.py
 
 ```
 Base Model : mistralai/Mistral-7B-v0.3
-Method     : QLoRA (4-bit) + DPO
+Method     : QLoRA (4-bit) + DPO + GRPO/RLVR comparison
 LoRA       : r=16, alpha=32, targets q_proj/v_proj
 SFT        : early stopping (patience=3) on MedQA-USMLE
 Warm-start : short SFT pass introducing the abstain completion
