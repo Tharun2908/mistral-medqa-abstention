@@ -49,7 +49,7 @@ print("Model loaded!")
 def format_prompt(example):
     """
     Format prompt — must match training format exactly.
-    Options ordered A→B→C→D, no trailing space after 'Answer:'.
+    Options ordered A->B->C->D, no trailing space after 'Answer:'.
     """
     options_str = "\n".join([f"{k}: {example['options'][k]}" for k in ["A", "B", "C", "D"]])
     return f"Question: {example['question']}\n\nOptions:\n{options_str}\n\nAnswer:"
@@ -75,7 +75,7 @@ def get_answer_token_ids(tokenizer, sample_prompt):
             )
         answer_token_ids[opt] = continuation_ids[0]
 
-    print("All options are single-token continuations. ✓\n")
+    print("All options are single-token continuations. \n")
     return answer_token_ids
 
 # ── 6. Predict Answer with Confidence ─────────────────────────────────────────
@@ -104,7 +104,7 @@ def predict_answer(model, tokenizer, prompt, answer_token_ids, debug=False):
     all_probs = {opt: option_probs[i].item() for i, opt in enumerate(option_order)}
 
     if debug:
-        print(f"  All probs → A: {all_probs['A']:.3f} | B: {all_probs['B']:.3f} | "
+        print(f"  All probs -> A: {all_probs['A']:.3f} | B: {all_probs['B']:.3f} | "
               f"C: {all_probs['C']:.3f} | D: {all_probs['D']:.3f}")
         print(f"  Predicted: {best_answer} (confidence: {confidence:.3f})")
 
@@ -144,7 +144,7 @@ for i, example in enumerate(tqdm(dataset, desc="Evaluating fine-tuned model")):
     correct += int(is_correct)
 
     if DEBUG:
-        status = "✓ CORRECT" if is_correct else "✗ WRONG"
+        status = " CORRECT" if is_correct else " WRONG"
         print(f"  Result   : {status}")
 
     results.append({

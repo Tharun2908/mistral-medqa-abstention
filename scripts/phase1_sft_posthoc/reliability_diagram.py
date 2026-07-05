@@ -6,11 +6,11 @@ Measures confidence calibration — how well model confidence aligns with accura
 
 ECE (Expected Calibration Error):
   Weighted average gap between confidence and accuracy across bins.
-  ECE = 0   → perfectly calibrated
-  ECE high  → poorly calibrated (overconfident or underconfident)
+  ECE = 0   -> perfectly calibrated
+  ECE high  -> poorly calibrated (overconfident or underconfident)
 
 A well-calibrated model follows y=x diagonal:
-  "When model says 70% confident → correct ~70% of the time"
+  "When model says 70% confident -> correct ~70% of the time"
 
 Input  : baseline_results.json, finetuned_results.json
 Output : reliability_results.json
@@ -162,11 +162,11 @@ print(f"  {'Fine-tuned':<20} {finetuned_ece:>8.4f} {finetuned_mce:>8.4f} "
 
 ece_diff = baseline_ece - finetuned_ece
 if ece_diff > 0:
-    print(f"\n  ✅ Fine-tuning reduced ECE by {ece_diff:.4f} points "
-          f"({baseline_ece:.4f} → {finetuned_ece:.4f})")
+    print(f"\n Fine-tuning reduced ECE by {ece_diff:.4f} points "
+          f"({baseline_ece:.4f} -> {finetuned_ece:.4f})")
 else:
-    print(f"\n  ⚠️  Fine-tuning increased ECE by {abs(ece_diff):.4f} points "
-          f"({baseline_ece:.4f} → {finetuned_ece:.4f})")
+    print(f"\n Fine-tuning increased ECE by {abs(ece_diff):.4f} points "
+          f"({baseline_ece:.4f} -> {finetuned_ece:.4f})")
 
 # ── 5. ASCII Reliability Diagram ───────────────────────────────────────────────
 def ascii_reliability_diagram(bins, title):

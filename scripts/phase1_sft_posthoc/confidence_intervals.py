@@ -6,7 +6,7 @@ Compute bootstrap confidence intervals for key metrics.
 Bootstrap method:
   - Resample test set 1000 times with replacement
   - Compute metric each time
-  - Take 2.5th and 97.5th percentile → 95% CI
+  - Take 2.5th and 97.5th percentile -> 95% CI
 
 Metrics:
   - Overall accuracy (baseline vs fine-tuned)
@@ -42,7 +42,7 @@ def bootstrap_ci(predictions, metric_fn, n_bootstrap=1000, ci=95, seed=42):
     Compute bootstrap confidence interval for a metric.
 
     predictions : list of prediction dicts
-    metric_fn   : function that takes predictions → scalar metric
+    metric_fn   : function that takes predictions -> scalar metric
     n_bootstrap : number of bootstrap samples
     ci          : confidence level (95 = 95% CI)
     """
@@ -135,7 +135,7 @@ for name, fn in metrics:
 
     # Check overlap
     overlap = bl_low <= ft_high and ft_low <= bl_high
-    overlap_str = "Yes ⚠️" if overlap else "No ✅"
+    overlap_str = "Yes " if overlap else "No "
 
     print(f"\r  {name:<28} "
           f"{bl_mean*100:>6.2f}% [{bl_low*100:.2f}%, {bl_high*100:.2f}%] "
@@ -163,7 +163,7 @@ for name, data in results.items():
         print(f"    Difference: {diff*100:+.2f}% — CIs overlap, not statistically conclusive")
     else:
         print(f"\n  {name}:")
-        print(f"    Difference: {diff*100:+.2f}% — CIs do NOT overlap, statistically meaningful ✅")
+        print(f" Difference: {diff*100:+.2f}% — CIs do NOT overlap, statistically meaningful ")
 
 # ── 6. Save Results ────────────────────────────────────────────────────────────
 with open("confidence_intervals_results.json", "w") as f:

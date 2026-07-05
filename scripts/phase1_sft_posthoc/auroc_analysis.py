@@ -10,9 +10,9 @@ Setup:
   - Use confidence score as the classifier score
   - Compute AUROC — how well confidence separates correct from wrong
 
-AUROC = 1.0 → perfect error detector
-AUROC = 0.5 → no better than random
-AUROC > 0.7 → useful signal for abstention
+AUROC = 1.0 -> perfect error detector
+AUROC = 0.5 -> no better than random
+AUROC > 0.7 -> useful signal for abstention
 
 Input  : baseline_results.json, finetuned_results.json
 Output : auroc_results.json
@@ -124,9 +124,9 @@ print(f"  {'Fine-tuned':<20} {finetuned_auroc:>8.4f} {interpret_auroc(finetuned_
 
 auroc_diff = finetuned_auroc - baseline_auroc
 if auroc_diff > 0:
-    print(f"\n  ✅ Fine-tuning improved AUROC by {auroc_diff:.4f} points")
+    print(f"\n Fine-tuning improved AUROC by {auroc_diff:.4f} points")
 else:
-    print(f"\n  ⚠️  Fine-tuning did not improve AUROC ({auroc_diff:+.4f} points)")
+    print(f"\n Fine-tuning did not improve AUROC ({auroc_diff:+.4f} points)")
 
 print(f"\n{'='*70}")
 print("CONFIDENCE GAP ANALYSIS")

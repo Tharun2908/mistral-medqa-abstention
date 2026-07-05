@@ -63,8 +63,8 @@ for i, p in enumerate(top_wrong):
     print(f"  Question    : {p['question']}")
     print(f"  Options     :")
     for k, v in p["options"].items():
-        marker = "← CORRECT" if k == p["ground_truth"] else \
-                 "← PREDICTED" if k == p["prediction"] else ""
+        marker = "<- CORRECT" if k == p["ground_truth"] else \
+                 "<- PREDICTED" if k == p["prediction"] else ""
         print(f"    {k}: {v} {marker}")
 
 # ── 5. Print Low-Confidence Examples ──────────────────────────────────────────
@@ -84,8 +84,8 @@ for i, p in enumerate(top_abstained):
     print(f"  Question    : {p['question']}")
     print(f"  Options     :")
     for k, v in p["options"].items():
-        marker = "← CORRECT" if k == p["ground_truth"] else \
-                 "← PREDICTED" if k == p["prediction"] else ""
+        marker = "<- CORRECT" if k == p["ground_truth"] else \
+                 "<- PREDICTED" if k == p["prediction"] else ""
         print(f"    {k}: {v} {marker}")
 
 # ── 6. Summary Stats ───────────────────────────────────────────────────────────

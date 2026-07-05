@@ -83,7 +83,7 @@ for target in target_coverages:
 
     acc_diff   = ft["answered_accuracy"] - bl["answered_accuracy"]
     wrong_diff = ft["wrong_answer_rate"] - bl["wrong_answer_rate"]
-    winner     = "FT ✅" if acc_diff > 0 else "Base ❌"
+    winner = "FT " if acc_diff > 0 else "Base "
 
     print(f"{target*100:>9.0f}% "
           f"{bl['answered_accuracy']*100:>9.2f}% "

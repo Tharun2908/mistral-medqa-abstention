@@ -45,7 +45,7 @@ def format_prompt(example):
     No trailing space — the natural continuation after 'Answer:' is ' A'/' B' etc.
     The space before the answer letter is handled in get_answer_token_ids().
     Must match the format used during fine-tuning exactly.
-    Options explicitly ordered A→B→C→D for deterministic prompt format.
+    Options explicitly ordered A->B->C->D for deterministic prompt format.
     """
     options_str = "\n".join([f"{k}: {example['options'][k]}" for k in ["A", "B", "C", "D"]])
     return f"Question: {example['question']}\n\nOptions:\n{options_str}\n\nAnswer:"
@@ -58,7 +58,7 @@ def get_answer_token_ids(tokenizer, sample_prompt):
 
     We check ' A', ' B', ' C', ' D' (with leading space) because that is
     the natural continuation after 'Answer:' — the tokenizer merges
-    the space with the letter into one token e.g. ' A' → single token.
+    the space with the letter into one token e.g. ' A' -> single token.
     """
     answer_token_ids = {}
     base_ids = tokenizer(sample_prompt, add_special_tokens=False).input_ids
@@ -78,7 +78,7 @@ def get_answer_token_ids(tokenizer, sample_prompt):
             )
         answer_token_ids[opt] = continuation_ids[0]
 
-    print("All options are single-token continuations. ✓\n")
+    print("All options are single-token continuations. \n")
     return answer_token_ids
 
 # ── 4. Predict Answer with Confidence ─────────────────────────────────────────
@@ -97,7 +97,7 @@ def predict_answer(model, tokenizer, prompt, answer_token_ids, debug=False):
     with torch.no_grad():
         outputs = model(**inputs)
 
-    # Logits at last token position → shape: [vocab_size]
+    # Logits at last token position -> shape: [vocab_size]
     last_logits = outputs.logits[0, -1, :]
 
     # Extract logits for A, B, C, D — keep everything in tensor form
@@ -108,7 +108,7 @@ def predict_answer(model, tokenizer, prompt, answer_token_ids, debug=False):
     )
     option_logits = last_logits[option_id_tensor]
 
-    # Softmax over 4 options → normalized option probabilities
+    # Softmax over 4 options -> normalized option probabilities
     option_probs = torch.softmax(option_logits, dim=0)
 
     best_idx = torch.argmax(option_probs).item()
@@ -117,7 +117,7 @@ def predict_answer(model, tokenizer, prompt, answer_token_ids, debug=False):
     all_probs = {opt: option_probs[i].item() for i, opt in enumerate(option_order)}
 
     if debug:
-        print(f"  All probs → A: {all_probs['A']:.3f} | B: {all_probs['B']:.3f} | "
+        print(f"  All probs -> A: {all_probs['A']:.3f} | B: {all_probs['B']:.3f} | "
               f"C: {all_probs['C']:.3f} | D: {all_probs['D']:.3f}")
         print(f"  Predicted: {best_answer} (confidence: {confidence:.3f})")
 
@@ -158,7 +158,7 @@ for i, example in enumerate(tqdm(dataset, desc="Evaluating baseline")):
     correct += int(is_correct)
 
     if DEBUG:
-        status = "✓ CORRECT" if is_correct else "✗ WRONG"
+        status = " CORRECT" if is_correct else " WRONG"
         print(f"  Result   : {status}")
 
     results.append({

@@ -88,7 +88,7 @@ def get_answer_token_ids(tokenizer, sample_prompt):
 def format_prompt(question, options):
     """
     Format prompt — identical to training and evaluation format.
-    Options ordered A→B→C→D explicitly.
+    Options ordered A->B->C->D explicitly.
     """
     options_str = "\n".join([f"{k}: {options[k]}" for k in ["A", "B", "C", "D"]])
     return f"Question: {question}\n\nOptions:\n{options_str}\n\nAnswer:"
@@ -114,7 +114,7 @@ def predict(model, tokenizer, prompt, answer_token_ids, threshold):
     )
     option_logits = last_logits[option_id_tensor]
 
-    # Softmax over 4 options → normalized confidence scores
+    # Softmax over 4 options -> normalized confidence scores
     option_probs = torch.softmax(option_logits, dim=0)
 
     best_idx      = torch.argmax(option_probs).item()

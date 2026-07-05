@@ -76,7 +76,7 @@ tokenizer.padding_side = "left"
 print("\nTokenizer sanity check:")
 for label in [" A", " B", " C", " D", " E"]:
     ids = tokenizer.encode(label, add_special_tokens=False)
-    print(f"  '{label}' → {ids} → '{tokenizer.decode(ids)}'")
+    print(f"  '{label}' -> {ids} -> '{tokenizer.decode(ids)}'")
 
 
 # ── 2. Load Base Model in 4-bit ───────────────────────────────────────────────
@@ -366,12 +366,12 @@ else:
 
 if SMOKE_TEST:
     print("\nSmoke test complete! Check for:")
-    print("  ✅ No errors")
-    print("  ✅ eval_loss in logs")
-    print("  ✅ rewards/chosen > rewards/rejected")
-    print("  ✅ rewards/margins positive or increasing")
-    print("  ✅ rewards/accuracies > 0.5")
-    print("\nIf all good → set SMOKE_TEST = False and run full training")
+    print(" No errors")
+    print(" eval_loss in logs")
+    print(" rewards/chosen > rewards/rejected")
+    print(" rewards/margins positive or increasing")
+    print(" rewards/accuracies > 0.5")
+    print("\nIf all good -> set SMOKE_TEST = False and run full training")
 else:
     print("\nFull DPO training complete!")
     print(f"Saved final adapter/tokenizer to: {FINAL_SAVE_DIR}")
