@@ -1,0 +1,53 @@
+{
+  "protocol": "clean_dpo_common_init_margin_dev_v1",
+  "split": "dev",
+  "official_test_used": false,
+  "model": "dpo_common_init_ratio_2to1",
+  "adapter": "results/clean_protocol/learned_abstention/dpo/common_init_ratio_2to1/final/policy",
+  "score_definition": "score(E) - max(score(A), score(B), score(C), score(D))",
+  "selection": {
+    "uses_correctness_labels_for_thresholds": false,
+    "answer_rule": "abstention_margin <= threshold",
+    "test_policy": "apply exact frozen numeric DEV thresholds unchanged to TEST"
+  },
+  "diagnostic": {
+    "would_be_accuracy": 0.5338050314465409,
+    "confidence_wrongness_auroc": 0.6151194470590865,
+    "margin_wrongness_auroc": 0.6665913318614072,
+    "natural_coverage": 0.5613207547169812
+  },
+  "operating_points": {
+    "0.3": {
+      "target_coverage": 0.3,
+      "threshold": -0.48193944431841373,
+      "actual_coverage": 0.300314465408805,
+      "answered_accuracy": 0.725130890052356,
+      "dataset_wrong_rate": 0.08254716981132075,
+      "utility": 0.26257861635220126
+    },
+    "0.4": {
+      "target_coverage": 0.4,
+      "threshold": -0.3130703531205654,
+      "actual_coverage": 0.4001572327044025,
+      "answered_accuracy": 0.6777996070726916,
+      "dataset_wrong_rate": 0.1289308176100629,
+      "utility": 0.19331761006289305
+    },
+    "0.5": {
+      "target_coverage": 0.5,
+      "threshold": -0.11612899601459503,
+      "actual_coverage": 0.5,
+      "answered_accuracy": 0.6572327044025157,
+      "dataset_wrong_rate": 0.17138364779874213,
+      "utility": 0.13584905660377355
+    },
+    "0.6": {
+      "target_coverage": 0.6,
+      "threshold": 0.09232663363218307,
+      "actual_coverage": 0.60062893081761,
+      "answered_accuracy": 0.6230366492146597,
+      "dataset_wrong_rate": 0.22641509433962265,
+      "utility": 0.0411949685534591
+    }
+  }
+}

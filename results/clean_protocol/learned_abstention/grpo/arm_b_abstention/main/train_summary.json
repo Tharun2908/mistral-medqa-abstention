@@ -1,0 +1,59 @@
+{
+  "protocol": "clean_symmetric_grpo_v1",
+  "arm": "B",
+  "smoke": false,
+  "common_initialization": "/workspace/mistral-medqa-abstention/results/clean_protocol/learned_abstention/grpo_common_warmstart/main/policy",
+  "train_manifest": "/workspace/mistral-medqa-abstention/results/clean_protocol/learned_abstention/grpo/data/train_2160_seed42.json",
+  "n_train_prompts": 2160,
+  "num_generations": 8,
+  "temperature": 1.0,
+  "max_prompt_length": 384,
+  "max_completion_length": 16,
+  "learning_rate": 3e-06,
+  "beta": 0.0,
+  "per_device_batch": 2,
+  "gradient_accumulation": 4,
+  "effective_prompt_batch": 8,
+  "seed": 42,
+  "reward_diagnostics": {
+    "arm": "B",
+    "reward_map": {
+      "correct": 1.0,
+      "wrong": -1.0,
+      "abstain": 0.0,
+      "malformed": -1.0
+    },
+    "reward_calls": 1080,
+    "completion_counts": {
+      "wrong": 7171,
+      "correct": 9838,
+      "abstain": 153,
+      "malformed": 118
+    },
+    "groups": 2160,
+    "groups_any_abstain": 146,
+    "groups_answer_and_abstain": 146,
+    "groups_all_answer": 1916,
+    "groups_all_abstain": 0,
+    "groups_any_malformed": 112,
+    "zero_reward_variance_groups": 1008,
+    "nonzero_advantage_groups": 1152,
+    "zero_reward_variance_rate": 0.4666666666666667,
+    "nonzero_advantage_rate": 0.5333333333333333,
+    "mean_group_reward_std": 0.42791330161817276
+  },
+  "trainer_metrics": {
+    "train_runtime": 905.2655,
+    "train_samples_per_second": 2.386,
+    "train_steps_per_second": 0.298,
+    "total_flos": 0.0,
+    "train_loss": 1.0313535178149188e-09
+  },
+  "gpu": {
+    "name": "NVIDIA H200",
+    "peak_allocated_gb": 61.62810516357422,
+    "peak_reserved_gb": 94.572265625
+  },
+  "dev_used_for_training": false,
+  "test_used": false
+}

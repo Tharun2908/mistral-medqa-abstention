@@ -1,0 +1,26 @@
+{
+  "protocol": "correct_only_sft_matched_step_v1",
+  "source_dataset": "/workspace/mistral-medqa-abstention/results/clean_protocol/learned_abstention/data/supervised_5way_data.json",
+  "n_train": 4697,
+  "n_val": 522,
+  "target_policy": "keep only supervised-5way A-D examples; train gold A-D",
+  "initial_adapter": "Primeinvincible/mistral-medqa-lora-v3",
+  "learning_rate": 5e-06,
+  "scheduler": "cosine",
+  "scheduler_horizon_steps": 1144,
+  "selected_comparison_step": 1000,
+  "actual_final_step": 1000,
+  "per_device_batch": 4,
+  "gradient_accumulation": 4,
+  "effective_batch": 16,
+  "seed": 42,
+  "evaluation_metrics": {
+    "eval_loss": 0.06774602830410004,
+    "eval_runtime": 64.1553,
+    "eval_samples_per_second": 8.137,
+    "eval_steps_per_second": 2.042,
+    "epoch": 3.4093617021276597
+  },
+  "official_dev_used_for_training": false,
+  "official_test_used": false
+}

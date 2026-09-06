@@ -1,0 +1,128 @@
+{
+  "protocol": "clean_locked_grpo_test_v1",
+  "split": "test",
+  "n_test": 1273,
+  "selection_split": "dev",
+  "threshold_split": "dev",
+  "no_test_tuning": true,
+  "arm_a": {
+    "name": "grpo_arm_a_checkpoint_50",
+    "adapter": "/workspace/mistral-medqa-abstention/results/clean_protocol/learned_abstention/grpo/arm_a_answer_only/main/checkpoints/checkpoint-50",
+    "n_test": 1273,
+    "wouldbe_accuracy": 0.5813040062843676,
+    "confidence_wrongness_auroc": 0.7167562496830789,
+    "margin_wrongness_auroc": 0.6557299325592009,
+    "natural_coverage": 0.9992144540455616,
+    "score_type": "confidence",
+    "operating_points": {
+      "0.3": {
+        "target_dev_coverage": 0.3,
+        "frozen_dev_threshold": 0.4609893518342743,
+        "coverage": 0.26865671641791045,
+        "answered_accuracy": 0.8391812865497076,
+        "dataset_wrong_rate": 0.04320502749410841,
+        "utility": 0.3584446190102121,
+        "n_answered": 342,
+        "n_correct_answered": 287,
+        "n_wrong_answered": 55,
+        "n_abstained": 931
+      },
+      "0.4": {
+        "target_dev_coverage": 0.4,
+        "frozen_dev_threshold": 0.4338820228385848,
+        "coverage": 0.36135113904163396,
+        "answered_accuracy": 0.7956521739130434,
+        "dataset_wrong_rate": 0.07384131971720345,
+        "utility": 0.33142183817753335,
+        "n_answered": 460,
+        "n_correct_answered": 366,
+        "n_wrong_answered": 94,
+        "n_abstained": 813
+      },
+      "0.5": {
+        "target_dev_coverage": 0.5,
+        "frozen_dev_threshold": 0.4078895905373883,
+        "coverage": 0.44383346425765907,
+        "answered_accuracy": 0.7539823008849558,
+        "dataset_wrong_rate": 0.10919088766692851,
+        "utility": 0.2831107619795758,
+        "n_answered": 565,
+        "n_correct_answered": 426,
+        "n_wrong_answered": 139,
+        "n_abstained": 708
+      },
+      "0.6": {
+        "target_dev_coverage": 0.6,
+        "frozen_dev_threshold": 0.3810075771910103,
+        "coverage": 0.5506677140612726,
+        "answered_accuracy": 0.7075606276747504,
+        "dataset_wrong_rate": 0.1610369206598586,
+        "utility": 0.202356637863315,
+        "n_answered": 701,
+        "n_correct_answered": 496,
+        "n_wrong_answered": 205,
+        "n_abstained": 572
+      }
+    }
+  },
+  "arm_b": {
+    "name": "grpo_arm_b_checkpoint_50",
+    "adapter": "/workspace/mistral-medqa-abstention/results/clean_protocol/learned_abstention/grpo/arm_b_abstention/main/checkpoints/checkpoint-50",
+    "n_test": 1273,
+    "wouldbe_accuracy": 0.5789473684210527,
+    "confidence_wrongness_auroc": 0.7191543976184207,
+    "margin_wrongness_auroc": 0.6632475343769619,
+    "natural_coverage": 0.9772191673212883,
+    "score_type": "margin",
+    "operating_points": {
+      "0.3": {
+        "target_dev_coverage": 0.3,
+        "frozen_dev_threshold": -0.36382973566651344,
+        "coverage": 0.2749410840534171,
+        "answered_accuracy": 0.7542857142857143,
+        "dataset_wrong_rate": 0.06755695208169678,
+        "utility": 0.28978790259230164,
+        "n_answered": 350,
+        "n_correct_answered": 264,
+        "n_wrong_answered": 86,
+        "n_abstained": 923
+      },
+      "0.4": {
+        "target_dev_coverage": 0.4,
+        "frozen_dev_threshold": -0.3326963894069195,
+        "coverage": 0.373134328358209,
+        "answered_accuracy": 0.7178947368421053,
+        "dataset_wrong_rate": 0.10526315789473684,
+        "utility": 0.24540455616653573,
+        "n_answered": 475,
+        "n_correct_answered": 341,
+        "n_wrong_answered": 134,
+        "n_abstained": 798
+      },
+      "0.5": {
+        "target_dev_coverage": 0.5,
+        "frozen_dev_threshold": -0.3019355982542038,
+        "coverage": 0.47054202670856243,
+        "answered_accuracy": 0.6878130217028381,
+        "dataset_wrong_rate": 0.14689709347996857,
+        "utility": 0.18868813825608802,
+        "n_answered": 599,
+        "n_correct_answered": 412,
+        "n_wrong_answered": 187,
+        "n_abstained": 674
+      },
+      "0.6": {
+        "target_dev_coverage": 0.6,
+        "frozen_dev_threshold": -0.2654915899038315,
+        "coverage": 0.5640219952867243,
+        "answered_accuracy": 0.6852367688022284,
+        "dataset_wrong_rate": 0.17753338570306362,
+        "utility": 0.1622152395915161,
+        "n_answered": 718,
+        "n_correct_answered": 492,
+        "n_wrong_answered": 226,
+        "n_abstained": 555
+      }
+    }
+  }
+}

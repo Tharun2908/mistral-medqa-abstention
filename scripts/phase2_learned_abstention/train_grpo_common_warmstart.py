@@ -48,7 +48,16 @@ os.environ.setdefault("USE_TF", "0")
 # ---------------------------------------------------------------------
 
 BASE_MODEL = "mistralai/Mistral-7B-v0.3"
-SFT_ADAPTER = "Primeinvincible/mistral-medqa-lora-v3"
+SFT_ADAPTER = str(
+    Path(__file__).resolve().parents[2]
+    / "results"
+    / "clean_protocol"
+    / "learned_abstention"
+    / "continue_sft_control"
+    / "main"
+    / "checkpoints"
+    / "checkpoint-1000"
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
@@ -66,7 +75,7 @@ OUTPUT_ROOT = (
     / "results"
     / "clean_protocol"
     / "learned_abstention"
-    / "warmstart"
+    / "grpo_common_warmstart"
 )
 
 MAX_LEN = 1024
@@ -363,7 +372,7 @@ def main():
     )
 
     print(
-        "\nLoading original MedQA SFT adapter..."
+        "\nLoading frozen continue-SFT adapter..."
     )
 
     model = PeftModel.from_pretrained(

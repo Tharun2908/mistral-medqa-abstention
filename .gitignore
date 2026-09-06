@@ -22,3 +22,32 @@ wandb/
 project2_release/
 data_local_only/
 docs/
+# Clean-protocol generated training artifacts
+results/clean_protocol/**/checkpoints/
+results/clean_protocol/**/policy/
+results/clean_protocol/**/best_adapter/
+results/clean_protocol/**/smoke*/
+results/clean_protocol/learned_abstention/data/
+results/clean_protocol/oof_sft/fold_*/
+results/clean_protocol/oof_sft/fold_*_smoke/
+
+# Repeated tokenizer exports
+results/clean_protocol/**/tokenizer.json
+results/clean_protocol/**/tokenizer.model
+results/clean_protocol/**/tokenizer_config.json
+results/clean_protocol/**/special_tokens_map.json
+
+# Editor temp files
+*.swp
+
+# Large per-example clean-protocol evaluation artifacts
+results/clean_protocol/learned_abstention/warmstart_eval/
+results/clean_protocol/oof_sft/sft_train_oof_predictions.json
+
+# Generated PEFT metadata / smoke artifacts
+results/clean_protocol/**/final/README.md
+results/clean_protocol/**/final/adapter_config.json
+results/clean_protocol/learned_abstention/dpo/common_init_smoke_ratio_2to1/
+results/clean_protocol/phase1_sft/sft_dev_limit20_predictions.json
+results/clean_protocol/learned_abstention/grpo/data/
+logs/

@@ -1,0 +1,180 @@
+{
+  "protocol": "clean_grpo_dev_checkpoint_selection_v1",
+  "split": "dev",
+  "n_dev": 1272,
+  "test_used": false,
+  "common_init_reference": {
+    "wouldbe_accuracy": 0.539308176100629,
+    "confidence_wrongness_auroc": 0.6961213544413377,
+    "margin_wrongness_auroc": 0.6616011104588105,
+    "natural_coverage": 0.8325471698113207,
+    "mean_margin_correct": -0.16474420458903813,
+    "mean_margin_wrong": -0.09136498869482568
+  },
+  "arm_a": {
+    "selection_rule": "highest DEV AUROC of -A-D confidence; exact tie -> earlier checkpoint",
+    "selection_metric": "confidence_wrongness_auroc",
+    "trajectory": [
+      {
+        "label": "checkpoint-50",
+        "step": 50,
+        "eval_name": "grpo_arm_a_checkpoint_50",
+        "wouldbe_accuracy": 0.5408805031446541,
+        "confidence_wrongness_auroc": 0.6933015092386111,
+        "margin_wrongness_auroc": 0.6397713244663905,
+        "natural_coverage": 0.9984276729559748,
+        "mean_margin_correct": -0.4541047142011785,
+        "mean_margin_wrong": -0.3836299557037881
+      },
+      {
+        "label": "checkpoint-100",
+        "step": 100,
+        "eval_name": "grpo_arm_a_checkpoint_100",
+        "wouldbe_accuracy": 0.5424528301886793,
+        "confidence_wrongness_auroc": 0.6879301758055679,
+        "margin_wrongness_auroc": 0.6184595846406693,
+        "natural_coverage": 0.9992138364779874,
+        "mean_margin_correct": -0.6011757646923533,
+        "mean_margin_wrong": -0.5407295301632598
+      },
+      {
+        "label": "checkpoint-150",
+        "step": 150,
+        "eval_name": "grpo_arm_a_checkpoint_150",
+        "wouldbe_accuracy": 0.5455974842767296,
+        "confidence_wrongness_auroc": 0.6805315955844958,
+        "margin_wrongness_auroc": 0.6064288064776682,
+        "natural_coverage": 0.9992138364779874,
+        "mean_margin_correct": -0.65093012113206,
+        "mean_margin_wrong": -0.5953158300755075
+      },
+      {
+        "label": "checkpoint-200",
+        "step": 200,
+        "eval_name": "grpo_arm_a_checkpoint_200",
+        "wouldbe_accuracy": 0.5471698113207547,
+        "confidence_wrongness_auroc": 0.6773352689974457,
+        "margin_wrongness_auroc": 0.6030741139846744,
+        "natural_coverage": 0.9992138364779874,
+        "mean_margin_correct": -0.6814459066349784,
+        "mean_margin_wrong": -0.6267722426598792
+      },
+      {
+        "label": "checkpoint-250",
+        "step": 250,
+        "eval_name": "grpo_arm_a_checkpoint_250",
+        "wouldbe_accuracy": 0.5471698113207547,
+        "confidence_wrongness_auroc": 0.6764297972541508,
+        "margin_wrongness_auroc": 0.601909223339719,
+        "natural_coverage": 0.9992138364779874,
+        "mean_margin_correct": -0.6892675427256966,
+        "mean_margin_wrong": -0.6354333714833855
+      },
+      {
+        "label": "final",
+        "step": 270,
+        "eval_name": "grpo_arm_a_final",
+        "wouldbe_accuracy": 0.5487421383647799,
+        "confidence_wrongness_auroc": 0.6737218334115392,
+        "margin_wrongness_auroc": 0.5996251110689577,
+        "natural_coverage": 0.9992138364779874,
+        "mean_margin_correct": -0.6889962085354593,
+        "mean_margin_wrong": -0.6362033212475904
+      }
+    ],
+    "selected": {
+      "label": "checkpoint-50",
+      "step": 50,
+      "eval_name": "grpo_arm_a_checkpoint_50",
+      "wouldbe_accuracy": 0.5408805031446541,
+      "confidence_wrongness_auroc": 0.6933015092386111,
+      "margin_wrongness_auroc": 0.6397713244663905,
+      "natural_coverage": 0.9984276729559748,
+      "mean_margin_correct": -0.4541047142011785,
+      "mean_margin_wrong": -0.3836299557037881
+    }
+  },
+  "arm_b": {
+    "selection_rule": "highest DEV AUROC of E margin; exact tie -> earlier checkpoint",
+    "selection_metric": "margin_wrongness_auroc",
+    "trajectory": [
+      {
+        "label": "checkpoint-50",
+        "step": 50,
+        "eval_name": "grpo_arm_b_checkpoint_50",
+        "wouldbe_accuracy": 0.5448113207547169,
+        "confidence_wrongness_auroc": 0.6861883079499659,
+        "margin_wrongness_auroc": 0.642786114288705,
+        "natural_coverage": 0.9772012578616353,
+        "mean_margin_correct": -0.32509918854817815,
+        "mean_margin_wrong": -0.2562703866904058
+      },
+      {
+        "label": "checkpoint-100",
+        "step": 100,
+        "eval_name": "grpo_arm_b_checkpoint_100",
+        "wouldbe_accuracy": 0.5432389937106918,
+        "confidence_wrongness_auroc": 0.6871779032607586,
+        "margin_wrongness_auroc": 0.6298562038104869,
+        "natural_coverage": 0.9968553459119497,
+        "mean_margin_correct": -0.4253242634393156,
+        "mean_margin_wrong": -0.3621834638470819
+      },
+      {
+        "label": "checkpoint-150",
+        "step": 150,
+        "eval_name": "grpo_arm_b_checkpoint_150",
+        "wouldbe_accuracy": 0.5487421383647799,
+        "confidence_wrongness_auroc": 0.6739963858909976,
+        "margin_wrongness_auroc": 0.6144234897117697,
+        "natural_coverage": 0.9976415094339622,
+        "mean_margin_correct": -0.47064686403826633,
+        "mean_margin_wrong": -0.41526437109702946
+      },
+      {
+        "label": "checkpoint-200",
+        "step": 200,
+        "eval_name": "grpo_arm_b_checkpoint_200",
+        "wouldbe_accuracy": 0.5471698113207547,
+        "confidence_wrongness_auroc": 0.6745864264048531,
+        "margin_wrongness_auroc": 0.6123707894316731,
+        "natural_coverage": 0.9976415094339622,
+        "mean_margin_correct": -0.5168547719051652,
+        "mean_margin_wrong": -0.4611031316518266
+      },
+      {
+        "label": "checkpoint-250",
+        "step": 250,
+        "eval_name": "grpo_arm_b_checkpoint_250",
+        "wouldbe_accuracy": 0.5463836477987422,
+        "confidence_wrongness_auroc": 0.674246599254392,
+        "margin_wrongness_auroc": 0.6125805767864044,
+        "natural_coverage": 0.9992138364779874,
+        "mean_margin_correct": -0.5324458921306412,
+        "mean_margin_wrong": -0.47646998899764476
+      },
+      {
+        "label": "final",
+        "step": 270,
+        "eval_name": "grpo_arm_b_final",
+        "wouldbe_accuracy": 0.5471698113207547,
+        "confidence_wrongness_auroc": 0.6735387731481481,
+        "margin_wrongness_auroc": 0.6114478568007663,
+        "natural_coverage": 0.9992138364779874,
+        "mean_margin_correct": -0.5326598600654036,
+        "mean_margin_wrong": -0.4771172472153719
+      }
+    ],
+    "selected": {
+      "label": "checkpoint-50",
+      "step": 50,
+      "eval_name": "grpo_arm_b_checkpoint_50",
+      "wouldbe_accuracy": 0.5448113207547169,
+      "confidence_wrongness_auroc": 0.6861883079499659,
+      "margin_wrongness_auroc": 0.642786114288705,
+      "natural_coverage": 0.9772012578616353,
+      "mean_margin_correct": -0.32509918854817815,
+      "mean_margin_wrong": -0.2562703866904058
+    }
+  }
+}

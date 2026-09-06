@@ -1,0 +1,17 @@
+{
+  "protocol": "clean_oof_v1",
+  "run_name": "lr5e5",
+  "learning_rate": 5e-05,
+  "epochs": 1,
+  "seed": 42,
+  "n_training_examples": 2300,
+  "source": "/workspace/mistral-medqa-abstention/results/clean_protocol/learned_abstention/data/warmstart_data.json",
+  "train_metrics": {
+    "train_runtime": 817.213,
+    "train_samples_per_second": 2.814,
+    "train_steps_per_second": 0.175,
+    "total_flos": 3.4942371123462144e+16,
+    "train_loss": 0.4316616022920275,
+    "epoch": 0.9947826086956522
+  }
+}

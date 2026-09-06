@@ -1,0 +1,28 @@
+{
+  "protocol": "clean_continue_sft_matched_compute_v1",
+  "purpose": "Control for extra supervised answer training in the supervised 5-way abstention experiment.",
+  "source_data": "/workspace/mistral-medqa-abstention/results/clean_protocol/learned_abstention/data/supervised_5way_data.json",
+  "start_adapter": "Primeinvincible/mistral-medqa-lora-v3",
+  "target_definition": "gold A/B/C/D full-sentence completion for every example",
+  "learning_rate": 5e-06,
+  "epochs": 2,
+  "seed": 42,
+  "train_n": 9160,
+  "val_n": 1018,
+  "matched_comparison_checkpoint_step": 1000,
+  "train_metrics": {
+    "train_runtime": 8007.271,
+    "train_samples_per_second": 2.288,
+    "train_steps_per_second": 0.143,
+    "total_flos": 2.747183651511337e+17,
+    "train_loss": 0.2921162010072828,
+    "epoch": 1.9982532751091702
+  },
+  "final_step_eval_metrics": {
+    "eval_loss": 0.16012074053287506,
+    "eval_runtime": 126.2209,
+    "eval_samples_per_second": 8.065,
+    "eval_steps_per_second": 2.02,
+    "epoch": 1.9982532751091702
+  }
+}

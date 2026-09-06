@@ -1,0 +1,55 @@
+{
+  "protocol": "clean_v1",
+  "selection_split": "dev",
+  "n_dev": 1272,
+  "sft_dev_accuracy": 0.5165094339622641,
+  "threshold_selection": "confidence_rank_only_no_label_based_selection",
+  "target_coverages": [
+    0.3,
+    0.4,
+    0.5,
+    0.6
+  ],
+  "operating_points": [
+    {
+      "target_coverage": 0.3,
+      "threshold": 0.6160473227500916,
+      "coverage": 0.300314465408805,
+      "answered": 382,
+      "correct": 275,
+      "wrong": 107,
+      "answered_accuracy": 0.7198952879581152,
+      "dataset_wrong_rate": 0.08411949685534591
+    },
+    {
+      "target_coverage": 0.4,
+      "threshold": 0.5462938547134399,
+      "coverage": 0.4001572327044025,
+      "answered": 509,
+      "correct": 340,
+      "wrong": 169,
+      "answered_accuracy": 0.6679764243614931,
+      "dataset_wrong_rate": 0.13286163522012578
+    },
+    {
+      "target_coverage": 0.5,
+      "threshold": 0.49631166458129883,
+      "coverage": 0.5,
+      "answered": 636,
+      "correct": 415,
+      "wrong": 221,
+      "answered_accuracy": 0.6525157232704403,
+      "dataset_wrong_rate": 0.17374213836477986
+    },
+    {
+      "target_coverage": 0.6,
+      "threshold": 0.45072025060653687,
+      "coverage": 0.5998427672955975,
+      "answered": 763,
+      "correct": 475,
+      "wrong": 288,
+      "answered_accuracy": 0.6225425950196593,
+      "dataset_wrong_rate": 0.22641509433962265
+    }
+  ]
+}

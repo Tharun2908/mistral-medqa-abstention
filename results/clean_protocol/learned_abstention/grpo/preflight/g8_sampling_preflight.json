@@ -1,0 +1,436 @@
+{
+  "protocol": "clean_grpo_g8_train_only_preflight_v1",
+  "split": "train",
+  "dev_loaded": false,
+  "test_loaded": false,
+  "n_prompts": 256,
+  "num_generations": 8,
+  "total_completions": 2048,
+  "seed": 42,
+  "temperature": 1.0,
+  "top_p": 1.0,
+  "max_prompt_length": 384,
+  "max_completion_length": 16,
+  "common_adapter": "/workspace/mistral-medqa-abstention/results/clean_protocol/learned_abstention/grpo_common_warmstart/main/policy",
+  "completion_counts": {
+    "correct": 911,
+    "wrong": 907,
+    "malformed": 81,
+    "abstain": 149
+  },
+  "completion_rates": {
+    "correct": 0.44482421875,
+    "wrong": 0.44287109375,
+    "abstain": 0.07275390625,
+    "malformed": 0.03955078125
+  },
+  "group_stats": {
+    "groups_any_abstain": 109,
+    "groups_answer_and_abstain": 109,
+    "groups_all_answer": 103,
+    "groups_all_abstain": 0,
+    "groups_any_malformed": 70,
+    "groups_all_same_class": 30
+  },
+  "arm_a": {
+    "reward": {
+      "correct": 1.0,
+      "wrong": -1.0,
+      "abstain": -1.0,
+      "malformed": -1.0
+    },
+    "zero_reward_variance_groups": 52,
+    "nonzero_advantage_groups": 204,
+    "mean_group_reward_std": 0.6845240837701984
+  },
+  "arm_b": {
+    "reward": {
+      "correct": 1.0,
+      "wrong": -1.0,
+      "abstain": 0.0,
+      "malformed": -1.0
+    },
+    "zero_reward_variance_groups": 36,
+    "nonzero_advantage_groups": 220,
+    "mean_group_reward_std": 0.6713855998330361
+  },
+  "gpu": {
+    "name": "NVIDIA H200",
+    "peak_allocated_gb": 16.40041446685791,
+    "peak_reserved_gb": 17.515625
+  },
+  "audit_groups": [
+    {
+      "id": "train-01434",
+      "gold": "B",
+      "classes": [
+        "correct",
+        "correct",
+        "correct",
+        "correct",
+        "wrong",
+        "correct",
+        "wrong",
+        "correct"
+      ],
+      "completions": [
+        "The answer is B.",
+        "The answer is B.",
+        "The answer is B.",
+        "The answer is B.",
+        "The answer is C.",
+        "The answer is B.",
+        "The answer is C.",
+        "The answer is B."
+      ],
+      "n_answer": 8,
+      "n_abstain": 0,
+      "n_malformed": 0,
+      "arm_a_reward_mean": 0.5,
+      "arm_a_reward_std": 0.8660254037844386,
+      "arm_b_reward_mean": 0.5,
+      "arm_b_reward_std": 0.8660254037844386
+    },
+    {
+      "id": "train-06555",
+      "gold": "A",
+      "classes": [
+        "wrong",
+        "wrong",
+        "wrong",
+        "malformed",
+        "wrong",
+        "wrong",
+        "malformed",
+        "wrong"
+      ],
+      "completions": [
+        "The answer is C.",
+        "The answer is C.",
+        "The answer is C.",
+        "All of the statements are true except statements",
+        "The answer is C.",
+        "Most likely option is C.",
+        "There is no answer!",
+        "The answer is C."
+      ],
+      "n_answer": 6,
+      "n_abstain": 0,
+      "n_malformed": 2,
+      "arm_a_reward_mean": -1.0,
+      "arm_a_reward_std": 0.0,
+      "arm_b_reward_mean": -1.0,
+      "arm_b_reward_std": 0.0
+    },
+    {
+      "id": "train-03273",
+      "gold": "D",
+      "classes": [
+        "wrong",
+        "wrong",
+        "wrong",
+        "wrong",
+        "wrong",
+        "wrong",
+        "correct",
+        "correct"
+      ],
+      "completions": [
+        "The answer is C.",
+        "The answer is C.",
+        "The answer is C.",
+        "The answer is C.",
+        "The answer is B.",
+        "The answer is C.",
+        "The answer is D.",
+        "The answer is D."
+      ],
+      "n_answer": 8,
+      "n_abstain": 0,
+      "n_malformed": 0,
+      "arm_a_reward_mean": -0.5,
+      "arm_a_reward_std": 0.8660254037844386,
+      "arm_b_reward_mean": -0.5,
+      "arm_b_reward_std": 0.8660254037844386
+    },
+    {
+      "id": "train-01868",
+      "gold": "C",
+      "classes": [
+        "correct",
+        "wrong",
+        "correct",
+        "wrong",
+        "correct",
+        "wrong",
+        "correct",
+        "wrong"
+      ],
+      "completions": [
+        "The answer is C.",
+        "The answer is A.",
+        "The answer is C.",
+        "The answer is A.",
+        "The answer is C.",
+        "The answer is B.",
+        "The answer is C.",
+        "The answer is B."
+      ],
+      "n_answer": 8,
+      "n_abstain": 0,
+      "n_malformed": 0,
+      "arm_a_reward_mean": 0.0,
+      "arm_a_reward_std": 1.0,
+      "arm_b_reward_mean": 0.0,
+      "arm_b_reward_std": 1.0
+    },
+    {
+      "id": "train-04903",
+      "gold": "B",
+      "classes": [
+        "correct",
+        "wrong",
+        "wrong",
+        "correct",
+        "wrong",
+        "wrong",
+        "wrong",
+        "correct"
+      ],
+      "completions": [
+        "The answer is B.",
+        "The answer is A.",
+        "The answer is D.",
+        "The answer is B.",
+        "The answer is A.",
+        "The answer is D.",
+        "The answer is A.",
+        "The answer is B."
+      ],
+      "n_answer": 8,
+      "n_abstain": 0,
+      "n_malformed": 0,
+      "arm_a_reward_mean": -0.25,
+      "arm_a_reward_std": 0.9682458365518543,
+      "arm_b_reward_mean": -0.25,
+      "arm_b_reward_std": 0.9682458365518543
+    },
+    {
+      "id": "train-01781",
+      "gold": "B",
+      "classes": [
+        "wrong",
+        "wrong",
+        "wrong",
+        "wrong",
+        "abstain",
+        "wrong",
+        "wrong",
+        "wrong"
+      ],
+      "completions": [
+        "The answer is C.",
+        "The answer is C.",
+        "The answer is C.",
+        "The answer is A.",
+        "I cannot answer confidently.",
+        "The answer is A.",
+        "The answer is C.",
+        "The answer is A."
+      ],
+      "n_answer": 7,
+      "n_abstain": 1,
+      "n_malformed": 0,
+      "arm_a_reward_mean": -1.0,
+      "arm_a_reward_std": 0.0,
+      "arm_b_reward_mean": -0.875,
+      "arm_b_reward_std": 0.33071891388307384
+    },
+    {
+      "id": "train-00413",
+      "gold": "A",
+      "classes": [
+        "correct",
+        "correct",
+        "correct",
+        "wrong",
+        "correct",
+        "correct",
+        "correct",
+        "abstain"
+      ],
+      "completions": [
+        "The answer is A.",
+        "The answer is A.",
+        "The answer is A.",
+        "The answer is D.",
+        "The answer is A.",
+        "The answer is A.",
+        "The answer is A.",
+        "I cannot answer confidently."
+      ],
+      "n_answer": 7,
+      "n_abstain": 1,
+      "n_malformed": 0,
+      "arm_a_reward_mean": 0.5,
+      "arm_a_reward_std": 0.8660254037844386,
+      "arm_b_reward_mean": 0.625,
+      "arm_b_reward_std": 0.6959705453537527
+    },
+    {
+      "id": "train-07813",
+      "gold": "B",
+      "classes": [
+        "correct",
+        "correct",
+        "correct",
+        "correct",
+        "correct",
+        "correct",
+        "correct",
+        "correct"
+      ],
+      "completions": [
+        "The answer is B.",
+        "The answer is B.",
+        "The answer is B.",
+        "The answer is B.",
+        "The answer is B.",
+        "B is correct.",
+        "The answer is B.",
+        "The answer is B."
+      ],
+      "n_answer": 8,
+      "n_abstain": 0,
+      "n_malformed": 0,
+      "arm_a_reward_mean": 1.0,
+      "arm_a_reward_std": 0.0,
+      "arm_b_reward_mean": 1.0,
+      "arm_b_reward_std": 0.0
+    },
+    {
+      "id": "train-04129",
+      "gold": "B",
+      "classes": [
+        "correct",
+        "correct",
+        "wrong",
+        "wrong",
+        "wrong",
+        "correct",
+        "wrong",
+        "wrong"
+      ],
+      "completions": [
+        "The answer is B.",
+        "The answer is B.",
+        "The answer is D.",
+        "The answer is D.",
+        "The answer is D.",
+        "The answer is B.",
+        "The answer is D.",
+        "The answer is D."
+      ],
+      "n_answer": 8,
+      "n_abstain": 0,
+      "n_malformed": 0,
+      "arm_a_reward_mean": -0.25,
+      "arm_a_reward_std": 0.9682458365518543,
+      "arm_b_reward_mean": -0.25,
+      "arm_b_reward_std": 0.9682458365518543
+    },
+    {
+      "id": "train-07523",
+      "gold": "C",
+      "classes": [
+        "wrong",
+        "correct",
+        "correct",
+        "wrong",
+        "wrong",
+        "correct",
+        "wrong",
+        "correct"
+      ],
+      "completions": [
+        "The answer is A.",
+        "The answer is C.",
+        "The answer is C.",
+        "The answer is A.",
+        "The answer is D.",
+        "The answer is C.",
+        "The answer is A.",
+        "The answer is C."
+      ],
+      "n_answer": 8,
+      "n_abstain": 0,
+      "n_malformed": 0,
+      "arm_a_reward_mean": 0.0,
+      "arm_a_reward_std": 1.0,
+      "arm_b_reward_mean": 0.0,
+      "arm_b_reward_std": 1.0
+    },
+    {
+      "id": "train-00838",
+      "gold": "A",
+      "classes": [
+        "correct",
+        "correct",
+        "correct",
+        "correct",
+        "wrong",
+        "correct",
+        "correct",
+        "correct"
+      ],
+      "completions": [
+        "The answer is A.",
+        "The answer is A.",
+        "The answer is A.",
+        "A.",
+        "The answer is B.",
+        "The answer is A.",
+        "The answer is A.",
+        "The answer is A."
+      ],
+      "n_answer": 8,
+      "n_abstain": 0,
+      "n_malformed": 0,
+      "arm_a_reward_mean": 0.75,
+      "arm_a_reward_std": 0.6614378277661477,
+      "arm_b_reward_mean": 0.75,
+      "arm_b_reward_std": 0.6614378277661477
+    },
+    {
+      "id": "train-06245",
+      "gold": "A",
+      "classes": [
+        "correct",
+        "wrong",
+        "correct",
+        "correct",
+        "wrong",
+        "correct",
+        "correct",
+        "correct"
+      ],
+      "completions": [
+        "The answer is A.",
+        "The answer is D.",
+        "The answer is A.",
+        "The answer is A.",
+        "The answer is D.",
+        "The answer is A.",
+        "The answer is A.",
+        "The answer is A."
+      ],
+      "n_answer": 8,
+      "n_abstain": 0,
+      "n_malformed": 0,
+      "arm_a_reward_mean": 0.5,
+      "arm_a_reward_std": 0.8660254037844386,
+      "arm_b_reward_mean": 0.5,
+      "arm_b_reward_std": 0.8660254037844386
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "protocol": "clean_dpo_dev_calibration_v1",
+  "split": "dev",
+  "model_selection": {
+    "warmstart_lr": 5e-06,
+    "dpo_ratio": "2:1",
+    "dpo_lr": 5e-06,
+    "beta": 0.1,
+    "epochs": 2,
+    "seed": 42
+  },
+  "threshold_selection": {
+    "uses_correctness_labels": false,
+    "selection_basis": "rank of P(E) on official MedQA dev",
+    "deployment_rule": "answer if P(E) <= threshold",
+    "test_policy": "apply these exact numeric thresholds unchanged to test"
+  },
+  "n_dev": 1272,
+  "target_coverages": [
+    0.3,
+    0.4,
+    0.5,
+    0.6
+  ],
+  "calibration": [
+    {
+      "target_coverage": 0.3,
+      "pe_threshold": 0.24740196764469147,
+      "rule": "answer_if_p_abstain_lte_threshold",
+      "actual_coverage": 0.300314465408805,
+      "n_answered": 382,
+      "n_abstained": 890,
+      "n_correct_answered": 247,
+      "n_wrong_answered": 135,
+      "answered_accuracy": 0.6465968586387435,
+      "dataset_wrong_rate": 0.10613207547169812,
+      "mean_utility": 0.1918238993710692
+    },
+    {
+      "target_coverage": 0.4,
+      "pe_threshold": 0.26630058884620667,
+      "rule": "answer_if_p_abstain_lte_threshold",
+      "actual_coverage": 0.4001572327044025,
+      "n_answered": 509,
+      "n_abstained": 763,
+      "n_correct_answered": 316,
+      "n_wrong_answered": 193,
+      "answered_accuracy": 0.6208251473477406,
+      "dataset_wrong_rate": 0.15172955974842767,
+      "mean_utility": 0.12492138364779873
+    },
+    {
+      "target_coverage": 0.5,
+      "pe_threshold": 0.28368762135505676,
+      "rule": "answer_if_p_abstain_lte_threshold",
+      "actual_coverage": 0.5,
+      "n_answered": 636,
+      "n_abstained": 636,
+      "n_correct_answered": 383,
+      "n_wrong_answered": 253,
+      "answered_accuracy": 0.6022012578616353,
+      "dataset_wrong_rate": 0.1988993710691824,
+      "mean_utility": 0.0533018867924528
+    },
+    {
+      "target_coverage": 0.6,
+      "pe_threshold": 0.30004504323005676,
+      "rule": "answer_if_p_abstain_lte_threshold",
+      "actual_coverage": 0.5998427672955975,
+      "n_answered": 763,
+      "n_abstained": 509,
+      "n_correct_answered": 446,
+      "n_wrong_answered": 317,
+      "answered_accuracy": 0.5845347313237221,
+      "dataset_wrong_rate": 0.24921383647798742,
+      "mean_utility": -0.027751572327043988
+    }
+  ]
+}

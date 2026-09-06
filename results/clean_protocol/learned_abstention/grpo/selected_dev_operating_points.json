@@ -1,0 +1,81 @@
+{
+  "protocol": "clean_grpo_selected_dev_thresholds_v1",
+  "split": "dev",
+  "test_used": false,
+  "arm_a": {
+    "checkpoint": "checkpoint-50",
+    "adapter": "/workspace/mistral-medqa-abstention/results/clean_protocol/learned_abstention/grpo/arm_a_answer_only/main/checkpoints/checkpoint-50",
+    "wouldbe_accuracy": 0.5408805031446541,
+    "wrongness_auroc": 0.6933015092386111,
+    "score": "A-D confidence",
+    "answer_rule": "confidence >= threshold",
+    "operating_points": {
+      "0.3": {
+        "threshold": 0.4609893518342743,
+        "coverage": 0.300314465408805,
+        "answered_accuracy": 0.7722513089005235,
+        "dataset_wrong_rate": 0.06839622641509434,
+        "utility": 0.3050314465408805
+      },
+      "0.4": {
+        "threshold": 0.4338820228385848,
+        "coverage": 0.4001572327044025,
+        "answered_accuracy": 0.7092337917485265,
+        "dataset_wrong_rate": 0.11635220125786164,
+        "utility": 0.23105345911949685
+      },
+      "0.5": {
+        "threshold": 0.4078895905373883,
+        "coverage": 0.5,
+        "answered_accuracy": 0.6792452830188679,
+        "dataset_wrong_rate": 0.16037735849056603,
+        "utility": 0.16886792452830185
+      },
+      "0.6": {
+        "threshold": 0.3810075771910103,
+        "coverage": 0.5998427672955975,
+        "answered_accuracy": 0.6435124508519003,
+        "dataset_wrong_rate": 0.2138364779874214,
+        "utility": 0.07838050314465413
+      }
+    }
+  },
+  "arm_b": {
+    "checkpoint": "checkpoint-50",
+    "adapter": "/workspace/mistral-medqa-abstention/results/clean_protocol/learned_abstention/grpo/arm_b_abstention/main/checkpoints/checkpoint-50",
+    "wouldbe_accuracy": 0.5448113207547169,
+    "wrongness_auroc": 0.642786114288705,
+    "score": "E margin",
+    "answer_rule": "margin <= threshold",
+    "operating_points": {
+      "0.3": {
+        "threshold": -0.36382973566651344,
+        "coverage": 0.300314465408805,
+        "answered_accuracy": 0.7094240837696335,
+        "dataset_wrong_rate": 0.08726415094339622,
+        "utility": 0.24842767295597484
+      },
+      "0.4": {
+        "threshold": -0.3326963894069195,
+        "coverage": 0.4001572327044025,
+        "answered_accuracy": 0.6679764243614931,
+        "dataset_wrong_rate": 0.13286163522012578,
+        "utility": 0.18152515723270438
+      },
+      "0.5": {
+        "threshold": -0.3019355982542038,
+        "coverage": 0.5,
+        "answered_accuracy": 0.6367924528301887,
+        "dataset_wrong_rate": 0.18160377358490565,
+        "utility": 0.10518867924528298
+      },
+      "0.6": {
+        "threshold": -0.2654915899038315,
+        "coverage": 0.5998427672955975,
+        "answered_accuracy": 0.6146788990825688,
+        "dataset_wrong_rate": 0.23113207547169812,
+        "utility": 0.026493710691823935
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "protocol": "clean_supervised_5way_train_v1",
+  "source": "/workspace/mistral-medqa-abstention/results/clean_protocol/learned_abstention/data/supervised_5way_data.json",
+  "start_adapter": "Primeinvincible/mistral-medqa-lora-v3",
+  "learning_rate": 5e-06,
+  "max_epochs": 2,
+  "actual_epochs_configured": 2,
+  "seed": 43,
+  "smoke": false,
+  "train_n": 9160,
+  "val_n": 1018,
+  "best_checkpoint": "/workspace/mistral-medqa-abstention/results/clean_protocol/learned_abstention/supervised_5way/seed43/checkpoints/checkpoint-900",
+  "best_metric": 0.1327429860830307,
+  "train_metrics": {
+    "train_runtime": 6198.191,
+    "train_samples_per_second": 2.956,
+    "train_steps_per_second": 0.185,
+    "total_flos": 2.1556650731116954e+17,
+    "train_loss": 0.4372546739048428,
+    "epoch": 1.572052401746725
+  },
+  "eval_metrics": {
+    "eval_loss": 0.1327429860830307,
+    "eval_runtime": 126.5712,
+    "eval_samples_per_second": 8.043,
+    "eval_steps_per_second": 2.015,
+    "epoch": 1.572052401746725
+  }
+}

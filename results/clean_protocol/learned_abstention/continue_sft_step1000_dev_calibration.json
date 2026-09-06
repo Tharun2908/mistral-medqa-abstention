@@ -1,0 +1,56 @@
+{
+  "protocol": "clean_continue_sft_dev_calibration_v1",
+  "selection_split": "dev",
+  "n_dev": 1272,
+  "model": "continue_sft_step1000",
+  "would_be_accuracy": 0.5424528301886793,
+  "score_definition": "max softmax probability over A/B/C/D full-completion mean log-scores",
+  "threshold_selection": "confidence_rank_only_no_label_based_selection",
+  "test_policy": "apply exact frozen numeric thresholds unchanged to official test",
+  "operating_points": [
+    {
+      "target_coverage": 0.3,
+      "confidence_threshold": 0.34801787636206843,
+      "rule": "answer_if_confidence_gte_threshold",
+      "actual_coverage": 0.300314465408805,
+      "n_answered": 382,
+      "n_abstained": 890,
+      "answered_accuracy": 0.7670157068062827,
+      "dataset_wrong_rate": 0.0699685534591195,
+      "mean_utility": 0.300314465408805
+    },
+    {
+      "target_coverage": 0.4,
+      "confidence_threshold": 0.331095533599246,
+      "rule": "answer_if_confidence_gte_threshold",
+      "actual_coverage": 0.4001572327044025,
+      "n_answered": 509,
+      "n_abstained": 763,
+      "answered_accuracy": 0.7131630648330058,
+      "dataset_wrong_rate": 0.11477987421383648,
+      "mean_utility": 0.23577044025157232
+    },
+    {
+      "target_coverage": 0.5,
+      "confidence_threshold": 0.3182072478715298,
+      "rule": "answer_if_confidence_gte_threshold",
+      "actual_coverage": 0.5,
+      "n_answered": 636,
+      "n_abstained": 636,
+      "answered_accuracy": 0.6981132075471698,
+      "dataset_wrong_rate": 0.1509433962264151,
+      "mean_utility": 0.19716981132075467
+    },
+    {
+      "target_coverage": 0.6,
+      "confidence_threshold": 0.30646372555930074,
+      "rule": "answer_if_confidence_gte_threshold",
+      "actual_coverage": 0.5998427672955975,
+      "n_answered": 763,
+      "n_abstained": 509,
+      "answered_accuracy": 0.6461336828309305,
+      "dataset_wrong_rate": 0.21226415094339623,
+      "mean_utility": 0.0830974842767296
+    }
+  ]
+}

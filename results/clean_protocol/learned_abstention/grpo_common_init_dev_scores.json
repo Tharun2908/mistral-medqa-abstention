@@ -1,0 +1,71 @@
+{
+  "protocol": "grpo_common_init_dev_scores_v1",
+  "split": "dev",
+  "n_dev": 1272,
+  "would_be_accuracy": 0.539308176100629,
+  "confidence_wrongness_auroc": 0.6961213544413377,
+  "margin_wrongness_auroc": 0.6616011104588105,
+  "operating_points": {
+    "confidence": {
+      "0.3": {
+        "threshold": 0.39002953177939786,
+        "coverage": 0.300314465408805,
+        "answered_accuracy": 0.7696335078534031,
+        "dataset_wrong_rate": 0.06918238993710692,
+        "utility": 0.3026729559748428
+      },
+      "0.4": {
+        "threshold": 0.36998360497002253,
+        "coverage": 0.4001572327044025,
+        "answered_accuracy": 0.7151277013752456,
+        "dataset_wrong_rate": 0.1139937106918239,
+        "utility": 0.23812893081761005
+      },
+      "0.5": {
+        "threshold": 0.35261813757151017,
+        "coverage": 0.5,
+        "answered_accuracy": 0.6839622641509434,
+        "dataset_wrong_rate": 0.1580188679245283,
+        "utility": 0.17594339622641506
+      },
+      "0.6": {
+        "threshold": 0.3365014738198169,
+        "coverage": 0.5998427672955975,
+        "answered_accuracy": 0.6500655307994757,
+        "dataset_wrong_rate": 0.2099056603773585,
+        "utility": 0.0901729559748428
+      }
+    },
+    "margin": {
+      "0.3": {
+        "threshold": -0.1970655769109726,
+        "coverage": 0.300314465408805,
+        "answered_accuracy": 0.725130890052356,
+        "dataset_wrong_rate": 0.08254716981132075,
+        "utility": 0.26257861635220126
+      },
+      "0.4": {
+        "threshold": -0.1646564081311226,
+        "coverage": 0.4001572327044025,
+        "answered_accuracy": 0.6817288801571709,
+        "dataset_wrong_rate": 0.12735849056603774,
+        "utility": 0.19803459119496852
+      },
+      "0.5": {
+        "threshold": -0.1351277008652687,
+        "coverage": 0.5,
+        "answered_accuracy": 0.6556603773584906,
+        "dataset_wrong_rate": 0.1721698113207547,
+        "utility": 0.13349056603773582
+      },
+      "0.6": {
+        "threshold": -0.09671132266521454,
+        "coverage": 0.5998427672955975,
+        "answered_accuracy": 0.6277850589777195,
+        "dataset_wrong_rate": 0.22327044025157233,
+        "utility": 0.050078616352201295
+      }
+    }
+  },
+  "official_test_used": false
+}

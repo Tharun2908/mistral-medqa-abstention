@@ -1,0 +1,77 @@
+{
+  "protocol": "posthoc_grpo_reward03_dev_selection_v1",
+  "split": "dev",
+  "test_used": false,
+  "selection_rule": "highest DEV E-margin wrongness AUROC; exact tie -> earlier checkpoint",
+  "reward": {
+    "correct": 1.0,
+    "wrong": -1.0,
+    "abstain": 0.3,
+    "malformed": -1.0
+  },
+  "candidates": [
+    {
+      "label": "checkpoint-50",
+      "step": 50,
+      "wb_acc": 0.5440251572327044,
+      "confidence_auc": 0.6883994418975483,
+      "margin_auc": 0.6428044648196134,
+      "natural_coverage": 0.9661949685534591,
+      "path": "results/clean_protocol/learned_abstention/warmstart_eval/posthoc_reward03_checkpoint_50.json"
+    },
+    {
+      "label": "checkpoint-100",
+      "step": 100,
+      "wb_acc": 0.5424528301886793,
+      "confidence_auc": 0.6881343692414961,
+      "margin_auc": 0.6329224562976243,
+      "natural_coverage": 0.9937106918238994,
+      "path": "results/clean_protocol/learned_abstention/warmstart_eval/posthoc_reward03_checkpoint_100.json"
+    },
+    {
+      "label": "checkpoint-150",
+      "step": 150,
+      "wb_acc": 0.5455974842767296,
+      "confidence_auc": 0.6807459888515501,
+      "margin_auc": 0.6222041622209148,
+      "natural_coverage": 0.9960691823899371,
+      "path": "results/clean_protocol/learned_abstention/warmstart_eval/posthoc_reward03_checkpoint_150.json"
+    },
+    {
+      "label": "checkpoint-200",
+      "step": 200,
+      "wb_acc": 0.5448113207547169,
+      "confidence_auc": 0.6801695713612812,
+      "margin_auc": 0.6203061954357292,
+      "natural_coverage": 0.9968553459119497,
+      "path": "results/clean_protocol/learned_abstention/warmstart_eval/posthoc_reward03_checkpoint_200.json"
+    },
+    {
+      "label": "checkpoint-250",
+      "step": 250,
+      "wb_acc": 0.5455974842767296,
+      "confidence_auc": 0.6779638622697766,
+      "margin_auc": 0.6168019504801412,
+      "natural_coverage": 0.9968553459119497,
+      "path": "results/clean_protocol/learned_abstention/warmstart_eval/posthoc_reward03_checkpoint_250.json"
+    },
+    {
+      "label": "final",
+      "step": 270,
+      "wb_acc": 0.5455974842767296,
+      "confidence_auc": 0.6779239751503245,
+      "margin_auc": 0.6165800783781898,
+      "natural_coverage": 0.9976415094339622,
+      "path": "results/clean_protocol/learned_abstention/warmstart_eval/posthoc_reward03_final.json"
+    }
+  ],
+  "selected": {
+    "label": "checkpoint-50",
+    "step": 50,
+    "wb_acc": 0.5440251572327044,
+    "confidence_auc": 0.6883994418975483,
+    "margin_auc": 0.6428044648196134,
+    "natural_coverage": 0.9661949685534591,
+    "path": "results/clean_protocol/learned_abstention/warmstart_eval/posthoc_reward03_checkpoint_50.json"
+  }
+}

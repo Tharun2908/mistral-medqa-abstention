@@ -1,0 +1,42 @@
+{
+  "protocol": "correct_only_sft_dev_calibration_v1",
+  "split": "dev",
+  "n_dev": 1272,
+  "would_be_accuracy": 0.5463836477987422,
+  "score": "max softmax probability over A-D full-completion scores",
+  "operating_points": [
+    {
+      "target_coverage": 0.3,
+      "threshold": 0.5008164101831156,
+      "actual_coverage": 0.300314465408805,
+      "answered_accuracy": 0.756544502617801,
+      "dataset_wrong_rate": 0.07311320754716981,
+      "utility": 0.2908805031446541
+    },
+    {
+      "target_coverage": 0.4,
+      "threshold": 0.4713761710744318,
+      "actual_coverage": 0.4001572327044025,
+      "answered_accuracy": 0.7151277013752456,
+      "dataset_wrong_rate": 0.1139937106918239,
+      "utility": 0.23812893081761005
+    },
+    {
+      "target_coverage": 0.5,
+      "threshold": 0.44182732886073406,
+      "actual_coverage": 0.5,
+      "answered_accuracy": 0.6698113207547169,
+      "dataset_wrong_rate": 0.1650943396226415,
+      "utility": 0.15471698113207544
+    },
+    {
+      "target_coverage": 0.6,
+      "threshold": 0.41114522540304105,
+      "actual_coverage": 0.5998427672955975,
+      "answered_accuracy": 0.6474442988204456,
+      "dataset_wrong_rate": 0.21147798742138366,
+      "utility": 0.08545597484276733
+    }
+  ],
+  "official_test_used": false
+}

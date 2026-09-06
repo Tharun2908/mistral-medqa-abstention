@@ -1,0 +1,38 @@
+{
+  "protocol": "clean_dpo_train_v1",
+  "pair_set": "ratio_1to1",
+  "pair_file": "/workspace/mistral-medqa-abstention/results/clean_protocol/learned_abstention/data/dpo_pairs_ratio_1to1.json",
+  "warmstart": "/workspace/mistral-medqa-abstention/results/clean_protocol/learned_abstention/warmstart/lr5e6/policy",
+  "learning_rate": 5e-06,
+  "beta": 0.1,
+  "epochs": 2,
+  "seed": 42,
+  "smoke": false,
+  "train_n": 2160,
+  "val_n": 240,
+  "train_metrics": {
+    "train_runtime": 5946.0843,
+    "train_samples_per_second": 0.727,
+    "train_steps_per_second": 0.091,
+    "total_flos": 0.0,
+    "train_loss": 0.6595235374238756,
+    "epoch": 2.0
+  },
+  "eval_metrics": {
+    "eval_loss": 0.6457287073135376,
+    "eval_runtime": 107.8597,
+    "eval_samples_per_second": 2.225,
+    "eval_steps_per_second": 1.113,
+    "eval_rewards/chosen": 0.01830212213099003,
+    "eval_rewards/rejected": -0.11447404325008392,
+    "eval_rewards/accuracies": 0.6333333253860474,
+    "eval_rewards/margins": 0.1327761709690094,
+    "eval_logps/chosen": -6.140437126159668,
+    "eval_logps/rejected": -7.753201961517334,
+    "eval_logits/chosen": -3.4332549571990967,
+    "eval_logits/rejected": -3.4328317642211914,
+    "epoch": 2.0
+  },
+  "best_checkpoint": "/workspace/mistral-medqa-abstention/results/clean_protocol/learned_abstention/dpo/ratio_1to1/checkpoints/checkpoint-525",
+  "best_metric": 0.6457309722900391
+}

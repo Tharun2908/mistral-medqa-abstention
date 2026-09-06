@@ -1,0 +1,64 @@
+{
+  "protocol": "clean_margin_dev_calibration_v1",
+  "split": "dev",
+  "model": "supervised_5way",
+  "score_definition": "score_E - max(score_A, score_B, score_C, score_D)",
+  "selection": {
+    "uses_correctness_labels": false,
+    "answer_rule": "abstention_margin <= threshold",
+    "test_policy": "apply exact frozen numeric thresholds unchanged to test"
+  },
+  "diagnostic": {
+    "mean_margin_correct": 0.000345787258147327,
+    "mean_margin_wrong": 0.12426409276827455,
+    "auroc_margin_as_wrongness": 0.6787367593182542,
+    "natural_coverage": 0.35455974842767296,
+    "natural_decision_mismatches": 0
+  },
+  "calibration": [
+    {
+      "target_coverage": 0.3,
+      "margin_threshold": -0.0319032222032547,
+      "rule": "answer_if_abstention_margin_lte_threshold",
+      "actual_coverage": 0.300314465408805,
+      "n_answered": 382,
+      "n_abstained": 890,
+      "answered_accuracy": 0.7617801047120419,
+      "dataset_wrong_rate": 0.07154088050314465,
+      "mean_utility": 0.29559748427672955
+    },
+    {
+      "target_coverage": 0.4,
+      "margin_threshold": 0.02521248161792755,
+      "rule": "answer_if_abstention_margin_lte_threshold",
+      "actual_coverage": 0.4001572327044025,
+      "n_answered": 509,
+      "n_abstained": 763,
+      "answered_accuracy": 0.7092337917485265,
+      "dataset_wrong_rate": 0.11635220125786164,
+      "mean_utility": 0.23105345911949685
+    },
+    {
+      "target_coverage": 0.5,
+      "margin_threshold": 0.07165184617042542,
+      "rule": "answer_if_abstention_margin_lte_threshold",
+      "actual_coverage": 0.5,
+      "n_answered": 636,
+      "n_abstained": 636,
+      "answered_accuracy": 0.6729559748427673,
+      "dataset_wrong_rate": 0.16352201257861634,
+      "mean_utility": 0.1594339622641509
+    },
+    {
+      "target_coverage": 0.6,
+      "margin_threshold": 0.12055434286594391,
+      "rule": "answer_if_abstention_margin_lte_threshold",
+      "actual_coverage": 0.5998427672955975,
+      "n_answered": 763,
+      "n_abstained": 509,
+      "answered_accuracy": 0.6343381389252949,
+      "dataset_wrong_rate": 0.21933962264150944,
+      "mean_utility": 0.06187106918238997
+    }
+  ]
+}
