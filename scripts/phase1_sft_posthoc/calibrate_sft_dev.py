@@ -14,6 +14,7 @@ Target coverage levels:
 The resulting thresholds are frozen and later applied unchanged to test.
 """
 
+import argparse
 import json
 from pathlib import Path
 
@@ -103,6 +104,13 @@ def evaluate_threshold(predictions, threshold):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--output", type=Path, default=OUTPUT_FILE,
+        help="Destination JSON; use a separate path to preserve committed results.",
+    )
+    args = parser.parse_args()
+    output_file = args.output
 
     print("=" * 72)
     print("SFT DEV CALIBRATION — CLEAN PROTOCOL")
@@ -186,13 +194,13 @@ def main():
         "operating_points": calibration_rows,
     }
 
-    OUTPUT_FILE.parent.mkdir(
+    output_file.parent.mkdir(
         parents=True,
         exist_ok=True,
     )
 
     with open(
-        OUTPUT_FILE,
+        output_file,
         "w",
         encoding="utf-8",
     ) as f:
@@ -200,7 +208,7 @@ def main():
 
     print("-" * 92)
 
-    print(f"\nSaved -> {OUTPUT_FILE}")
+    print(f"\nSaved -> {output_file}")
 
     print(
         "\nThese thresholds are now the frozen SFT thresholds "

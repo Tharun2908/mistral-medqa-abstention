@@ -310,6 +310,90 @@ Earlier exploratory threshold tables used TEST information for selection. They r
 
 ## Reproducibility map
 
+
+### Start here: CPU reproduction from committed predictions
+
+Clone the project and run commands from its root. This quickstart works without
+CUDA, model weights, or dataset downloads:
+
+```bash
+git clone https://github.com/Tharun2908/mistral-medqa-abstention.git
+cd mistral-medqa-abstention
+python -m venv .venv-analysis
+# Linux/macOS:
+source .venv-analysis/bin/activate
+# Windows Command Prompt instead: .venv-analysis\Scripts\activate
+python -m pip install numpy==1.26.4
+python scripts/phase1_sft_posthoc/calibrate_sft_dev.py --output .artifacts/sft_dev_calibration.json
+```
+
+This recomputes the original SFT **single-token DEV calibration** from all 1,272
+committed DEV predictions. Expected confidence thresholds at target coverage
+30/40/50/60% are **0.616047 / 0.546294 / 0.496312 / 0.450720**.
+The generated JSON goes to `.artifacts/`; the committed reference remains at
+`results/clean_protocol/phase1_sft/sft_dev_calibration.json`.
+
+This checks the saved-prediction analysis only. It is not model retraining or a
+reproduction of the final locked-TEST table: that table uses **full-completion
+scores** and its separately frozen DEV thresholds. Do not interchange them.
+The final comparison and bootstrap artifacts are listed below for inspection.
+
+### GPU smoke test: original SFT on DEV
+
+After installing the training environment below and confirming CUDA is available:
+
+```bash
+python scripts/phase1_sft_posthoc/finetuned_eval.py --split dev --limit 20
+```
+
+This loads `mistralai/Mistral-7B-v0.3` plus the published
+`Primeinvincible/mistral-medqa-lora-v3` adapter with 4-bit quantization.
+It downloads model/dataset files if needed, requires a compatible NVIDIA GPU,
+and writes `results/clean_protocol/phase1_sft/sft_dev_limit20_predictions.json`.
+A successful smoke test contains 20 DEV predictions; it is not an accuracy target.
+Use Linux for the GPU training stack; the clean GRPO runs used H200/BF16.
+
+### Clean training order and missing artifacts
+
+Git contains summaries and selected prediction caches, not all training data
+artifacts or checkpoint weights. The following paths are relative to the repo.
+The scripts use repository-relative paths; running from the root keeps commands
+and generated outputs easy to follow.
+
+| Stage | Entry point | Prerequisites and outputs |
+| --- | --- | --- |
+| OOF SFT | `scripts/phase1_sft_posthoc/generate_sft_oof_fold.py --fold 0` (repeat for folds 1–4) | Uses official TRAIN; writes five fold outputs under `results/clean_protocol/oof_sft/`. `--smoke` is only a pipeline check. |
+| Combine OOF | `scripts/phase1_sft_posthoc/combine_sft_oof.py` | Requires all five full folds; produces `sft_train_oof_predictions.json` in that directory. |
+| Build training data | `build_clean_source_pools.py`, then `build_clean_dpo_pairs.py` and `build_supervised_5way_data.py` in `scripts/phase2_learned_abstention/` | Uses TRAIN OOF predictions; generates `results/clean_protocol/learned_abstention/data/`. This directory is intentionally not committed. |
+| Supervised baselines | `train_supervised_5way.py`, `train_continue_sft_control.py`, `train_correct_only_sft_control.py` | Require generated data and original SFT adapter; use `--help` for required run names/options. Continue-SFT produces the shared checkpoint-1000 used below. |
+| Common initialization | `train_grpo_common_warmstart.py` | Requires Continue-SFT `main/checkpoints/checkpoint-1000` and `warmstart_data.json`; requires explicit `--lr` and `--run-name`. A `main` run produces `grpo_common_warmstart/main/policy/`. |
+| Common-init DPO | `train_dpo_common_init.py --pair-set ratio_2to1 --run-name common_init_ratio_2to1` | Requires the shared policy and generated DPO pairs. |
+| Clean GRPO | `train_clean_grpo.py --arm A --run-name main` (and separately arm B) | Requires the same shared policy; creates/verifies a deterministic TRAIN manifest and writes separate arm outputs. |
+| DEV selection | `eval_warmstart_dev.py`, the DEV calibration scripts, and `select_grpo_dev_checkpoints.py` | Require actual trained checkpoints and DEV scores. Freeze model, scoring rule, checkpoint, and thresholds before TEST. |
+| Locked evaluation | `eval_final_locked_comparison.py`, `eval_selected_grpo_test.py`, `eval_dpo_common_init_test.py` | Final evaluation only, after frozen DEV choices and all prerequisite checkpoints/caches exist. These are not smoke-test commands. |
+
+For example, once the **five full OOF runs** exist:
+
+```bash
+python scripts/phase1_sft_posthoc/combine_sft_oof.py
+python scripts/phase2_learned_abstention/build_clean_source_pools.py
+python scripts/phase2_learned_abstention/build_clean_dpo_pairs.py
+python scripts/phase2_learned_abstention/build_supervised_5way_data.py
+python scripts/phase2_learned_abstention/train_continue_sft_control.py --run-name smoke-local --smoke
+```
+
+The smoke run is not the `main/checkpoints/checkpoint-1000` required by the common
+initialization stage. Supply/regenerate that checkpoint before continuing.
+The common warm-start script requires a learning rate explicitly; the committed
+summary paths alone are insufficient to recover every historical training choice.
+Consult the original run records rather than guessing a value for an exact rerun.
+
+`train_lora.py`, `grpo_v4_full.py`, and the older checkpoint sweeps are historical
+experiments, not the clean-protocol quickstart. Some retain pod-specific paths.
+`test_medqa_splits.py` explicitly unlocks TEST, so it is also excluded from setup
+checks. Absolute paths inside committed JSON metadata describe historical runs;
+they do not mean those checkpoints are included in this checkout.
+
 ### Training environment
 
 Use an isolated **Linux / Python 3.12** environment:

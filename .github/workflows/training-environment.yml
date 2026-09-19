@@ -29,3 +29,7 @@ jobs:
         run: python scripts/check_training_environment.py
       - name: Check reward parser
         run: python -m pytest scripts/phase2_learned_abstention/test_reward_fn.py -q
+      - name: Reproduce committed SFT DEV calibration
+        run: |
+          python scripts/phase1_sft_posthoc/calibrate_sft_dev.py --output .artifacts/sft_dev_calibration.json
+          python -c "import json; from pathlib import Path; actual=json.loads(Path('.artifacts/sft_dev_calibration.json').read_text()); expected=json.loads(Path('results/clean_protocol/phase1_sft/sft_dev_calibration.json').read_text()); assert actual == expected"

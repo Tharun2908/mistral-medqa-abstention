@@ -52,3 +52,7 @@ results/clean_protocol/learned_abstention/dpo/common_init_smoke_ratio_2to1/
 results/clean_protocol/phase1_sft/sft_dev_limit20_predictions.json
 results/clean_protocol/learned_abstention/grpo/data/
 logs/
+
+# Local reproduction checks
+.artifacts/
+.venv-analysis/
