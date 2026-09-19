@@ -310,6 +310,44 @@ Earlier exploratory threshold tables used TEST information for selection. They r
 
 ## Reproducibility map
 
+### Training environment
+
+Use an isolated **Linux / Python 3.12** environment:
+
+```bash
+python3.12 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python -m pip check
+python scripts/check_training_environment.py
+```
+
+`requirements.txt` is a compatibility baseline checked by CI, **not an archived
+package freeze from the historical GPU runs**. The committed run summaries do not
+record a complete environment. TRL is pinned to **0.14.0**, matching the version
+referenced in the GRPO scripts and their prompt-batch semantics; the previous
+0.12.2 pin did not provide `GRPOConfig` or `GRPOTrainer`.
+See the [TRL 0.14 GRPO documentation](https://huggingface.co/docs/trl/v0.14.0/grpo_trainer).
+
+The environment check runs offline on CPU: it imports the clean SFT/DPO/GRPO
+entry points, constructs trainer configurations, and runs a tiny randomly
+initialized Mistral LoRA forward/backward pass. It downloads no model or dataset
+and does not evaluate TEST. CI uses the CPU build of the same PyTorch version.
+This check does **not** validate CUDA, bitsandbytes GPU kernels, full trainer
+execution, or reproduction of the published metrics. The clean GRPO runs used
+an H200 with BF16; real training also requires the prepared training artifacts
+and initialization checkpoints referenced by the scripts.
+
+Before a new GPU run, save its actual environment alongside its outputs:
+
+```bash
+python -m pip freeze > environment-freeze.txt
+python -c "import torch; print(torch.__version__, torch.version.cuda); print(torch.cuda.get_device_name(0))" > gpu-environment.txt
+```
+
+### Committed results
+
 Core clean-protocol artifacts live under:
 
 ```text

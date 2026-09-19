@@ -1,17 +1,22 @@
-# Core ML stack
+# Training compatibility baseline (Linux, Python 3.12).
+# See README.md: this is not an archived freeze of the historical GPU runs.
+# Keep TRL on 0.14: the GRPO scripts use its prompt-batch semantics.
+# 0.12.2 does not provide GRPOConfig / GRPOTrainer.
 torch==2.3.1
 transformers==4.46.3
 tokenizers==0.20.3
 accelerate==0.34.2
 peft==0.19.1
-trl==0.12.2
+trl==0.14.0
 
 # Quantization / GPU fine-tuning
 bitsandbytes==0.43.3
 triton==2.3.1
+# Triton imports setuptools; fresh Python 3.12 environments do not include it.
+setuptools==75.6.0
 
 # Data / evaluation
-datasets
+datasets==3.2.0
 numpy==1.26.4
 pandas
 scikit-learn

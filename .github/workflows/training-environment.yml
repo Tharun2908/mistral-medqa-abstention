@@ -1,0 +1,31 @@
+name: Training environment
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  cpu-compatibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - name: Install the declared environment with CPU PyTorch
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install torch==2.3.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements.txt pytest
+          python -m pip check
+      - name: Check training imports, configs, and Mistral LoRA
+        run: python scripts/check_training_environment.py
+      - name: Check reward parser
+        run: python -m pytest scripts/phase2_learned_abstention/test_reward_fn.py -q
